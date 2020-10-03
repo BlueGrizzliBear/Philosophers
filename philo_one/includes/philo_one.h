@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 19:06:57 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 19:10:58 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct			s_fork
 typedef struct			s_phi
 {
 	int					id;
-	// pthread_mutex_t		*mutex;
 	int					*game;
 	int					has_eaten;
 	struct timeval		start;
@@ -71,22 +70,21 @@ typedef struct			s_phi
 
 typedef struct			s_philo_one
 {
-	// pthread_mutex_t		*mutex;
 	int					game;
 	t_params			*params;
 	t_fork				*forks;
 	t_phi				*phi;
 }						t_philo_one;
 
-int 		ft_error(int err);
-t_params	*ft_parse(char **argv);
-int			ft_atoi(const char *str);
-void		ft_putstr(char *str);
-t_philo_one	*ft_init(t_params *params);
-void	*ft_is_alive(void *arg);
-int		ft_display(t_phi *phi, char *str);
-int	ft_get_timestamp(struct timeval start, struct timeval t);
-int 	ft_free(t_philo_one *p);
-int		ft_is_dead(t_phi *phi);
+int						ft_error(int err);
+t_params				*ft_parse(char **argv);
+int						ft_atoi(const char *str);
+void					ft_putstr(char *str);
+t_philo_one				*ft_init(t_params *params);
+void					*ft_is_alive(void *arg);
+int						ft_display(t_phi *phi, char *str);
+int						ft_get_timestamp(struct timeval s, struct timeval t);
+int						ft_free(t_philo_one *p);
+int						ft_is_dead(t_phi *phi);
 
 #endif
