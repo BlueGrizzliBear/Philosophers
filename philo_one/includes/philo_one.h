@@ -6,20 +6,13 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 18:28:25 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 19:06:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_ONE_H
 # define PHILO_ONE_H
 
-// # include <stddef.h>
-// # include <sys/errno.h>
-// # include <sys/stat.h>
-// # include <sys/wait.h>
-// # include <sys/types.h>
-// # include <limits.h>
-// # include <signal.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -31,19 +24,18 @@
 # define ERROR_ARG_VAL 1
 # define ERROR_INIT_STRUCT 2
 # define ERROR_STRUCT_CREAT 3
-# define ERROR_ALLOC_MUTEX 4
+# define ERROR_ALLOC_INIT_MUTEX 4
 # define ERROR_ALLOC_THREAD 5
-# define ERROR_INIT_MUTEX 6
-# define ERROR_LAUNCH_PHI 7
-# define ERROR_CREATE_THREAD 8
-# define ERROR_LOCK_MUTEX 9
-# define ERROR_UNLOCK_MUTEX 10
-# define ERROR_GTOD 11
-# define ERROR_MEM_ALLOC 12
-# define ERROR_DISPLAY 13
-# define ERROR_STANDBY 14
-# define ERROR_DESTROY 15
-# define ERROR_JOIN_THREAD 16
+# define ERROR_LAUNCH_PHI 6
+# define ERROR_CREATE_THREAD 7
+# define ERROR_LOCK_MUTEX 8
+# define ERROR_UNLOCK_MUTEX 9
+# define ERROR_GTOD 10
+# define ERROR_MEM_ALLOC 11
+# define ERROR_DISPLAY 12
+# define ERROR_STANDBY 13
+# define ERROR_DESTROY 14
+# define ERROR_JOIN_THREAD 15
 
 typedef struct			s_params
 {
@@ -67,7 +59,6 @@ typedef struct			s_phi
 	int					id;
 	// pthread_mutex_t		*mutex;
 	int					*game;
-	// int					alive;
 	int					has_eaten;
 	struct timeval		start;
 	struct timeval		last_meal;
@@ -96,5 +87,6 @@ void	*ft_is_alive(void *arg);
 int		ft_display(t_phi *phi, char *str);
 int	ft_get_timestamp(struct timeval start, struct timeval t);
 int 	ft_free(t_philo_one *p);
+int		ft_is_dead(t_phi *phi);
 
 #endif

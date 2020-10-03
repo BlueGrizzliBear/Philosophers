@@ -6,26 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 18:40:59 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 19:07:07 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
-
-int		ft_is_dead(t_phi *phi)
-{
-	struct timeval now;
-
-	if (gettimeofday(&now, NULL))
-		return (ft_error(ERROR_GTOD));
-	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
-	{
-		// phi->alive = 0;
-		ft_display(phi, "died\n");
-		return (1);
-	}
-	return (0);
-}
 
 int		ft_standby(t_phi *phi, int time)
 {
@@ -116,8 +101,6 @@ void	*ft_is_alive(void *arg)
 			*phi->game = 0;
 			if (ret == -2)
 				ft_unlock_forks(phi);
-			// pthread_detach(*phi->thread);
-			// dprintf(2, "detached phi %d\n", phi->id);
 			return (NULL);
 		}
 	}

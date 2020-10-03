@@ -6,13 +6,13 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 14:55:08 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 19:05:56 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
 
-int	ft_get_timestamp(struct timeval start, struct timeval t)
+int		ft_get_timestamp(struct timeval start, struct timeval t)
 {
 	int	start_ms;
 	int	t_ms;
@@ -87,7 +87,7 @@ void	ft_fill_msg_nb(char *msg, int nb)
 		size++;
 	}
 	size++;
-	msg[len + size] = ' ';	
+	msg[len + size] = ' ';
 	size--;
 	while (nb > 9)
 	{
@@ -101,7 +101,7 @@ void	ft_fill_msg_nb(char *msg, int nb)
 int		ft_display(t_phi *phi, char *str)
 {
 	struct timeval	now;
-	int 			timestamp;
+	int				timestamp;
 	char			*msg;
 	int				size;
 
