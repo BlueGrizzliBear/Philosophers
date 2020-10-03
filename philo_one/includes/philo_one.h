@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 16:46:54 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 18:19:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct			s_phi
 	int					id;
 	// pthread_mutex_t		*mutex;
 	int					*game;
-	int					alive;
+	// int					alive;
 	int					has_eaten;
 	struct timeval		start;
 	struct timeval		last_meal;

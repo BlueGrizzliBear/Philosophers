@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 18:12:12 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 18:19:39 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		ft_is_dead(t_phi *phi)
 		return (ft_error(ERROR_GTOD));
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
-		phi->alive = 0;
+		// phi->alive = 0;
 		ft_display(phi, "died\n");
 		return (1);
 	}
@@ -38,8 +38,6 @@ int		ft_standby(t_phi *phi, int time)
 		return (ft_error(ERROR_GTOD));
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		// if (*phi->game == 0)
-		// 	return (-2);
 		if (ft_is_dead(phi) == 1 || *phi->game == 0)
 			return (-1);
 		usleep(10);
