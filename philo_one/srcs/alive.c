@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 18:19:39 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 18:40:59 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		ft_lock_forks(t_phi *phi)
 {
 	while (phi->right_fork->status == 1 || phi->left_fork->status == 1)
 	{
-		if (ft_is_dead(phi) == 1)
+		if (ft_is_dead(phi) == 1 || *phi->game == 0)
 			return (-1);
 		usleep(10);
 	}
@@ -82,7 +82,7 @@ int		ft_eat_sleep_think(t_phi *phi)
 	if (ft_display(phi, "has taken fork\n") || ft_display(phi, "is eating\n"))
 		return (ft_error(ERROR_DISPLAY));
 	phi->has_eaten++;
-	if (phi-> params->nb_time_phi_must_eat != -1 &&
+	if (phi->params->nb_time_phi_must_eat != -1 &&
 	phi->has_eaten >= phi->params->nb_time_phi_must_eat)
 		return (-2);
 	if (gettimeofday(&phi->last_meal, NULL))
@@ -111,7 +111,7 @@ void	*ft_is_alive(void *arg)
 	while (*phi->game == 1)
 	{
 		ret = 0;
-		if ((ret = ft_eat_sleep_think(phi)) < 0)
+		if ((ret = ft_eat_sleep_think(phi)) != 0)
 		{
 			*phi->game = 0;
 			if (ret == -2)
