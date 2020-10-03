@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 18:12:21 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/03 18:21:28 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		ft_launch(t_philo_one *p)
 			return (ft_error(ERROR_GTOD));
 		if (gettimeofday(&iter->last_meal, NULL))
 			return (ft_error(ERROR_GTOD));
-		iter->alive = 1;
+		// iter->alive = 1;
 		if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
 			return (ft_error(ERROR_CREATE_THREAD));
 		iter = iter->next;
