@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 11:49:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/04 11:55:48 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct			s_params
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					nb_time_phi_must_eat;
-	char				*sem_name;
 	sem_t				*forks;
 	int					forks_nb;
 }						t_params;
