@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 11:55:48 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/04 12:00:52 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 # include <semaphore.h>
 
 # define ERROR_NB_ARG 0
