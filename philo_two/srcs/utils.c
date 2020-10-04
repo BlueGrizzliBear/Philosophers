@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 10:39:41 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/04 11:51:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,27 @@ int		ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strdup(char *str)
+{
+	char	*s;
+	int		i;
+
+	i = 0;
+	s = NULL;
+	if (str)
+	{
+		if (!(s = malloc(sizeof(char) * (ft_strlen(str) + 1))))
+			return (NULL);
+		while (str[i])
+		{
+			s[i] = str[i];
+			i++;
+		}
+		s[i] = '\0';
+	}
+	return (s);
 }
 
 void	ft_putstr(char *str)
