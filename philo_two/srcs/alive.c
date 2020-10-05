@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 11:54:12 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/05 17:33:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,10 @@ int		ft_lock_forks(t_phi *phi)
 			return (-1);
 		usleep(10);
 	}
-	if (sem_wait(phi->params->forks))
+	if (sem_wait(phi->params->forks) || sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
-	if (ft_display(phi, "has taken a fork\n"))
-		return (ft_error(ERROR_DISPLAY));
-	if (sem_wait(phi->params->forks))
-		return (ft_error(ERROR_LOCK_SEM));
-	if (ft_display(phi, "has taken a fork\n"))
+	if (ft_display(phi, "has taken a fork\n") ||
+	ft_display(phi, "has taken a fork\n"))
 		return (ft_error(ERROR_DISPLAY));
 	phi->params->forks_nb -= 2;
 	return (0);
@@ -64,8 +61,9 @@ int		ft_eat_sleep_think(t_phi *phi)
 {
 	int ret;
 
-	if (ft_lock_forks(phi))
-		return (1);
+	ret = 0;
+	if ((ret = ft_lock_forks(phi)) != 0)
+		return (ret < 0 ? -1 : 1);
 	if (ft_display(phi, "is eating\n"))
 		return (ft_error(ERROR_DISPLAY));
 	phi->has_eaten++;
@@ -74,14 +72,12 @@ int		ft_eat_sleep_think(t_phi *phi)
 		return (-3);
 	if (gettimeofday(&phi->last_meal, NULL))
 		return (ft_error(ERROR_GTOD));
-	ret = 0;
 	if ((ret = ft_standby(phi, phi->params->time_to_eat)) != 0)
 		return (ret < 0 ? -2 : ft_error(ERROR_STANDBY));
 	if (ft_unlock_forks(phi))
 		return (1);
 	if (ft_display(phi, "is sleeping\n"))
 		return (ft_error(ERROR_DISPLAY));
-	ret = 0;
 	if ((ret = ft_standby(phi, phi->params->time_to_sleep)) != 0)
 		return (ret < 0 ? -1 : ft_error(ERROR_STANDBY));
 	if (ft_display(phi, "is thinking\n"))
@@ -100,7 +96,7 @@ void	*ft_is_alive(void *arg)
 		ret = 0;
 		if ((ret = ft_eat_sleep_think(phi)) != 0)
 		{
-			if (ret == -2)
+			if (ret == -1 || ret == -2)
 				*phi->game = 0;
 			if (ret == -2 || ret == -3)
 				ft_unlock_forks(phi);
