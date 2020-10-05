@@ -21,24 +21,26 @@
 # include <sys/time.h>
 # include <fcntl.h>
 # include <semaphore.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <signal.h>
 
 # define ERROR_NB_ARG 0
 # define ERROR_ARG_VAL 1
 # define ERROR_INIT_STRUCT 2
 # define ERROR_STRUCT_CREAT 3
 # define ERROR_OPEN_SEM 4
-# define ERROR_ALLOC_THREAD 5
-# define ERROR_LAUNCH_PHI 6
-# define ERROR_CREATE_THREAD 7
-# define ERROR_LOCK_SEM 8
-# define ERROR_UNLOCK_SEM 9
-# define ERROR_GTOD 10
-# define ERROR_MEM_ALLOC 11
-# define ERROR_DISPLAY 12
-# define ERROR_STANDBY 13
-# define ERROR_CLOSING 14
-# define ERROR_JOIN_THREAD 15
-# define ERROR_UNLINK 14
+# define ERROR_LAUNCH_PHI 5
+# define ERROR_CREATE_FORK 6
+# define ERROR_LOCK_SEM 7
+# define ERROR_UNLOCK_SEM 8
+# define ERROR_GTOD 9
+# define ERROR_MEM_ALLOC 10
+# define ERROR_DISPLAY 11
+# define ERROR_STANDBY 12
+# define ERROR_CLOSING 13
+# define ERROR_JOIN_THREAD 14
+# define ERROR_UNLINK 15
 
 typedef struct			s_params
 {
@@ -54,11 +56,13 @@ typedef struct			s_params
 typedef struct			s_phi
 {
 	int					id;
-	int					*game;
+	// int					*game;
+	int					status;
 	int					has_eaten;
 	struct timeval		start;
 	struct timeval		last_meal;
-	pthread_t			*thread;
+	// pthread_t			*thread;
+	int					pid;
 	t_params			*params;
 	struct s_phi		*next;
 }						t_phi;
@@ -74,8 +78,8 @@ int						ft_error(int err);
 t_params				*ft_parse(char **argv);
 int						ft_atoi(const char *str);
 void					ft_putstr(char *str);
-t_philo_three				*ft_init(t_params *params);
-void					*ft_is_alive(void *arg);
+t_philo_three			*ft_init(t_params *params);
+int						ft_is_alive(void *arg);
 int						ft_display(t_phi *phi, char *str);
 int						ft_get_timestamp(struct timeval s, struct timeval t);
 int						ft_free(t_philo_three *p);

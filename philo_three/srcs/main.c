@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 11:20:25 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/05 11:46:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int		ft_is_dead(t_phi *phi)
 		return (ft_error(ERROR_GTOD));
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
+		phi->status = 0;
 		ft_display(phi, "died\n");
 		return (1);
 	}
@@ -30,15 +31,28 @@ int		ft_wait(t_philo_three *p)
 {
 	t_phi	*iter;
 	int		counter;
+	int		status;
+	int		incr;
 
-	iter = p->phi;
-	counter = p->params->nb;
-	while (counter > 0)
+	incr = 0;
+	while (incr < p->params->nb)
 	{
-		if (pthread_join(*iter->thread, NULL))
-			return (1);
-		iter = iter->next;
-		counter--;
+		status = 0;
+		if (waitpid(-1, &status, 0) < 0)
+			return (ft_error(ERROR_CREATE_FORK));
+		incr++;
+		if (WEXITSTATUS(status) == 2)
+		{
+			iter = p->phi;
+			counter = p->params->nb;
+			while (counter > 0)
+			{
+				kill(iter->pid, SIGINT);
+				iter = iter->next;
+				counter--;
+			}
+			return (0);
+		}
 	}
 	return (0);
 }
@@ -47,6 +61,7 @@ int		ft_launch(t_philo_three *p)
 {
 	t_phi	*iter;
 	int		counter;
+	int		pid;
 
 	iter = p->phi;
 	counter = p->params->nb;
@@ -56,8 +71,12 @@ int		ft_launch(t_philo_three *p)
 			return (ft_error(ERROR_GTOD));
 		if (gettimeofday(&iter->last_meal, NULL))
 			return (ft_error(ERROR_GTOD));
-		if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
-			return (ft_error(ERROR_CREATE_THREAD));
+		if (!(pid = fork()))
+			ft_is_alive(iter);
+		if ((iter->pid = pid) < 0)
+			return (ft_error(ERROR_CREATE_FORK));
+		// if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
+		// 	return (ft_error(ERROR_CREATE_THREAD));
 		iter = iter->next;
 		counter--;
 	}

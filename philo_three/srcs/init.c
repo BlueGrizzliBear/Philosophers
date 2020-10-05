@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 11:18:35 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/05 11:31:24 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ t_phi		*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
 	if (inv_id == p->params->nb)
 		addr = phi;
 	phi->id = p->params->nb - inv_id;
-	phi->game = &p->game;
+	phi->status = 1;
+	// phi->game = &p->game;
 	phi->has_eaten = 0;
-	if (!(phi->thread = malloc(sizeof(pthread_t))))
-	{
-		ft_error(ERROR_ALLOC_THREAD);
-		return (NULL);
-	}
+	// if (!(phi->thread = malloc(sizeof(pthread_t))))
+	// {
+	// 	ft_error(ERROR_ALLOC_THREAD);
+	// 	return (NULL);
+	// }
 	phi->params = p->params;
 	if (inv_id != 1)
 		phi->next = ft_init_phi(p, inv_id - 1, addr);
@@ -41,16 +42,16 @@ t_phi		*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
 
 t_philo_three	*ft_init(t_params *p)
 {
-	t_philo_three *ph_two;
+	t_philo_three *ph_three;
 
-	if (!(ph_two = malloc(sizeof(t_philo_three))))
+	if (!(ph_three = malloc(sizeof(t_philo_three))))
 	{
 		ft_error(ERROR_STRUCT_CREAT);
 		return (NULL);
 	}
-	ph_two->game = 1;
-	ph_two->params = p;
-	if (!(ph_two->phi = ft_init_phi(ph_two, p->nb, NULL)))
+	ph_three->game = 1;
+	ph_three->params = p;
+	if (!(ph_three->phi = ft_init_phi(ph_three, p->nb, NULL)))
 		return (NULL);
-	return (ph_two);
+	return (ph_three);
 }
