@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 10:11:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/05 12:09:58 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int		ft_free_philosophers(t_phi *phi, t_params *params)
 	nb = params->nb;
 	while (nb > 0)
 	{
-		// free(phi->thread);
-		// phi->thread = NULL;
 		iter = phi->next;
 		free(phi);
 		phi = iter;

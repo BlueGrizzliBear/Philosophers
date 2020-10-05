@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 11:46:00 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/05 12:09:20 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int		ft_is_dead(t_phi *phi)
 int		ft_wait(t_philo_three *p)
 {
 	t_phi	*iter;
-	int		counter;
 	int		status;
 	int		incr;
 
@@ -44,12 +43,12 @@ int		ft_wait(t_philo_three *p)
 		if (WEXITSTATUS(status) == 2)
 		{
 			iter = p->phi;
-			counter = p->params->nb;
-			while (counter > 0)
+			status = p->params->nb;
+			while (status > 0)
 			{
 				kill(iter->pid, SIGINT);
 				iter = iter->next;
-				counter--;
+				status--;
 			}
 			return (0);
 		}
@@ -75,8 +74,6 @@ int		ft_launch(t_philo_three *p)
 			ft_is_alive(iter);
 		if ((iter->pid = pid) < 0)
 			return (ft_error(ERROR_CREATE_FORK));
-		// if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
-		// 	return (ft_error(ERROR_CREATE_THREAD));
 		iter = iter->next;
 		counter--;
 	}

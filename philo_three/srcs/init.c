@@ -6,13 +6,13 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 11:31:24 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/05 12:09:48 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
 
-t_phi		*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
+t_phi			*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
 {
 	t_phi *phi;
 
@@ -25,13 +25,7 @@ t_phi		*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
 		addr = phi;
 	phi->id = p->params->nb - inv_id;
 	phi->status = 1;
-	// phi->game = &p->game;
 	phi->has_eaten = 0;
-	// if (!(phi->thread = malloc(sizeof(pthread_t))))
-	// {
-	// 	ft_error(ERROR_ALLOC_THREAD);
-	// 	return (NULL);
-	// }
 	phi->params = p->params;
 	if (inv_id != 1)
 		phi->next = ft_init_phi(p, inv_id - 1, addr);

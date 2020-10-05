@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 10:29:35 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/05 12:07:34 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ t_params	*ft_parse(char **argv)
 	int			val;
 
 	if (!(params = malloc(sizeof(t_params))))
-	{
-		ft_error(ERROR_STRUCT_CREAT);
-		return (NULL);
-	}
+		return (ft_error(ERROR_STRUCT_CREAT) == 3 ? NULL : NULL);
 	params->nb_time_phi_must_eat = -1;
 	i = 0;
 	while (argv[++i])
@@ -49,10 +46,7 @@ t_params	*ft_parse(char **argv)
 	sem_unlink("/forks");
 	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
 	if (params->forks == SEM_FAILED)
-	{
-		ft_error(ERROR_OPEN_SEM);
-		return (NULL);
-	}
+		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
 	params->forks_nb = params->nb;
 	return (params);
 }

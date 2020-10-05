@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_three.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 11:10:01 by cbussier         ###   ########lyon.fr   */
+/*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
+/*   Updated: 2020/10/05 12:11:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,10 @@ typedef struct			s_params
 typedef struct			s_phi
 {
 	int					id;
-	// int					*game;
 	int					status;
 	int					has_eaten;
 	struct timeval		start;
 	struct timeval		last_meal;
-	// pthread_t			*thread;
 	int					pid;
 	t_params			*params;
 	struct s_phi		*next;
