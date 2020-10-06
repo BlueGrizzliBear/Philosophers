@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 18:14:18 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 21:46:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_standby(t_phi *phi, int time)
 		return (ft_error(ERROR_GTOD));
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		if (ft_is_dead(phi) == 1 || phi->params->g == 0)
+		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
 			return (-1);
 		usleep(10);
 		if (gettimeofday(&now, NULL))
@@ -39,11 +39,10 @@ int		ft_lock_forks(t_phi *phi)
 	ret = 0;
 	while (phi->params->forks_nb < 2)
 	{
-		if (ft_is_dead(phi) == 1 || phi->params->g == 0)
+		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
 			return (-1);
 		usleep(10);
 	}
-	dprintf(2, "waiting for forks\n");
 	if (sem_wait(phi->params->forks) || sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
 	if ((ret = ft_display(phi, "has taken a fork\n")) ||
@@ -95,7 +94,7 @@ void	*ft_is_alive(void *arg)
 	int		ret;
 
 	phi = (t_phi *)arg;
-	while (phi->params->g == 1)
+	while (phi->params->game == 1)
 	{
 		ret = 0;
 		if ((ret = ft_eat_sleep_think(phi)) != 0)

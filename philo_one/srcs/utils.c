@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 11:56:53 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 21:52:05 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,16 @@ int		ft_atoi(const char *str)
 	if (str[i] != '\0')
 		return (-1);
 	return (res);
+}
+
+int		ft_get_timestamp(struct timeval start, struct timeval t)
+{
+	int	start_ms;
+	int	t_ms;
+	int	timestamp;
+
+	start_ms = start.tv_sec * 1000 + start.tv_usec / 1000;
+	t_ms = t.tv_sec * 1000 + t.tv_usec / 1000;
+	timestamp = t_ms - start_ms;
+	return (timestamp);
 }

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 16:57:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 22:20:37 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_standby(t_phi *phi, int time)
 		return (ft_error(ERROR_GTOD));
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		if (ft_is_dead(phi) == 1 || *phi->game == 0)
+		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
 			return (-1);
 		usleep(10);
 		if (gettimeofday(&now, NULL))
@@ -36,32 +36,32 @@ int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
 
-	ret = 0;
-	while (phi->right_fork->id == phi->left_fork->id ||
-		(phi->right_fork->status == 1 || phi->left_fork->status == 1))
+	while (phi->left_fork->id == phi->right_fork->id ||
+		(phi->left_fork->status == 1 || phi->right_fork->status == 1))
 	{
-		if (ft_is_dead(phi) == 1 || *phi->game == 0)
+		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
 			return (-1);
 		usleep(10);
 	}
+	phi->left_fork->status = 1;
+	phi->right_fork->status = 1;
 	if (pthread_mutex_lock(phi->left_fork->mutex) ||
 	pthread_mutex_lock(phi->right_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
+	ret = 0;
 	if ((ret = ft_display(phi, "has taken a fork\n")) ||
 	(ret = ft_display(phi, "has taken a fork\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	phi->right_fork->status = 1;
-	phi->left_fork->status = 1;
 	return (0);
 }
 
 int		ft_unlock_forks(t_phi *phi)
 {
-	phi->right_fork->status = 0;
-	phi->left_fork->status = 0;
 	if (pthread_mutex_unlock(phi->right_fork->mutex) ||
 	pthread_mutex_unlock(phi->left_fork->mutex))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
+	phi->right_fork->status = 0;
+	phi->left_fork->status = 0;
 	return (0);
 }
 
@@ -99,13 +99,11 @@ void	*ft_is_alive(void *arg)
 	int		ret;
 
 	phi = (t_phi *)arg;
-	while (*phi->game == 1)
+	while (phi->params->game == 1)
 	{
 		ret = 0;
 		if ((ret = ft_eat_sleep_think(phi)) != 0)
 		{
-			if (ret == -1 || ret == -2)
-				*phi->game = 0;
 			if (ret == -2 || ret == -3)
 				ft_unlock_forks(phi);
 			return (NULL);

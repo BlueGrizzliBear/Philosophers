@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 20:54:58 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 21:27:39 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,24 @@ int			ft_init_params(t_params *params, int val, int index)
 	return (0);
 }
 
+int			ft_init_semaphores(t_params *params)
+{
+	sem_unlink("/reaper");
+	params->reaper = sem_open("/reaper", O_CREAT, S_IRWXU, 1);
+	if (params->reaper == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM));
+	params->game = 1;
+	sem_unlink("/display");
+	params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
+	if (params->display == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM));
+	sem_unlink("/forks");
+	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
+	if (params->forks == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM));
+	return (0);
+}
+
 t_params	*ft_parse(char **argv)
 {
 	t_params	*params;
@@ -43,20 +61,8 @@ t_params	*ft_parse(char **argv)
 			return (NULL);
 		ft_init_params(params, val, i);
 	}
-	// sem_unlink("/g");
-	// params->g = sem_open("/g", O_CREAT, S_IRWXU, 1);
-	// if (params->g == SEM_FAILED)
-	// 	return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
-	params->game = 1;
-	sem_unlink("/display");
-	params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
-	if (params->display == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
-	params->display_nb = 1;
-	sem_unlink("/forks");
-	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
-	if (params->forks == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
+	if (ft_init_semaphores(params))
+		return (NULL);
 	params->forks_nb = params->nb;
 	return (params);
 }

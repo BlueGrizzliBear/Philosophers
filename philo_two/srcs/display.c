@@ -6,23 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 18:11:19 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 22:03:27 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_two.h"
-
-int		ft_get_timestamp(struct timeval start, struct timeval t)
-{
-	int	start_ms;
-	int	t_ms;
-	int	timestamp;
-
-	start_ms = start.tv_sec * 1000 + start.tv_usec / 1000;
-	t_ms = t.tv_sec * 1000 + t.tv_usec / 1000;
-	timestamp = t_ms - start_ms;
-	return (timestamp);
-}
 
 int		ft_get_size(int timestamp, int phi_nb, char *str)
 {
@@ -98,21 +86,13 @@ void	ft_fill_msg_nb(char *msg, int nb)
 	msg[len + size] = nb % 10 + '0';
 }
 
-int		ft_display(t_phi *phi, char *str)
+int		ft_build_msg(t_phi *phi, char *str)
 {
 	struct timeval	now;
 	int				timestamp;
 	char			*msg;
 	int				size;
 
-	if (sem_wait(phi->params->display))
-		return (ft_error(ERROR_LOCK_SEM));
-	if (phi->params->g == 0)
-	{
-		if (sem_post(phi->params->display))
-			return (ft_error(ERROR_UNLOCK_SEM));
-		return (-1);
-	}
 	if (gettimeofday(&now, NULL))
 		return (ft_error(ERROR_GTOD));
 	timestamp = ft_get_timestamp(phi->start, now);
@@ -126,6 +106,25 @@ int		ft_display(t_phi *phi, char *str)
 	ft_putstr(msg);
 	free(msg);
 	msg = NULL;
+	return (0);
+}
+
+int		ft_display(t_phi *phi, char *str)
+{
+	static int	reaper = 0;
+
+	if (sem_wait(phi->params->display))
+		return (ft_error(ERROR_LOCK_SEM));
+	if (reaper != 0)
+	{
+		if (sem_post(phi->params->display))
+			return (ft_error(ERROR_UNLOCK_SEM));
+		return (-1);
+	}
+	if (phi->status == 0)
+		reaper += 1;
+	if (ft_build_msg(phi, str))
+		return (1);
 	if (sem_post(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	return (0);

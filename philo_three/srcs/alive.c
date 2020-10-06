@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 20:38:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 21:25:22 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ int		ft_is_alive(void *arg)
 		ret = 0;
 		if ((ret = ft_eat_sleep_think(phi)) < 0)
 		{
-			// if (ret == -1 || ret == -2)
-			// 	phi->params->game = 0;
 			if (ret == -2 || ret == -3)
 				ft_unlock_forks(phi);
 			if (phi->status == 0)
@@ -109,7 +107,6 @@ int		ft_is_alive(void *arg)
 		}
 		else if (ret > 0)
 			exit(1);
-		// usleep(100000);
 	}
 	return (0);
 }

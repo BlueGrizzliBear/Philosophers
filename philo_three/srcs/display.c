@@ -6,23 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 21:01:29 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 21:35:18 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
-
-int		ft_get_timestamp(struct timeval start, struct timeval t)
-{
-	int	start_ms;
-	int	t_ms;
-	int	timestamp;
-
-	start_ms = start.tv_sec * 1000 + start.tv_usec / 1000;
-	t_ms = t.tv_sec * 1000 + t.tv_usec / 1000;
-	timestamp = t_ms - start_ms;
-	return (timestamp);
-}
 
 int		ft_get_size(int timestamp, int phi_nb, char *str)
 {
@@ -98,52 +86,43 @@ void	ft_fill_msg_nb(char *msg, int nb)
 	msg[len + size] = nb % 10 + '0';
 }
 
-int		ft_display(t_phi *phi, char *str)
+int		ft_build_msg(t_phi *phi, char *str)
 {
 	struct timeval	now;
 	int				timestamp;
 	char			*msg;
 	int				size;
 
-	// while (phi->params->display_nb < 1)
-	// 	usleep(10000);
-	// phi->params->display_nb -= 1;
-	if (sem_wait(phi->params->display))
-		return (ft_error(ERROR_LOCK_SEM));
-	// dprintf(2, "0\n");
-	// sem_wait(phi->params->g);
-	// dprintf(2, "1\n");
-	// test = phi->params->game;
-	// sem_post(phi->params->g);
-	// dprintf(2, "2\n");
-	// dprintf(2, "test|%d|\n", test);
-	if (phi->params->game == 0)
-	{
-		dprintf(2, "gameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee overr\n");
-		if (sem_post(phi->params->display))
-			return (ft_error(ERROR_LOCK_SEM));
-		// phi->params->display_nb += 1;
-		return (-1);
-	}
-	// sem_wait(phi->params->g);
-	// if (phi->status == 0)
-	// 	phi->params->game = 0;
-	// sem_post(phi->params->g);
 	if (gettimeofday(&now, NULL))
 		return (ft_error(ERROR_GTOD));
 	timestamp = ft_get_timestamp(phi->start, now);
 	size = (ft_get_size(timestamp, phi->id, str) + 3);
 	if (!(msg = malloc(sizeof(char) * size)))
 		return (ft_error(ERROR_MEM_ALLOC));
-	msg = memset(msg, '\0', size);
+	if (!(msg = memset(msg, '\0', size)))
+		return (ft_error(ERROR_MEM_ALLOC));
 	ft_fill_msg_nb(msg, timestamp);
 	ft_fill_msg_nb(msg, phi->id);
 	ft_fill_msg_str(msg, str);
 	ft_putstr(msg);
 	free(msg);
-	msg = NULL;
+	return (0);
+}
+
+int		ft_display(t_phi *phi, char *str)
+{
+	if (sem_wait(phi->params->display))
+		return (ft_error(ERROR_LOCK_SEM));
+	if (sem_wait(phi->params->reaper))
+		return (ft_error(ERROR_LOCK_SEM));
+	if (ft_build_msg(phi, str))
+		return (1);
+	if (phi->status != 0)
+	{
+		if (sem_post(phi->params->reaper))
+			return (ft_error(ERROR_LOCK_SEM));
+	}
 	if (sem_post(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_SEM));
-	// phi->params->display_nb += 1;
 	return (0);
 }
