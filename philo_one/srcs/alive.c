@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 17:32:18 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 11:28:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int		ft_standby(t_phi *phi, int time)
 
 int		ft_lock_forks(t_phi *phi)
 {
-	while (phi->right_fork->status == 1 || phi->left_fork->status == 1)
+	while (phi->right_fork->id == phi->left_fork->id ||
+		(phi->right_fork->status == 1 || phi->left_fork->status == 1))
 	{
 		if (ft_is_dead(phi) == 1 || *phi->game == 0)
 			return (-1);
