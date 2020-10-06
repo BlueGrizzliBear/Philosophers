@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 10:51:01 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 18:15:09 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		ft_is_dead(t_phi *phi)
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
 		ft_display(phi, "died\n");
+		phi->params->g = 0;
 		return (1);
 	}
 	return (0);

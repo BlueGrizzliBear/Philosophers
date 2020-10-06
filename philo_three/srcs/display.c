@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 10:22:03 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 21:01:29 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,30 @@ int		ft_display(t_phi *phi, char *str)
 	char			*msg;
 	int				size;
 
+	// while (phi->params->display_nb < 1)
+	// 	usleep(10000);
+	// phi->params->display_nb -= 1;
+	if (sem_wait(phi->params->display))
+		return (ft_error(ERROR_LOCK_SEM));
+	// dprintf(2, "0\n");
+	// sem_wait(phi->params->g);
+	// dprintf(2, "1\n");
+	// test = phi->params->game;
+	// sem_post(phi->params->g);
+	// dprintf(2, "2\n");
+	// dprintf(2, "test|%d|\n", test);
+	if (phi->params->game == 0)
+	{
+		dprintf(2, "gameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee overr\n");
+		if (sem_post(phi->params->display))
+			return (ft_error(ERROR_LOCK_SEM));
+		// phi->params->display_nb += 1;
+		return (-1);
+	}
+	// sem_wait(phi->params->g);
+	// if (phi->status == 0)
+	// 	phi->params->game = 0;
+	// sem_post(phi->params->g);
 	if (gettimeofday(&now, NULL))
 		return (ft_error(ERROR_GTOD));
 	timestamp = ft_get_timestamp(phi->start, now);
@@ -118,5 +142,8 @@ int		ft_display(t_phi *phi, char *str)
 	ft_putstr(msg);
 	free(msg);
 	msg = NULL;
+	if (sem_post(phi->params->display))
+		return (ft_error(ERROR_UNLOCK_SEM));
+	// phi->params->display_nb += 1;
 	return (0);
 }

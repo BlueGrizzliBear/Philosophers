@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 19:05:56 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 15:35:08 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,14 @@ int		ft_display(t_phi *phi, char *str)
 	char			*msg;
 	int				size;
 
+	if (pthread_mutex_lock(phi->params->display))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	if (*phi->game == 0)
+	{
+		if (pthread_mutex_unlock(phi->params->display))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
+		return (-1);
+	}
 	if (gettimeofday(&now, NULL))
 		return (ft_error(ERROR_GTOD));
 	timestamp = ft_get_timestamp(phi->start, now);
@@ -118,5 +126,7 @@ int		ft_display(t_phi *phi, char *str)
 	ft_putstr(msg);
 	free(msg);
 	msg = NULL;
+	if (pthread_mutex_unlock(phi->params->display))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);
 }

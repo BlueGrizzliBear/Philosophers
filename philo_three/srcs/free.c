@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 12:09:58 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 16:05:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ int		ft_free_philosophers(t_phi *phi, t_params *params)
 
 int		ft_free_semaphore(t_params *params)
 {
+	if (sem_close(params->display))
+		return (ft_error(ERROR_CLOSING));
+	if (sem_unlink("/display"))
+		return (ft_error(ERROR_UNLINK));
 	if (sem_close(params->forks))
 		return (ft_error(ERROR_CLOSING));
 	if (sem_unlink("/forks"))

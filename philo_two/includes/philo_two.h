@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 12:04:00 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 18:44:18 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ typedef struct			s_params
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					nb_time_phi_must_eat;
+	// sem_t				*game;
+	int					g;
+	sem_t				*display;
 	sem_t				*forks;
 	int					forks_nb;
 }						t_params;
@@ -55,7 +58,6 @@ typedef struct			s_params
 typedef struct			s_phi
 {
 	int					id;
-	int					*game;
 	int					has_eaten;
 	struct timeval		start;
 	struct timeval		last_meal;
@@ -66,7 +68,6 @@ typedef struct			s_phi
 
 typedef struct			s_philo_two
 {
-	int					game;
 	t_params			*params;
 	t_phi				*phi;
 }						t_philo_two;

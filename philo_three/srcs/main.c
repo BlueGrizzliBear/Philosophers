@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 12:09:20 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 20:55:16 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@ int		ft_is_dead(t_phi *phi)
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
 		phi->status = 0;
-		ft_display(phi, "died\n");
+		ft_display(phi, "died\n");		
+		// dprintf(2, "3\n");
+		// sem_wait(phi->params->g);
+		// dprintf(2, "4\n");
+		phi->params->game = 0;
+		// sem_post(phi->params->g);
+		// dprintf(2, "5\n");
 		return (1);
 	}
 	return (0);
@@ -33,16 +39,16 @@ int		ft_wait(t_philo_three *p)
 	int		status;
 	int		incr;
 
+	iter = p->phi;
 	incr = 0;
 	while (incr < p->params->nb)
 	{
 		status = 0;
 		if (waitpid(-1, &status, 0) < 0)
 			return (ft_error(ERROR_CREATE_FORK));
-		incr++;
-		if (WEXITSTATUS(status) == 2)
+		if (WEXITSTATUS(status) > 0)
 		{
-			iter = p->phi;
+			// p->game = 0;
 			status = p->params->nb;
 			while (status > 0)
 			{
@@ -52,6 +58,7 @@ int		ft_wait(t_philo_three *p)
 			}
 			return (0);
 		}
+		incr++;
 	}
 	return (0);
 }
@@ -74,6 +81,7 @@ int		ft_launch(t_philo_three *p)
 			ft_is_alive(iter);
 		if ((iter->pid = pid) < 0)
 			return (ft_error(ERROR_CREATE_FORK));
+		// usleep(5000);
 		iter = iter->next;
 		counter--;
 	}

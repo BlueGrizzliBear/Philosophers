@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 11:15:20 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 18:13:20 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_phi		*ft_init_phi(t_philo_two *p, int inv_id, t_phi *addr)
 	if (inv_id == p->params->nb)
 		addr = phi;
 	phi->id = p->params->nb - inv_id;
-	phi->game = &p->game;
 	phi->has_eaten = 0;
 	if (!(phi->thread = malloc(sizeof(pthread_t))))
 	{
@@ -48,7 +47,6 @@ t_philo_two	*ft_init(t_params *p)
 		ft_error(ERROR_STRUCT_CREAT);
 		return (NULL);
 	}
-	ph_two->game = 1;
 	ph_two->params = p;
 	if (!(ph_two->phi = ft_init_phi(ph_two, p->nb, NULL)))
 		return (NULL);

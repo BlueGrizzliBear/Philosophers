@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/05 12:09:48 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 18:52:22 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_philo_three	*ft_init(t_params *p)
 		ft_error(ERROR_STRUCT_CREAT);
 		return (NULL);
 	}
-	ph_three->game = 1;
 	ph_three->params = p;
 	if (!(ph_three->phi = ft_init_phi(ph_three, p->nb, NULL)))
 		return (NULL);

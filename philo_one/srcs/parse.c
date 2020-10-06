@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/03 18:52:23 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/06 15:00:43 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ t_params	*ft_parse(char **argv)
 		if ((val = ft_atoi(argv[i])) < 1)
 			return (NULL);
 		ft_init_params(params, val, i);
+	}
+	if (!(params->display = malloc(sizeof(pthread_mutex_t))) ||
+	(pthread_mutex_init(params->display, NULL)))
+	{
+		ft_error(ERROR_ALLOC_INIT_MUTEX);
+		return (NULL);
 	}
 	return (params);
 }
