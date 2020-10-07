@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 22:04:57 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 12:56:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		ft_build_msg(t_phi *phi, char *str)
 
 	if (gettimeofday(&now, NULL))
 		return (ft_error(ERROR_GTOD));
-	timestamp = ft_get_timestamp(phi->start, now);
+	timestamp = ft_get_timestamp(phi->params->start, now);
 	size = (ft_get_size(timestamp, phi->id, str) + 3);
 	if (!(msg = malloc(sizeof(char) * size)))
 		return (ft_error(ERROR_MEM_ALLOC));

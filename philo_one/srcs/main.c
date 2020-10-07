@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 12:47:23 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 12:53:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ int		ft_launch(t_philo_one *p)
 
 	iter = p->phi;
 	counter = p->params->nb;
+	if (gettimeofday(&p->params->start, NULL))
+		return (ft_error(ERROR_GTOD));
 	while (counter > 0)
 	{
-		if (gettimeofday(&iter->start, NULL))
-			return (ft_error(ERROR_GTOD));
 		if (gettimeofday(&iter->last_meal, NULL))
 			return (ft_error(ERROR_GTOD));
 		if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
