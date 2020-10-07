@@ -6,40 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 12:56:02 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 13:36:31 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
-
-int		ft_get_size(int timestamp, int phi_nb, char *str)
-{
-	int iter;
-	int size;
-	int nb;
-
-	size = 0;
-	nb = timestamp;
-	while (nb > 9 || nb < -9)
-	{
-		nb = nb / 10;
-		size++;
-	}
-	size++;
-	while (phi_nb > 9 || phi_nb < -9)
-	{
-		phi_nb = phi_nb / 10;
-		size++;
-	}
-	size++;
-	iter = 0;
-	while (str[iter])
-	{
-		iter++;
-		size++;
-	}
-	return (size);
-}
 
 void	ft_fill_msg_str(char *msg, char *str)
 {
@@ -113,18 +84,36 @@ int		ft_display(t_phi *phi, char *str)
 {
 	static int	reaper = 0;
 
-	if (pthread_mutex_lock(phi->params->display))
-		return (ft_error(ERROR_LOCK_MUTEX));
+	// if (pthread_mutex_lock(phi->params->display))
+	// 	return (ft_error(ERROR_LOCK_MUTEX));
 	if (reaper != 0)
 	{
-		if (pthread_mutex_unlock(phi->params->display))
-			return (ft_error(ERROR_UNLOCK_MUTEX));
+		// if (pthread_mutex_unlock(phi->params->display))
+		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
 		return (-1);
 	}
 	if (phi->status == 0)
 		reaper += 1;
 	if (ft_build_msg(phi, str))
 		return (1);
+	// if (pthread_mutex_unlock(phi->params->display))
+	// 	return (ft_error(ERROR_UNLOCK_MUTEX));
+	return (0);
+}
+
+int		fts_display(t_phi *phi, char *str)
+{
+	int ret;
+
+	ret = 0;
+	if (pthread_mutex_lock(phi->params->display))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	if ((ret = ft_display(phi, str)))
+	{
+		if (pthread_mutex_unlock(phi->params->display))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
+		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
+	}
 	if (pthread_mutex_unlock(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);

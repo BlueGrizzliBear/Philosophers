@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 13:19:19 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 13:35:32 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int		ft_eat_sleep_think(t_phi *phi)
 	ret = 0;
 	if ((ret = ft_lock_forks(phi)) != 0)
 		return (ret < 0 ? -2 : 1);
-	if ((ret = ft_display(phi, "is eating\n")))
+	if ((ret = fts_display(phi, "is eating\n")))
 		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
 	phi->has_eaten++;
 	if (phi->params->nb_time_phi_must_eat != -1 &&
@@ -121,11 +121,11 @@ int		ft_eat_sleep_think(t_phi *phi)
 		return (ret < 0 ? -2 : ft_error(ERROR_STANDBY));
 	if (ft_unlock_forks(phi))
 		return (1);
-	if ((ret = ft_display(phi, "is sleeping\n")))
+	if ((ret = fts_display(phi, "is sleeping\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	if ((ret = ft_standby(phi, phi->params->time_to_sleep)) != 0)
 		return (ret < 0 ? -1 : ft_error(ERROR_STANDBY));
-	if ((ret = ft_display(phi, "is thinking\n")))
+	if ((ret = fts_display(phi, "is thinking\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 21:52:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 13:33:04 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ int		ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
-}
-
-void	ft_putstr(char *str)
-{
-	write(1, str, ft_strlen(str));
 }
 
 int		ft_atoi(const char *str)
@@ -59,4 +54,33 @@ int		ft_get_timestamp(struct timeval start, struct timeval t)
 	t_ms = t.tv_sec * 1000 + t.tv_usec / 1000;
 	timestamp = t_ms - start_ms;
 	return (timestamp);
+}
+
+int		ft_get_size(int timestamp, int phi_nb, char *str)
+{
+	int iter;
+	int size;
+	int nb;
+
+	size = 0;
+	nb = timestamp;
+	while (nb > 9 || nb < -9)
+	{
+		nb = nb / 10;
+		size++;
+	}
+	size++;
+	while (phi_nb > 9 || phi_nb < -9)
+	{
+		phi_nb = phi_nb / 10;
+		size++;
+	}
+	size++;
+	iter = 0;
+	while (str[iter])
+	{
+		iter++;
+		size++;
+	}
+	return (size);
 }
