@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 10:57:37 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 11:32:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
 
-	// here
-	if (pthread_mutex_lock(phi->params->available))
-		return (ft_error(ERROR_LOCK_MUTEX));
-	// here
 	// while (phi->left_fork->id == phi->right_fork->id ||
 	// 	(phi->left_fork->status == 1 || phi->right_fork->status == 1))
 	// {
@@ -48,20 +44,33 @@ int		ft_lock_forks(t_phi *phi)
 	// 	usleep(10);
 	// }
 	ret = 0;
+	// here
+	if (pthread_mutex_lock(phi->params->available))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	// here
 	if (pthread_mutex_lock(phi->left_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
-	phi->left_fork->status = 1;
-	if ((ret = ft_display(phi, "has taken a fork\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	if (pthread_mutex_lock(phi->right_fork->mutex))
-		return (ft_error(ERROR_LOCK_MUTEX));
-	phi->right_fork->status = 1;
-	if ((ret = ft_display(phi, "has taken a fork\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	// here
 	if (pthread_mutex_unlock(phi->params->available))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	// here
+	// phi->left_fork->status = 1;
+	if ((ret = ft_display(phi, "has taken a fork\n")))
+		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
+	
+	// here
+	if (pthread_mutex_lock(phi->params->available))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	// here
+	if (pthread_mutex_lock(phi->right_fork->mutex))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	// here
+	if (pthread_mutex_unlock(phi->params->available))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
+	// here
+	// phi->right_fork->status = 1;
+	if ((ret = ft_display(phi, "has taken a fork\n")))
+		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 
 	// if (pthread_mutex_lock(phi->left_fork->mutex) ||
 	// pthread_mutex_lock(phi->right_fork->mutex))
@@ -80,8 +89,8 @@ int		ft_unlock_forks(t_phi *phi)
 	if (pthread_mutex_unlock(phi->left_fork->mutex) ||
 	pthread_mutex_unlock(phi->right_fork->mutex))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
-	phi->left_fork->status = 0;
-	phi->right_fork->status = 0;
+	// phi->left_fork->status = 0;
+	// phi->right_fork->status = 0;
 	return (0);
 }
 
