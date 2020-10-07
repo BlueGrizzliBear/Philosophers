@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 14:58:00 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 16:50:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,62 +37,25 @@ int		ft_lock_forks(t_phi *phi)
 	int ret;
 
 	ret = 0;
-	// if (pthread_mutex_lock(phi->params->available))
-	// 	return (ft_error(ERROR_LOCK_MUTEX));
 	while (phi->left_fork->id == phi->right_fork->id ||
-		(phi->left_fork->status == 1 || phi->right_fork->status == 1))
+	!(phi->left_fork->status == 0 && phi->right_fork->status == 0))
 	{
 		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
 			return (1);
-		// usleep(10);
 	}
-	// here
-	// here
-	// dprintf(2, "phi%d waiting availability\n", phi->id);
-	// while (phi->left_fork->id == phi->right_fork->id ||
-	// // phi->left_fork->status == 1 || phi->right_fork->status == 1 ||
-	// // pthread_mutex_lock(phi->params->available) != 0)
-	// pthread_mutex_lock(phi->params->available) != 0 ||
-	// phi->left_fork->status == 1 || phi->right_fork->status == 1)
-	// {
-	// 	if (pthread_mutex_unlock(phi->params->available))
-	// 		return (ft_error(ERROR_UNLOCK_MUTEX));
-	// 	if (ft_is_dead(phi) == 1 || phi->params->game == 0)
-	// 		return (1);
-	// 	usleep(10);
-	// }
-
-	// here
-	// dprintf(2, "phi%d waiting availability\n", phi->id);
-	// if (pthread_mutex_lock(phi->params->available))
-	// 	return (ft_error(ERROR_LOCK_MUTEX));
-	// here
-	if (pthread_mutex_lock(phi->right_fork->mutex) ||
-	pthread_mutex_lock(phi->left_fork->mutex))
+	if (pthread_mutex_lock(phi->params->available))
 		return (ft_error(ERROR_LOCK_MUTEX));
-	// if (pthread_mutex_lock(phi->right_fork->mutex))
-	// 	return (ft_error(ERROR_LOCK_MUTEX));
+	if (pthread_mutex_lock(phi->left_fork->mutex))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	if (pthread_mutex_lock(phi->right_fork->mutex))
+		return (ft_error(ERROR_LOCK_MUTEX));
 	phi->left_fork->status = 1;
 	phi->right_fork->status = 1;
-	// if (pthread_mutex_unlock(phi->params->available))
-	// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-	// dprintf(2, "phi%d returning availability\n", phi->id);
-	if ((ret = ft_display(phi, "has taken a fork\n")))
+	if (pthread_mutex_unlock(phi->params->available))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
+	if ((ret = ft_display(phi, "has taken a fork\n")) ||
+	(ret = ft_display(phi, "has taken a fork\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	if ((ret = ft_display(phi, "has taken a fork\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	// here
-	// here
-
-	// if (pthread_mutex_lock(phi->left_fork->mutex) ||
-	// pthread_mutex_lock(phi->right_fork->mutex))
-	// 	return (ft_error(ERROR_LOCK_MUTEX));
-	// phi->left_fork->status = 1;
-	// phi->right_fork->status = 1;
-	// ret = 0;
-	// if ((ret = ft_display(phi, "has taken a fork\n")) ||
-	// (ret = ft_display(phi, "has taken a fork\n")))
-	// 	return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	return (0);
 }
 

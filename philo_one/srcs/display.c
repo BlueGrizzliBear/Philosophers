@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 14:34:51 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 16:47:42 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,47 +67,34 @@ int		ft_secure_msg(t_phi *phi, char *msg)
 	return (0);
 }
 
-int		ft_build_msg(t_phi *phi, char *str)
+int		ft_build_msg(t_phi *phi, int timestamp, char *str, int size)
 {
-	struct timeval	now;
-	int				timestamp;
-	char			*msg;
-	int				size;
+	char	msg[size];
+	char	*m;
 
-	if (gettimeofday(&now, NULL))
-		return (ft_error(ERROR_GTOD));
-	timestamp = ft_get_timestamp(phi->params->start, now);
-	size = (ft_get_size(timestamp, phi->id, str) + 3);
-	if (!(msg = malloc(sizeof(char) * size)))
-		return (ft_error(ERROR_MEM_ALLOC));
-	msg = memset(msg, '\0', size);
-	ft_fill_msg_nb(msg, timestamp);
-	ft_fill_msg_nb(msg, phi->id);
-	ft_fill_msg_str(msg, str);
-	ft_secure_msg(phi, msg);
-	// ft_putstr(msg);
-	free(msg);
-	msg = NULL;
+	m = memset((void*)msg, '\0', size);
+	ft_fill_msg_nb(m, timestamp);
+	ft_fill_msg_nb(m, phi->id);
+	ft_fill_msg_str(m, str);
+	ft_secure_msg(phi, m);
 	return (0);
 }
 
 int		ft_display(t_phi *phi, char *str)
 {
+	struct timeval	now;
+	int				timestamp;
+	int				size;
 	static int	reaper = 0;
 
-	// if (pthread_mutex_lock(phi->params->display))
-	// 	return (ft_error(ERROR_LOCK_MUTEX));
 	if (reaper != 0)
-	{
-		// if (pthread_mutex_unlock(phi->params->display))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
 		return (-1);
-	}
 	if (phi->status == 0)
 		reaper += 1;
-	if (ft_build_msg(phi, str))
-		return (1);
-	// if (pthread_mutex_unlock(phi->params->display))
-	// 	return (ft_error(ERROR_UNLOCK_MUTEX));
+	if (gettimeofday(&now, NULL))
+		return (ft_error(ERROR_GTOD));
+	timestamp = ft_get_timestamp(phi->params->start, now);
+	size = (ft_get_size(timestamp, phi->id, str) + 3);
+	ft_build_msg(phi, timestamp, str, size);
 	return (0);
 }
