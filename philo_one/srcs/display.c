@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 17:57:44 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 18:45:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,13 @@ int		ft_display(t_phi *phi, char *str)
 	if (reaper != 0)
 		return (-1);
 	if (phi->status == 0)
+	{
+		if (pthread_mutex_lock(phi->params->available))
+			return (ft_error(ERROR_LOCK_MUTEX));
 		reaper += 1;
+		if (pthread_mutex_unlock(phi->params->available))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
+	}
 	if (gettimeofday(&now, NULL))
 		return (ft_error(ERROR_GTOD));
 	timestamp = ft_get_timestamp(phi->params->start, now);
