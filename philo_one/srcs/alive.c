@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 17:37:27 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 17:53:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		ft_standby(t_phi *phi, int time)
 	{
 		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
 			return (-1);
-		usleep(10);
+		// usleep(10);
 		if (gettimeofday(&now, NULL))
 			return (ft_error(ERROR_GTOD));
 	}
@@ -89,10 +89,14 @@ int		ft_eat_sleep_think(t_phi *phi)
 		return (ret < 0 ? -2 : ft_error(ERROR_STANDBY));
 	if (ft_unlock_forks(phi))
 		return (1);
+	if (ft_is_dead(phi) == 1)
+		return (-1);
 	if ((ret = ft_display(phi, "is sleeping\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	if ((ret = ft_standby(phi, phi->params->time_to_sleep)) != 0)
 		return (ret < 0 ? -1 : ft_error(ERROR_STANDBY));
+	if (ft_is_dead(phi) == 1)
+		return (-1);
 	if ((ret = ft_display(phi, "is thinking\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	return (0);
