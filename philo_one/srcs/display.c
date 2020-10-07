@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 18:45:44 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 18:48:48 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,16 @@ int		ft_display(t_phi *phi, char *str)
 	int				size;
 	static int	reaper = 0;
 
+	if (pthread_mutex_lock(phi->params->available))
+		return (ft_error(ERROR_LOCK_MUTEX));
 	if (reaper != 0)
+	{
+		if (pthread_mutex_unlock(phi->params->available))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
 		return (-1);
+	}
+	if (pthread_mutex_unlock(phi->params->available))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
 	if (phi->status == 0)
 	{
 		if (pthread_mutex_lock(phi->params->available))
