@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 12:53:10 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 13:01:12 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		ft_launch(t_philo_one *p)
 			return (ft_error(ERROR_GTOD));
 		if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
 			return (ft_error(ERROR_CREATE_THREAD));
-		usleep(1000);
+		// usleep(1000);
 		iter = iter->next;
 		counter--;
 	}
