@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 11:51:30 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 11:56:12 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
 
-	while (phi->left_fork->id == phi->right_fork->id ||
-		(phi->left_fork->status == 1 || phi->right_fork->status == 1))
-	{
-		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
-			return (1);
-		usleep(10);
-	}
+	// while (phi->left_fork->id == phi->right_fork->id ||
+	// 	(phi->left_fork->status == 1 || phi->right_fork->status == 1))
+	// {
+	// 	if (ft_is_dead(phi) == 1 || phi->params->game == 0)
+	// 		return (1);
+	// 	usleep(10);
+	// }
 	// here
 	if (pthread_mutex_lock(phi->params->available))
 		return (ft_error(ERROR_LOCK_MUTEX));
