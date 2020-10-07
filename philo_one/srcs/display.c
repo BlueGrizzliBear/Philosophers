@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 17:51:04 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 17:57:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		ft_secure_msg(t_phi *phi, char *msg)
 {
 	if (pthread_mutex_lock(phi->params->display))
 		return (ft_error(ERROR_LOCK_MUTEX));
-	ft_putstr(msg);
+	write(1, msg, ft_strlen(msg));
 	if (pthread_mutex_unlock(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);
