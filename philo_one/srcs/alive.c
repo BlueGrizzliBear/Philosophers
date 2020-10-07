@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 13:44:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 13:46:06 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,16 @@ int		ft_lock_forks(t_phi *phi)
 	if (pthread_mutex_lock(phi->left_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
 	phi->left_fork->status = 1;
-	if ((ret = fts_display(phi, "has taken a fork\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	if (pthread_mutex_lock(phi->right_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
 	phi->right_fork->status = 1;
+	if (pthread_mutex_unlock(phi->params->available))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
+	if ((ret = fts_display(phi, "has taken a fork\n")))
+		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	if ((ret = fts_display(phi, "has taken a fork\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	// here
-	if (pthread_mutex_unlock(phi->params->available))
-		return (ft_error(ERROR_UNLOCK_MUTEX));
 	// here
 
 	// if (pthread_mutex_lock(phi->left_fork->mutex) ||
