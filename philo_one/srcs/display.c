@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 18:51:26 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 18:56:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int		ft_display(t_phi *phi, char *str)
 	struct timeval	now;
 	int				timestamp;
 	int				size;
-	static int	reaper = 0;
+	static int		reaper = 0;
 
 	if (pthread_mutex_lock(phi->params->available))
 		return (ft_error(ERROR_LOCK_MUTEX));
@@ -95,14 +95,8 @@ int		ft_display(t_phi *phi, char *str)
 			return (ft_error(ERROR_UNLOCK_MUTEX));
 		return (-1);
 	}
-	// if (pthread_mutex_unlock(phi->params->available))
-	// 	return (ft_error(ERROR_UNLOCK_MUTEX));
 	if (phi->status == 0)
-	{
-		// if (pthread_mutex_lock(phi->params->available))
-		// 	return (ft_error(ERROR_LOCK_MUTEX));
 		reaper += 1;
-	}
 	if (pthread_mutex_unlock(phi->params->available))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	if (gettimeofday(&now, NULL))
