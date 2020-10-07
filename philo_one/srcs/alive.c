@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 16:50:00 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 16:54:24 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ int		ft_lock_forks(t_phi *phi)
 
 int		ft_unlock_forks(t_phi *phi)
 {
-	if (pthread_mutex_unlock(phi->left_fork->mutex) ||
-	pthread_mutex_unlock(phi->right_fork->mutex))
+	if (pthread_mutex_unlock(phi->right_fork->mutex) ||
+	pthread_mutex_unlock(phi->left_fork->mutex))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
-	phi->left_fork->status = 0;
 	phi->right_fork->status = 0;
+	phi->left_fork->status = 0;
 	return (0);
 }
 
