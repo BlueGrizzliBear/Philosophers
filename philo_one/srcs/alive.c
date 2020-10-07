@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 13:17:28 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 13:19:19 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,23 @@ int		ft_lock_forks(t_phi *phi)
 	// }
 
 	// here
-	// if (pthread_mutex_lock(phi->params->available))
-	// 	return (ft_error(ERROR_LOCK_MUTEX));
+	if (pthread_mutex_lock(phi->params->available))
+		return (ft_error(ERROR_LOCK_MUTEX));
 	// here
 	if (pthread_mutex_lock(phi->left_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
 	phi->left_fork->status = 1;
+	if ((ret = ft_display(phi, "has taken a fork\n")))
+		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	if (pthread_mutex_lock(phi->right_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
 	phi->right_fork->status = 1;
+	if ((ret = ft_display(phi, "has taken a fork\n")))
+		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	// here
 	if (pthread_mutex_unlock(phi->params->available))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	// here
-	if ((ret = ft_display(phi, "has taken a fork\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	if ((ret = ft_display(phi, "has taken a fork\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 
 	// if (pthread_mutex_lock(phi->left_fork->mutex) ||
 	// pthread_mutex_lock(phi->right_fork->mutex))
