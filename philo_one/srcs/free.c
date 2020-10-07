@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 10:48:19 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 11:41:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,18 @@ int		ft_free(t_philo_one *p)
 	ft_free_philosophers(p->phi, p->params);
 
 	if (pthread_mutex_destroy(p->params->available))
+	{
+		dprintf(2, "available destruction error\n");
 		ft_error(ERROR_DESTROY);
+	}
 	free(p->params->available);
 	p->params->available = NULL;
 
 	if (pthread_mutex_destroy(p->params->display))
+	{
+		dprintf(2, "available destruction error\n");
 		ft_error(ERROR_DESTROY);
+	}
 	free(p->params->display);
 	p->params->display = NULL;
 
