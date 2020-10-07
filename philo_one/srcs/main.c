@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 13:36:09 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 14:35:18 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		ft_is_dead(t_phi *phi)
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
 		phi->status = 0;
-		fts_display(phi, "died\n");
+		ft_display(phi, "died\n");
 		phi->params->game = 0;
 		return (1);
 	}

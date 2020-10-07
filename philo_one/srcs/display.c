@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 13:36:31 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 14:34:51 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,16 @@ void	ft_fill_msg_nb(char *msg, int nb)
 	msg[len + size] = nb % 10 + '0';
 }
 
+int		ft_secure_msg(t_phi *phi, char *msg)
+{
+	if (pthread_mutex_lock(phi->params->display))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	ft_putstr(msg);
+	if (pthread_mutex_unlock(phi->params->display))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
+	return (0);
+}
+
 int		ft_build_msg(t_phi *phi, char *str)
 {
 	struct timeval	now;
@@ -74,7 +84,8 @@ int		ft_build_msg(t_phi *phi, char *str)
 	ft_fill_msg_nb(msg, timestamp);
 	ft_fill_msg_nb(msg, phi->id);
 	ft_fill_msg_str(msg, str);
-	ft_putstr(msg);
+	ft_secure_msg(phi, msg);
+	// ft_putstr(msg);
 	free(msg);
 	msg = NULL;
 	return (0);
@@ -98,23 +109,5 @@ int		ft_display(t_phi *phi, char *str)
 		return (1);
 	// if (pthread_mutex_unlock(phi->params->display))
 	// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-	return (0);
-}
-
-int		fts_display(t_phi *phi, char *str)
-{
-	int ret;
-
-	ret = 0;
-	if (pthread_mutex_lock(phi->params->display))
-		return (ft_error(ERROR_LOCK_MUTEX));
-	if ((ret = ft_display(phi, str)))
-	{
-		if (pthread_mutex_unlock(phi->params->display))
-			return (ft_error(ERROR_UNLOCK_MUTEX));
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	}
-	if (pthread_mutex_unlock(phi->params->display))
-		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);
 }
