@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 11:44:53 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/07 11:48:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,12 @@ int		ft_free_forks(t_fork *f, t_params *params)
 {
 	t_fork	*iter;
 	int		nb;
-	int		ret;
 
 	nb = params->nb;
 	while (nb > 0)
 	{
-		ret = 0;
-		dprintf(2, "nb|%d|\n", nb);
 		if ((ret = pthread_mutex_destroy(f->mutex)))
-		{
-			dprintf(2, "ret|%d|\n", ret);
 			ft_error(ERROR_DESTROY);
-		}
 		free(f->mutex);
 		f->mutex = NULL;
 		iter = f;
