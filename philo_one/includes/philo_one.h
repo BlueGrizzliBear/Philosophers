@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 19:34:11 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/08 22:50:12 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct			s_params
 	int					time_to_sleep;
 	int					nb_time_phi_must_eat;
 	int					game;
-	pthread_mutex_t		*available;
 	pthread_mutex_t		*display;
 	struct timeval		start;
 }						t_params;

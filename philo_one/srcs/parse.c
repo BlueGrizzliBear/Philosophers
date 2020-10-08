@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 16:37:11 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/08 22:50:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,6 @@ t_params	*ft_parse(char **argv)
 		ft_init_params(params, val, i);
 	}
 	params->game = 1;
-	if (!(params->available = malloc(sizeof(pthread_mutex_t))) ||
-	(pthread_mutex_init(params->available, NULL)))
-	{
-		ft_error(ERROR_ALLOC_INIT_MUTEX);
-		return (NULL);
-	}
 	if (!(params->display = malloc(sizeof(pthread_mutex_t))) ||
 	(pthread_mutex_init(params->display, NULL)))
 	{
