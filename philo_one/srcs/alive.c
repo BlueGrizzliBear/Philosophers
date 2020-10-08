@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/08 11:37:32 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/08 16:18:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_standby(t_phi *phi, int time)
 		return (ft_error(ERROR_GTOD));
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
+		if (phi->params->game == 0 || ft_is_dead(phi) == 1 )
 			return (-1);
 		// usleep(10);
 		if (gettimeofday(&now, NULL))
@@ -36,23 +36,30 @@ int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
 
-	ret = 0;
-	// while (phi->left_fork->id == phi->right_fork->id ||
-	// while(!(phi->right_fork->status == 0 && phi->left_fork->status == 0))
-	while(!phi->right_fork->status == 0)
+	// pthread_mutex_lock(phi->params->display);
+	// dprintf(2, "                       phi%d arrives\n", phi->id);
+	// pthread_mutex_unlock(phi->params->display);
+	while (phi->right_fork->status == 1 ||
+	phi->left_fork->id == phi->right_fork->id)
 	{
-		usleep(10);
-		// if (ft_is_dead(phi) || !phi->params->game)
-		// 	return (1);
-		// if (ft_is_dead(phi) == 1 || phi->params->game == 0)
-		// 	return (1);
+		if (!phi->params->game || ft_is_dead(phi))
+			return (1);
+		// usleep(10);
 	}
+	phi->right_fork->status = 1;
+	phi->left_fork->status = 1;
 	if (pthread_mutex_lock(phi->left_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
-	// phi->left_fork->status = 1;
+	// pthread_mutex_lock(phi->params->display);
+	// dprintf(2, "                       phi%d took left fork\n", phi->id);
+	// pthread_mutex_unlock(phi->params->display);
 	if (pthread_mutex_lock(phi->right_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
-	phi->right_fork->status = 1;
+	// pthread_mutex_lock(phi->params->display);
+	// dprintf(2, "                        phi%d took right fork\n", phi->id);
+	// dprintf(2, "                        phi%d locked both forks\n", phi->id);	
+	// pthread_mutex_unlock(phi->params->display);
+	ret = 0;
 	if ((ret = ft_display(phi, "has taken a fork\n")) ||
 	(ret = ft_display(phi, "has taken a fork\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
@@ -61,10 +68,10 @@ int		ft_lock_forks(t_phi *phi)
 
 int		ft_unlock_forks(t_phi *phi)
 {
-	// phi->left_fork->status = 0;
+	phi->left_fork->status = 0;
+	phi->right_fork->status = 0;
 	if (pthread_mutex_unlock(phi->left_fork->mutex))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
-	phi->right_fork->status = 0;
 	if (pthread_mutex_unlock(phi->right_fork->mutex))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);
