@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/08 22:37:07 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/08 22:39:31 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		ft_get_timestamp(struct timeval start, struct timeval t)
 	// timestamp = t_ms - start_ms;
 	// timestamp = 1000 * (t.tv_sec - start.tv_sec) +
 	// (t.tv_usec - start.tv_usec) * 0.001;
-	timestamp = 1000 * (t.tv_sec - start.tv_sec);
+	timestamp = (t.tv_usec - start.tv_usec) * 0.001;
 	return (timestamp);
 }
 
