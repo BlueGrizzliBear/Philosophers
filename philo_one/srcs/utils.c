@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/08 10:02:24 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/08 10:03:03 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int		ft_atoi(const char *str)
 
 int		ft_get_timestamp(struct timeval start, struct timeval t)
 {
-	int	start_ms;
-	int	t_ms;
+	// int	start_ms;
+	// int	t_ms;
 	int	timestamp;
 
 	// start_ms = start.tv_sec * 1000 + start.tv_usec * 0.001;
