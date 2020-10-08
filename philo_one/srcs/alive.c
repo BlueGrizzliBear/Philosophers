@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/08 09:57:29 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/08 10:03:50 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int		ft_lock_forks(t_phi *phi)
 	while(!(phi->right_fork->status == 0 && phi->left_fork->status == 0))
 	{
 		usleep(10);
+		if (ft_is_dead(phi))
+			return (1);
 		// if (ft_is_dead(phi) == 1 || phi->params->game == 0)
 		// 	return (1);
 	}
