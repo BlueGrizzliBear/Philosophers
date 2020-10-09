@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/08 22:50:43 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/09 10:01:40 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,6 @@ void	ft_fill_msg_nb(char *msg, int nb)
 	msg[len + size] = nb % 10 + '0';
 }
 
-int		ft_secure_msg(t_phi *phi, char *msg)
-{
-	if (pthread_mutex_lock(phi->params->display))
-		return (ft_error(ERROR_LOCK_MUTEX));
-	write(1, msg, ft_strlen(msg));
-	if (pthread_mutex_unlock(phi->params->display))
-		return (ft_error(ERROR_UNLOCK_MUTEX));
-	return (0);
-}
-
 int		ft_build_msg(t_phi *phi, int timestamp, char *str, int size)
 {
 	char	msg[size];
@@ -76,7 +66,11 @@ int		ft_build_msg(t_phi *phi, int timestamp, char *str, int size)
 	ft_fill_msg_nb(m, timestamp);
 	ft_fill_msg_nb(m, phi->id);
 	ft_fill_msg_str(m, str);
-	ft_secure_msg(phi, m);
+	if (pthread_mutex_lock(phi->params->display))
+		return (ft_error(ERROR_LOCK_MUTEX));
+	write(1, m, ft_strlen(m));
+	if (pthread_mutex_unlock(phi->params->display))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);
 }
 
