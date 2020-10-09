@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 21:22:51 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/09 09:51:42 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct			s_params
 	int					time_to_sleep;
 	int					nb_time_phi_must_eat;
 	int					game;
+	struct timeval		start;
 	sem_t				*reaper;
 	sem_t				*display;
 	sem_t				*forks;
@@ -61,7 +62,6 @@ typedef struct			s_phi
 	int					id;
 	int					status;
 	int					has_eaten;
-	struct timeval		start;
 	struct timeval		last_meal;
 	int					pid;
 	t_params			*params;
@@ -84,5 +84,6 @@ int						ft_display(t_phi *phi, char *str);
 int						ft_get_timestamp(struct timeval s, struct timeval t);
 int						ft_free(t_philo_three *p);
 int						ft_is_dead(t_phi *phi);
+int						ft_strlen(char *str);
 
 #endif

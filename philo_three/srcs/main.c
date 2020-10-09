@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 21:25:43 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/09 09:52:14 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ int		ft_launch(t_philo_three *p)
 
 	iter = p->phi;
 	counter = p->params->nb;
+	if (gettimeofday(&p->params->start, NULL))
+		return (ft_error(ERROR_GTOD));
 	while (counter > 0)
 	{
-		if (gettimeofday(&iter->start, NULL))
-			return (ft_error(ERROR_GTOD));
 		if (gettimeofday(&iter->last_meal, NULL))
 			return (ft_error(ERROR_GTOD));
 		if (!(pid = fork()))

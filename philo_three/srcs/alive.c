@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/06 21:25:22 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/10/09 09:55:52 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ int		ft_standby(t_phi *phi, int time)
 		return (ft_error(ERROR_GTOD));
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
+		if (!phi->params->game || ft_is_dead(phi))
 			return (-1);
-		usleep(10);
 		if (gettimeofday(&now, NULL))
 			return (ft_error(ERROR_GTOD));
 	}
@@ -36,27 +35,26 @@ int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
 
-	ret = 0;
 	while (phi->params->forks_nb < 2)
 	{
-		if (ft_is_dead(phi) == 1 || phi->params->game == 0)
+		if (!phi->params->game || ft_is_dead(phi))
 			return (-1);
-		usleep(10);
 	}
+	phi->params->forks_nb -= 2;
 	if (sem_wait(phi->params->forks) || sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
+	ret = 0;
 	if ((ret = ft_display(phi, "has taken a fork\n")) ||
 	(ret = ft_display(phi, "has taken a fork\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	phi->params->forks_nb -= 2;
 	return (0);
 }
 
 int		ft_unlock_forks(t_phi *phi)
 {
+	phi->params->forks_nb += 2;
 	if (sem_post(phi->params->forks) || sem_post(phi->params->forks))
 		return (ft_error(ERROR_UNLOCK_SEM));
-	phi->params->forks_nb += 2;
 	return (0);
 }
 
