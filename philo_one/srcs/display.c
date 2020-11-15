@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/09 10:01:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/15 18:01:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,12 @@ int		ft_build_msg(t_phi *phi, int timestamp, char *str, int size)
 
 	m = memset((void*)msg, '\0', size);
 	ft_fill_msg_nb(m, timestamp);
-	ft_fill_msg_nb(m, phi->id);
+	// ft_fill_msg_nb(m, phi->id);
+	ft_fill_msg_str(m, phi->id);
 	ft_fill_msg_str(m, str);
 	if (pthread_mutex_lock(phi->params->display))
 		return (ft_error(ERROR_LOCK_MUTEX));
-	write(1, m, ft_strlen(m));
+	write(1, m, size);
 	if (pthread_mutex_unlock(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);

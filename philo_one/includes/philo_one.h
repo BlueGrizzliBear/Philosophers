@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/08 22:50:12 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/15 18:01:33 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ typedef struct			s_fork
 
 typedef struct			s_phi
 {
-	int					id;
+	// int					id;
+	char				id[13];
 	int					status;
 	int					has_eaten;
 	struct timeval		last_meal;
@@ -89,6 +90,7 @@ int						ft_display(t_phi *phi, char *str);
 int						ft_get_timestamp(struct timeval s, struct timeval t);
 int						ft_free(t_philo_one *p);
 int						ft_is_dead(t_phi *phi);
-int						ft_get_size(int timestamp, int phi_nb, char *str);
+int						ft_get_size(int timestamp, char *phi_nb, char *str);
+void					ft_itoa(t_phi *p, int nb);
 
 #endif
