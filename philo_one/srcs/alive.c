@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 12:25:41 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 13:36:40 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,23 @@ int		ft_standby(t_phi *phi, int time)
 
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		// if (pthread_mutex_lock(phi->params->game_status))
-		// 	return (ft_error(ERROR_LOCK_MUTEX));
-		// if (!phi->params->game)
-		// {
-		// 	if (pthread_mutex_unlock(phi->params->game_status))
-		// 		return (ft_error(ERROR_UNLOCK_MUTEX));
-		// 	return (-1);
-		// }
-		// if (pthread_mutex_unlock(phi->params->game_status))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		// if (ft_is_dead(phi))
-		// 	return (-1);
-
-		if (!phi->params->game || ft_is_dead(phi))
+		if (pthread_mutex_lock(phi->params->game_status))
+			return (ft_error(ERROR_LOCK_MUTEX));
+		if (!phi->params->game)
+		{
+			if (pthread_mutex_unlock(phi->params->game_status))
+				return (ft_error(ERROR_UNLOCK_MUTEX));
 			return (-1);
+		}
+		if (pthread_mutex_unlock(phi->params->game_status))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
+		if (ft_is_dead(phi))
+			return (-1);
+
+		if (ft_is_dead(phi))
+			return (-1);
+		// if (!phi->params->game || ft_is_dead(phi))
+		// 	return (-1);
 		gettimeofday(&now, NULL);
 	}
 	return (0);
