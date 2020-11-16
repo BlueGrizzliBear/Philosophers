@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 14:09:49 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 14:10:25 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		ft_display(t_phi *phi, char *str)
 {
 	struct timeval	now;
 	int				timestamp;
-	static int		reaper = 0;
+	// static int		reaper = 0;
 
 	// if (reaper != 0)
 	// 	return (-1);
