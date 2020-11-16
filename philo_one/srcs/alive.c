@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 11:34:11 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 11:35:34 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		ft_lock_forks(t_phi *phi)
 		{
 			if (pthread_mutex_unlock(phi->params->game_status))
 				return (ft_error(ERROR_UNLOCK_MUTEX));
-			return (-1);
+			return (1);
 		}
 		if (pthread_mutex_unlock(phi->params->game_status))
 			return (ft_error(ERROR_UNLOCK_MUTEX));
