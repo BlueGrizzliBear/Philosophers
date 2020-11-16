@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/15 18:01:18 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 10:50:24 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,67 +44,31 @@ int		ft_atoi(const char *str)
 	return (res);
 }
 
-void	ft_itoa(t_phi *p, int nb)
+void	ft_itoa(char *id, int nb)
 {
 	int len;
+	int cpy;
 
 	len = 0;
+	cpy = nb;
+	id[0] = ' ';
+	len++;
 	if (nb == 0)
-		p->id[0] = '0';
+		id[1] = '0';
+	while (cpy != 0)
+	{
+		cpy = cpy / 10;
+		len++;
+	}
 	while (nb != 0)
 	{
-		p->id[len++] = (nb % 10) + '0';
+		id[--len] = (nb % 10) + '0';
 		nb = nb / 10;		
 	}
-	// if (len > 0)
-	// 	len--;
-
-	// p->id[]
 }
 
 int		ft_get_timestamp(struct timeval start, struct timeval t)
 {
 	return (1000 * (t.tv_sec - start.tv_sec) +
 	(t.tv_usec - start.tv_usec) * 0.001);
-	// int	timestamp;
-
-	// timestamp = 1000 * (t.tv_sec - start.tv_sec) +
-	// (t.tv_usec - start.tv_usec) * 0.001;
-	// return (timestamp);
-}
-
-int		ft_get_size(int timestamp, char *phi_nb, char *str)
-{
-	int iter;
-	int size;
-	int nb;
-
-	size = 0;
-	nb = timestamp;
-	while (nb > 9 || nb < -9)
-	{
-		nb = nb / 10;
-		size++;
-	}
-	size++;
-	// while (phi_nb > 9 || phi_nb < -9)
-	// {
-	// 	phi_nb = phi_nb / 10;
-	// 	size++;
-	// }
-	// size++;
-	iter = 0;
-	while (phi_nb[iter])
-	{
-		iter++;
-		size++;
-	}
-	size++;
-	iter = 0;
-	while (str[iter])
-	{
-		iter++;
-		size++;
-	}
-	return (size);
 }

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/15 18:04:16 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 10:43:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int		ft_is_dead(t_phi *phi)
 {
 	struct timeval now;
 
-	if (gettimeofday(&now, NULL))
-		return (ft_error(ERROR_GTOD));
+	gettimeofday(&now, NULL);
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
 		phi->status = 0;
@@ -35,12 +34,11 @@ int		ft_wait(t_philo_one *p)
 
 	iter = p->phi;
 	counter = p->params->nb;
-	while (counter > 0)
+	while (counter-- > 0)
 	{
 		if (pthread_join(*iter->thread, NULL))
 			return (1);
 		iter = iter->next;
-		counter--;
 	}
 	return (0);
 }
@@ -51,17 +49,14 @@ int		ft_launch(t_philo_one *p)
 	int				counter;
 
 	iter = p->phi;
-	counter = p->params->nb;
-	if (gettimeofday(&p->params->start, NULL))
-		return (ft_error(ERROR_GTOD));
-	while (counter > 0)
+	counter = p->params->nb;	
+	gettimeofday(&p->params->start, NULL);
+	while (counter-- > 0)
 	{
-		if (gettimeofday(&iter->last_meal, NULL))
-			return (ft_error(ERROR_GTOD));
+		gettimeofday(&iter->last_meal, NULL);
 		if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
 			return (ft_error(ERROR_CREATE_THREAD));
 		iter = iter->next;
-		counter--;
 		usleep(100);
 	}
 	return (0);

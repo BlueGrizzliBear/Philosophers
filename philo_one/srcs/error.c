@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/07 13:32:39 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 10:41:16 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	ft_program_error(int err)
 		ft_putstr("Error: could not lock mutex\n");
 	if (err == ERROR_UNLOCK_MUTEX)
 		ft_putstr("Error: could not unlock mutex\n");
-	if (err == ERROR_GTOD)
-		ft_putstr("Error: gettimeofday() returned an error\n");
 	if (err == ERROR_MEM_ALLOC)
 		ft_putstr("Error: could not allocate memory\n");
 	if (err == ERROR_DISPLAY)

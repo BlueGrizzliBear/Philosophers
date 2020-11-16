@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/09 09:55:52 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 10:41:55 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@ int		ft_standby(t_phi *phi, int time)
 	struct timeval now;
 	struct timeval standby_start;
 
-	if (gettimeofday(&standby_start, NULL))
-		return (ft_error(ERROR_GTOD));
-	if (gettimeofday(&now, NULL))
-		return (ft_error(ERROR_GTOD));
+	gettimeofday(&standby_start, NULL);
+	gettimeofday(&now, NULL);
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
 		if (!phi->params->game || ft_is_dead(phi))
 			return (-1);
+		gettimeofday(&now, NULL);
 		if (gettimeofday(&now, NULL))
 			return (ft_error(ERROR_GTOD));
 	}
