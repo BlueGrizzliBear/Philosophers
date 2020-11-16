@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/04 11:10:32 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 15:19:20 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	ft_program_error(int err)
 		ft_putstr("Error: could not lock semaphore\n");
 	if (err == ERROR_UNLOCK_SEM)
 		ft_putstr("Error: could not unlock semaphore\n");
-	if (err == ERROR_GTOD)
-		ft_putstr("Error: gettimeofday() returned an error\n");
 	if (err == ERROR_MEM_ALLOC)
 		ft_putstr("Error: could not allocate memory\n");
 	if (err == ERROR_DISPLAY)

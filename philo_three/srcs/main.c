@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/09 09:52:14 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 15:41:51 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@ int		ft_is_dead(t_phi *phi)
 {
 	struct timeval now;
 
-	if (gettimeofday(&now, NULL))
-		return (ft_error(ERROR_GTOD));
+	gettimeofday(&now, NULL);
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
+		if (sem_wait(phi->params->game_status))
+			return (ft_error(ERROR_LOCK_SEM));
 		phi->status = 0;
-		ft_display(phi, "died\n");
+		ft_display(phi, " died\n");
 		phi->params->game = 0;
+		if (sem_post(phi->params->game_status))
+			return (ft_error(ERROR_UNLOCK_SEM));
 		return (1);
 	}
 	return (0);
@@ -36,7 +39,7 @@ int		ft_wait(t_philo_three *p)
 
 	iter = p->phi;
 	incr = 0;
-	while (incr < p->params->nb)
+	while (incr++ < p->params->nb)
 	{
 		status = 0;
 		if (waitpid(-1, &status, 0) < 0)
@@ -52,7 +55,6 @@ int		ft_wait(t_philo_three *p)
 			}
 			return (0);
 		}
-		incr++;
 	}
 	return (0);
 }
@@ -65,18 +67,15 @@ int		ft_launch(t_philo_three *p)
 
 	iter = p->phi;
 	counter = p->params->nb;
-	if (gettimeofday(&p->params->start, NULL))
-		return (ft_error(ERROR_GTOD));
-	while (counter > 0)
+	gettimeofday(&p->params->start, NULL);
+	while (counter-- > 0)
 	{
-		if (gettimeofday(&iter->last_meal, NULL))
-			return (ft_error(ERROR_GTOD));
+		gettimeofday(&iter->last_meal, NULL);
 		if (!(pid = fork()))
 			ft_is_alive(iter);
 		if ((iter->pid = pid) < 0)
 			return (ft_error(ERROR_CREATE_FORK));
 		iter = iter->next;
-		counter--;
 	}
 	return (0);
 }

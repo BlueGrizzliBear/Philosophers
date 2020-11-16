@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/09 09:35:36 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 15:24:52 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@
 # define ERROR_CREATE_THREAD 7
 # define ERROR_LOCK_SEM 8
 # define ERROR_UNLOCK_SEM 9
-# define ERROR_GTOD 10
-# define ERROR_MEM_ALLOC 11
-# define ERROR_DISPLAY 12
-# define ERROR_STANDBY 13
-# define ERROR_CLOSING 14
-# define ERROR_JOIN_THREAD 15
-# define ERROR_UNLINK 14
+# define ERROR_MEM_ALLOC 10
+# define ERROR_DISPLAY 11
+# define ERROR_STANDBY 12
+# define ERROR_CLOSING 13
+# define ERROR_JOIN_THREAD 14
+# define ERROR_UNLINK 15
 
 typedef struct			s_params
 {
@@ -49,6 +48,7 @@ typedef struct			s_params
 	int					time_to_sleep;
 	int					nb_time_phi_must_eat;
 	int					game;
+	sem_t				*game_status;
 	struct timeval		start;
 	sem_t				*display;
 	sem_t				*forks;
@@ -57,7 +57,7 @@ typedef struct			s_params
 
 typedef struct			s_phi
 {
-	int					id;
+	char				id[13];
 	int					status;
 	int					has_eaten;
 	struct timeval		last_meal;
@@ -84,5 +84,6 @@ int						ft_free(t_philo_two *p);
 int						ft_is_dead(t_phi *phi);
 char					*ft_strdup(char *str);
 int						ft_strlen(char *str);
+void					ft_itoa(char *id, int nb);
 
 #endif

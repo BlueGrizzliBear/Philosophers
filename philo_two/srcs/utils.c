@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/10/09 09:42:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 15:24:45 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,31 @@ int		ft_atoi(const char *str)
 	return (res);
 }
 
+void	ft_itoa(char *id, int nb)
+{
+	int len;
+	int cpy;
+
+	len = 0;
+	cpy = nb;
+	id[0] = ' ';
+	len++;
+	if (nb == 0)
+		id[1] = '0';
+	while (cpy != 0)
+	{
+		cpy = cpy / 10;
+		len++;
+	}
+	while (nb != 0)
+	{
+		id[--len] = (nb % 10) + '0';
+		nb = nb / 10;		
+	}
+}
+
 int		ft_get_timestamp(struct timeval start, struct timeval t)
 {
-	int	timestamp;
-
-	timestamp = 1000 * (t.tv_sec - start.tv_sec) +
-	(t.tv_usec - start.tv_usec) * 0.001;
-	return (timestamp);
+	return (1000 * (t.tv_sec - start.tv_sec) +
+	(t.tv_usec - start.tv_usec) * 0.001);
 }
