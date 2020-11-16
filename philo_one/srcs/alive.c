@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 12:04:49 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 12:15:20 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,19 @@ int		ft_lock_forks(t_phi *phi)
 	while (phi->right_fork->status == 1 ||
 	phi->left_fork->id == phi->right_fork->id)
 	{
-		// if (pthread_mutex_lock(phi->params->game_status))
-		// 	return (ft_error(ERROR_LOCK_MUTEX));
-		// if (!phi->params->game)
-		// {
-		// 	if (pthread_mutex_unlock(phi->params->game_status))
-		// 		return (ft_error(ERROR_UNLOCK_MUTEX));
-		// 	return (1);
-		// }
-		// if (pthread_mutex_unlock(phi->params->game_status))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		// if (ft_is_dead(phi))
-		// 	return (1);
+		if (pthread_mutex_lock(phi->params->game_status))
+			return (ft_error(ERROR_LOCK_MUTEX));
+		if (!phi->params->game)
+		{
+			if (pthread_mutex_unlock(phi->params->game_status))
+				return (ft_error(ERROR_UNLOCK_MUTEX));
+			return (1);
+		}
+		if (pthread_mutex_unlock(phi->params->game_status))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
+		if (ft_is_dead(phi))
+			return (1);
 
-		usleep(1);
 		// if (!phi->params->game || ft_is_dead(phi))
 		// 	return (1);
 	}
