@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 11:38:26 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 12:04:49 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_standby(t_phi *phi, int time)
 	{
 		if (pthread_mutex_lock(phi->params->game_status))
 			return (ft_error(ERROR_LOCK_MUTEX));
-		if (!phi->params->game || ft_is_dead(phi))
+		if (!phi->params->game)
 		{
 			if (pthread_mutex_unlock(phi->params->game_status))
 				return (ft_error(ERROR_UNLOCK_MUTEX));
@@ -31,6 +31,9 @@ int		ft_standby(t_phi *phi, int time)
 		}
 		if (pthread_mutex_unlock(phi->params->game_status))
 			return (ft_error(ERROR_UNLOCK_MUTEX));
+		if (ft_is_dead(phi))
+			return (-1);
+
 		// if (!phi->params->game || ft_is_dead(phi))
 		// 	return (-1);
 		gettimeofday(&now, NULL);
@@ -47,7 +50,7 @@ int		ft_lock_forks(t_phi *phi)
 	{
 		// if (pthread_mutex_lock(phi->params->game_status))
 		// 	return (ft_error(ERROR_LOCK_MUTEX));
-		// if (!phi->params->game || ft_is_dead(phi))
+		// if (!phi->params->game)
 		// {
 		// 	if (pthread_mutex_unlock(phi->params->game_status))
 		// 		return (ft_error(ERROR_UNLOCK_MUTEX));
@@ -55,8 +58,12 @@ int		ft_lock_forks(t_phi *phi)
 		// }
 		// if (pthread_mutex_unlock(phi->params->game_status))
 		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		if (!phi->params->game || ft_is_dead(phi))
-			return (1);
+		// if (ft_is_dead(phi))
+		// 	return (1);
+
+		usleep(1);
+		// if (!phi->params->game || ft_is_dead(phi))
+		// 	return (1);
 	}
 	phi->right_fork->status = 1;
 	phi->left_fork->status = 1;
@@ -96,6 +103,12 @@ int		ft_eat_sleep_think(t_phi *phi)
 	phi->has_eaten >= phi->params->nb_time_phi_must_eat)
 		return (-3);
 	gettimeofday(&phi->last_meal, NULL);
+
+	// if (pthread_mutex_lock(phi->params->game_status))
+	// 	return (ft_error(ERROR_LOCK_MUTEX));
+	// if (pthread_mutex_unlock(phi->params->game_status))
+	// 	return (ft_error(ERROR_UNLOCK_MUTEX));
+
 	if ((ret = ft_standby(phi, phi->params->time_to_eat)) != 0)
 		return (ret < 0 ? -2 : ft_error(ERROR_STANDBY));
 	if (ft_unlock_forks(phi))
