@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 10:40:50 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 11:24:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,18 @@ int		ft_standby(t_phi *phi, int time)
 	gettimeofday(&now, NULL);
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
+		if (pthread_mutex_lock(phi->params->game_status))
+			return (ft_error(ERROR_LOCK_MUTEX));
 		if (!phi->params->game || ft_is_dead(phi))
+		{
+			if (pthread_mutex_unlock(phi->params->game_status))
+				return (ft_error(ERROR_UNLOCK_MUTEX));
 			return (-1);
+		}
+		if (pthread_mutex_unlock(phi->params->game_status))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
+		// if (!phi->params->game || ft_is_dead(phi))
+		// 	return (-1);
 		gettimeofday(&now, NULL);
 	}
 	return (0);
