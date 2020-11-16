@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 13:37:59 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 14:21:16 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
 
-	while (phi->right_fork->status == 1 ||
+	while (phi->left_fork->status == 1 || phi->right_fork->status == 1 ||
 	phi->left_fork->id == phi->right_fork->id)
 	{
 		// if (pthread_mutex_lock(phi->params->game_status))
