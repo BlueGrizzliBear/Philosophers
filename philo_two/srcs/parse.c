@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:23:49 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/19 14:13:04 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,23 @@ int			ft_init_params(t_params *params, int val, int index)
 	return (0);
 }
 
+t_params	*ft_create_sem(t_params *params)
+{
+	sem_unlink("/game_status");
+	params->game_status = sem_open("/game_status", O_CREAT, S_IRWXU, 1);
+	if (params->game_status == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
+	sem_unlink("/display");
+	params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
+	if (params->display == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
+	sem_unlink("/forks");
+	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
+	if (params->forks == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
+	return (params);
+}
+
 t_params	*ft_parse(char **argv)
 {
 	t_params	*params;
@@ -44,18 +61,8 @@ t_params	*ft_parse(char **argv)
 		ft_init_params(params, val, i);
 	}
 	params->game = 1;
-	sem_unlink("/game_status");
-	params->game_status = sem_open("/game_status", O_CREAT, S_IRWXU, 1);
-	if (params->game_status == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
-	sem_unlink("/display");
-	params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
-	if (params->display == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
-	sem_unlink("/forks");
-	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
-	if (params->forks == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM) == 4 ? NULL : NULL);
+	if (!(params = ft_create_sem(params)))
+		return (NULL);
 	params->forks_nb = params->nb;
 	return (params);
 }

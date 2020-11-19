@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:39:25 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/19 14:13:52 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_itoa(char *id, int nb)
 	while (nb != 0)
 	{
 		id[--len] = (nb % 10) + '0';
-		nb = nb / 10;		
+		nb = nb / 10;
 	}
 }
 

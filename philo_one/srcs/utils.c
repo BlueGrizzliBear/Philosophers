@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 10:50:24 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/19 14:10:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_itoa(char *id, int nb)
 	int len;
 	int cpy;
 
+	memset(id, '\0', 13);
 	len = 0;
 	cpy = nb;
 	id[0] = ' ';
@@ -63,7 +64,7 @@ void	ft_itoa(char *id, int nb)
 	while (nb != 0)
 	{
 		id[--len] = (nb % 10) + '0';
-		nb = nb / 10;		
+		nb = nb / 10;
 	}
 }
 

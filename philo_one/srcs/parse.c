@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 11:08:54 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/19 14:08:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,23 @@ int			ft_init_params(t_params *params, int val, int index)
 	else if (index == 5)
 		params->nb_time_phi_must_eat = val;
 	return (0);
+}
+
+t_params	*ft_create_mutex(t_params *params)
+{
+	if (!(params->game_status = malloc(sizeof(pthread_mutex_t))) ||
+	(pthread_mutex_init(params->game_status, NULL)))
+	{
+		ft_error(ERROR_ALLOC_INIT_MUTEX);
+		return (NULL);
+	}
+	if (!(params->display = malloc(sizeof(pthread_mutex_t))) ||
+	(pthread_mutex_init(params->display, NULL)))
+	{
+		ft_error(ERROR_ALLOC_INIT_MUTEX);
+		return (NULL);
+	}
+	return (params);
 }
 
 t_params	*ft_parse(char **argv)
@@ -47,17 +64,7 @@ t_params	*ft_parse(char **argv)
 		ft_init_params(params, val, i);
 	}
 	params->game = 1;
-	if (!(params->game_status = malloc(sizeof(pthread_mutex_t))) ||
-	(pthread_mutex_init(params->game_status, NULL)))
-	{
-		ft_error(ERROR_ALLOC_INIT_MUTEX);
+	if (!(params = ft_create_mutex(params)))
 		return (NULL);
-	}
-	if (!(params->display = malloc(sizeof(pthread_mutex_t))) ||
-	(pthread_mutex_init(params->display, NULL)))
-	{
-		ft_error(ERROR_ALLOC_INIT_MUTEX);
-		return (NULL);
-	}
 	return (params);
 }

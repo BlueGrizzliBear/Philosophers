@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 11:48:33 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/19 14:04:51 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		ft_launch(t_philo_one *p)
 	int				counter;
 
 	iter = p->phi;
-	counter = p->params->nb;	
+	counter = p->params->nb;
 	gettimeofday(&p->params->start, NULL);
 	while (counter-- > 0)
 	{
