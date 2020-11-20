@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 16:57:17 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 16:59:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		ft_display(t_phi *phi, char *str)
 	ft_build_msg(phi, ft_get_timestamp(phi->params->start, now), str);
 	if (phi->status == 0)
 		return (0);
-	if (sem_post(phi->params->display))
+	if (sem_post(phi->params->game_status))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	return (0);
 }
