@@ -6,19 +6,14 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 14:51:10 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 09:35:01 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
 
-int		ft_standby(t_phi *phi, int time)
+int		ft_is_over(t_phi *phi)
 {
-	struct timeval now;
-	struct timeval standby_start;
-
-	gettimeofday(&standby_start, NULL);
-	gettimeofday(&now, NULL);
 	if (pthread_mutex_lock(phi->params->game_status))
 		return (ft_error(ERROR_LOCK_MUTEX));
 	if (!phi->params->game)
@@ -29,9 +24,21 @@ int		ft_standby(t_phi *phi, int time)
 	}
 	if (pthread_mutex_unlock(phi->params->game_status))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
+	return (0);
+}
+
+int		ft_standby(t_phi *phi, int time)
+{
+	struct timeval now;
+	struct timeval standby_start;
+
+	gettimeofday(&standby_start, NULL);
+	gettimeofday(&now, NULL);
+	// if (ft_is_over(phi))
+	// 	return (-1);
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		if (!phi->params->game || ft_is_dead(phi))
+		if (ft_is_over(phi) || ft_is_dead(phi))
 			return (-1);
 		gettimeofday(&now, NULL);
 	}
@@ -45,8 +52,8 @@ int		ft_lock_forks(t_phi *phi)
 	while (phi->left_fork->status == 1 || phi->right_fork->status == 1 ||
 	phi->left_fork->id == phi->right_fork->id)
 	{
-		if (!phi->params->game || ft_is_dead(phi))
-			return (1);
+		if (ft_is_over(phi) || ft_is_dead(phi))
+			return (-1);
 	}
 	phi->right_fork->status = 1;
 	phi->left_fork->status = 1;
@@ -97,23 +104,4 @@ int		ft_eat_sleep_think(t_phi *phi)
 	if ((ret = ft_display(phi, " is thinking\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	return (0);
-}
-
-void	*ft_is_alive(void *arg)
-{
-	t_phi	*phi;
-	int		ret;
-
-	phi = (t_phi *)arg;
-	while (phi->params->game == 1)
-	{
-		ret = 0;
-		if ((ret = ft_eat_sleep_think(phi)) != 0)
-		{
-			if (ret == -2 || ret == -3)
-				ft_unlock_forks(phi);
-			return (NULL);
-		}
-	}
-	return (NULL);
 }

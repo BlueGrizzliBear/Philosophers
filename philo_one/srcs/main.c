@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/19 14:04:51 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 09:31:54 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int		ft_is_dead(t_phi *phi)
 	gettimeofday(&now, NULL);
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
-		if (pthread_mutex_lock(phi->params->game_status))
-			return (ft_error(ERROR_LOCK_MUTEX));
 		phi->status = 0;
 		ft_display(phi, " died\n");
+		if (pthread_mutex_lock(phi->params->game_status))
+			return (ft_error(ERROR_LOCK_MUTEX));
 		phi->params->game = 0;
 		if (pthread_mutex_unlock(phi->params->game_status))
 			return (ft_error(ERROR_UNLOCK_MUTEX));
@@ -45,6 +45,25 @@ int		ft_wait(t_philo_one *p)
 		iter = iter->next;
 	}
 	return (0);
+}
+
+void	*ft_is_alive(void *arg)
+{
+	t_phi	*phi;
+	int		ret;
+
+	phi = (t_phi *)arg;
+	while (phi->params->game == 1)
+	{
+		ret = 0;
+		if ((ret = ft_eat_sleep_think(phi)) != 0)
+		{
+			if (ret == -2 || ret == -3)
+				ft_unlock_forks(phi);
+			return (NULL);
+		}
+	}
+	return (NULL);
 }
 
 int		ft_launch(t_philo_one *p)

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:29:44 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/19 20:55:51 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int		ft_build_msg(t_phi *phi, int timestamp, char *str)
 int		ft_display(t_phi *phi, char *str)
 {
 	struct timeval	now;
-	int				timestamp;
 	static int		reaper = 0;
 
 	if (reaper != 0)
@@ -75,7 +74,6 @@ int		ft_display(t_phi *phi, char *str)
 	if (phi->status == 0)
 		reaper += 1;
 	gettimeofday(&now, NULL);
-	timestamp = ft_get_timestamp(phi->params->start, now);
-	ft_build_msg(phi, timestamp, str);
+	ft_build_msg(phi, ft_get_timestamp(phi->params->start, now), str);
 	return (0);
 }
