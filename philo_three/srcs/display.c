@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:19:01 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:22:28 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ int		ft_display(t_phi *phi, char *str)
 	struct timeval	now;
 	// static int		reaper = 0;
 
-	if (ft_is_over(phi))
+	// if (ft_is_over(phi))
+	// 	return (-1);
+	if (!phi->params->game)
 		return (-1);
 	// if (reaper != 0)
 	// 	return (-1);
