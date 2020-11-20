@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 11:25:01 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 11:32:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		ft_standby(t_phi *phi, int time)
 		return (-1);
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
-		if (ft_is_over(phi) || ft_is_dead(phi))
+		if (!phi->params->game || ft_is_dead(phi))
 			return (-1);
 		gettimeofday(&now, NULL);
 	}
@@ -52,7 +52,7 @@ int		ft_lock_forks(t_phi *phi)
 	while (phi->left_fork->status == 1 || phi->right_fork->status == 1 ||
 	phi->left_fork->id == phi->right_fork->id)
 	{
-		if (ft_is_over(phi) || ft_is_dead(phi))
+		if (!phi->params->game || ft_is_dead(phi))
 			return (-1);
 	}
 	phi->right_fork->status = 1;
