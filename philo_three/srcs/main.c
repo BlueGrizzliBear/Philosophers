@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:49:16 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:51:49 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int		ft_is_dead(t_phi *phi)
 		if (sem_wait(phi->params->game_status))
 			return (ft_error(ERROR_LOCK_SEM));
 		phi->status = 0;
-		if (phi->params->game == 1)
-			ft_display(phi, " died\n");
+		ft_display(phi, " died\n");
 		phi->params->game = 0;
 		if (sem_post(phi->params->game_status))
 			return (ft_error(ERROR_UNLOCK_SEM));
