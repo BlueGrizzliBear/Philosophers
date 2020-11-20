@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/19 14:10:31 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 12:53:48 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_fork		*ft_init_forks(int nb, int inv_id, t_fork *addr)
 	}
 	if (inv_id == nb)
 		addr = fork;
-	fork->id = inv_id - nb;
+	// fork->id = inv_id - nb;
 	fork->status = 0;
 	if (!(fork->mutex = malloc(sizeof(pthread_mutex_t))) ||
 	(pthread_mutex_init(fork->mutex, NULL)))
