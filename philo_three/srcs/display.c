@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:54:32 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:58:47 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int		ft_display(t_phi *phi, char *str)
 
 	// if (ft_is_over(phi))
 	// 	return (-1);
-	if (!phi->params->game)
-		return (-1);
+	// if (!phi->params->game)
+	// 	return (-1);
 	// if (reaper != 0)
 	// 	return (-1);
 	// if (phi->status == 0)

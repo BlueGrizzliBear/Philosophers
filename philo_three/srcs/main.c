@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:52:41 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:59:03 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int		ft_is_dead(t_phi *phi)
 		phi->status = 0;
 		ft_display(phi, " died\n");
 		phi->params->game = 0;
-		if (sem_post(phi->params->game_status))
-			return (ft_error(ERROR_UNLOCK_SEM));
+		// if (sem_post(phi->params->game_status))
+		// 	return (ft_error(ERROR_UNLOCK_SEM));
 		return (1);
 	}
 	return (0);
@@ -33,28 +33,28 @@ int		ft_is_dead(t_phi *phi)
 
 int		ft_wait(t_philo_three *p)
 {
-	// t_phi	*iter;
+	t_phi	*iter;
 	int		status;
 	int		incr;
 
-	// iter = p->phi;
+	iter = p->phi;
 	incr = 0;
 	while (incr++ < p->params->nb)
 	{
 		status = 0;
 		if (waitpid(-1, &status, 0) < 0)
 			return (ft_error(ERROR_CREATE_FORK));
-		// if (WEXITSTATUS(status) > 0)
-		// {
-		// 	status = p->params->nb;
-		// 	while (status > 0)
-		// 	{
-		// 		kill(iter->pid, SIGINT);
-		// 		iter = iter->next;
-		// 		status--;
-		// 	}
-		// 	return (0);
-		// }
+		if (WEXITSTATUS(status) > 0)
+		{
+			status = p->params->nb;
+			while (status > 0)
+			{
+				kill(iter->pid, SIGINT);
+				iter = iter->next;
+				status--;
+			}
+			return (0);
+		}
 	}
 	return (0);
 }
