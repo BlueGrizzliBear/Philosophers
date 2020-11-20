@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:00:29 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:02:33 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*ft_fill_const_char(char *c, char *str)
 	int i;
 
 	i = -1;
-	memset((void*)c, '\0', 32);
 	while (str[++i])
 		c[i] = str[i];
 	return (c);
@@ -42,6 +41,7 @@ t_params	*ft_create_sem(t_params *params)
 {
 	char str[32];
 
+	memset((void*)str, '\0', 32);
 	ft_fill_const_char(str, "game_status");
 
 	sem_unlink(str);
