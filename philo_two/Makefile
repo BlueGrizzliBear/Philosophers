@@ -6,7 +6,7 @@
 #    By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/30 10:08:08 by cbussier          #+#    #+#              #
-#    Updated: 2020/10/04 10:38:27 by cbussier         ###   ########lyon.fr    #
+#    Updated: 2020/11/20 16:34:26 by cbussier         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,4 +47,4 @@ fclean			:		clean
 
 re				:      	fclean all
 
-.PHONY			:		all lib clean fclean re
+.PHONY			:		all clean fclean re
