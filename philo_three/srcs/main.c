@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:51:49 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:52:06 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ int		ft_wait(t_philo_three *p)
 		status = 0;
 		if (waitpid(-1, &status, 0) < 0)
 			return (ft_error(ERROR_CREATE_FORK));
-		if (WEXITSTATUS(status) > 0)
-		{
-			status = p->params->nb;
-			while (status > 0)
-			{
-				kill(iter->pid, SIGINT);
-				iter = iter->next;
-				status--;
-			}
-			return (0);
-		}
+		// if (WEXITSTATUS(status) > 0)
+		// {
+		// 	status = p->params->nb;
+		// 	while (status > 0)
+		// 	{
+		// 		kill(iter->pid, SIGINT);
+		// 		iter = iter->next;
+		// 		status--;
+		// 	}
+		// 	return (0);
+		// }
 	}
 	return (0);
 }
