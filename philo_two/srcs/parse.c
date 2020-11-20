@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 14:55:44 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 14:58:39 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ char	*ft_fill_const_char(char *c, char *str)
 
 	i = -1;
 	memset((void*)c, '\0', 32);
-	dprintf(2, "%lu\n", sizeof((const char*)c));
 	while (str[++i])
-		c[i] = str[i];		
+		c[i] = str[i];
 	return (c);
 }
 
@@ -45,18 +44,36 @@ t_params	*ft_create_sem(t_params *params)
 
 	ft_fill_const_char(str, "/game_status");
 
-	sem_unlink((const char*)str);
+	sem_unlink(str);
 	params->game_status = sem_open(str, O_CREAT, S_IRWXU, 1);
 	if (params->game_status == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
-	sem_unlink("/display");
-	params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
+
+	ft_fill_const_char(str, "/display");
+	sem_unlink(str);
+	params->display = sem_open(str, O_CREAT, S_IRWXU, 1);
 	if (params->display == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
-	sem_unlink("/forks");
-	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
+	
+	ft_fill_const_char(str, "/forks");
+	sem_unlink(str);
+	params->forks = sem_open(str, O_CREAT, S_IRWXU, params->nb);
 	if (params->forks == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
+
+	// sem_unlink("/game_status");
+	// params->game_status = sem_open("/game_status", O_CREAT, S_IRWXU, 1);
+	// if (params->game_status == SEM_FAILED)
+	// 	return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
+	// sem_unlink("/display");
+	// params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
+	// if (params->display == SEM_FAILED)
+	// 	return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
+	// sem_unlink("/forks");
+	// params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
+	// if (params->forks == SEM_FAILED)
+	// 	return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
+
 	return (params);
 }
 
