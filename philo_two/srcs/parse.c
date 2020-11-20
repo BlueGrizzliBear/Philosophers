@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 14:58:39 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:00:29 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,20 @@ t_params	*ft_create_sem(t_params *params)
 {
 	char str[32];
 
-	ft_fill_const_char(str, "/game_status");
+	ft_fill_const_char(str, "game_status");
 
 	sem_unlink(str);
 	params->game_status = sem_open(str, O_CREAT, S_IRWXU, 1);
 	if (params->game_status == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
 
-	ft_fill_const_char(str, "/display");
+	ft_fill_const_char(str, "display");
 	sem_unlink(str);
 	params->display = sem_open(str, O_CREAT, S_IRWXU, 1);
 	if (params->display == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
 	
-	ft_fill_const_char(str, "/forks");
+	ft_fill_const_char(str, "forks");
 	sem_unlink(str);
 	params->forks = sem_open(str, O_CREAT, S_IRWXU, params->nb);
 	if (params->forks == SEM_FAILED)
