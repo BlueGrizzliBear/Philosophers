@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 13:23:46 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 19:53:45 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int		ft_eat_sleep_think(t_phi *phi)
 		return (ret < 0 ? ret : 1);
 	if ((ret = ft_display(phi, " is eating\n")))
 		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
-	gettimeofday(&phi->last_meal, NULL);
 	if ((ret = ft_standby(phi, phi->params->time_to_eat)) != 0)
 		return (ret < 0 ? -2 : ft_error(ERROR_STANDBY));
+	gettimeofday(&phi->last_meal, NULL);
 	if (phi->params->nb_time_phi_must_eat != -1 &&
 	++phi->has_eaten >= phi->params->nb_time_phi_must_eat)
 		return (-3);
