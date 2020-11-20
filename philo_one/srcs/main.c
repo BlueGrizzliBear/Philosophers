@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 10:00:56 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 12:05:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int		ft_is_dead(t_phi *phi)
 	{
 		phi->status = 0;
 		ft_display(phi, " died\n");
-		if (pthread_mutex_lock(phi->params->game_status))
-			return (ft_error(ERROR_LOCK_MUTEX));
+		// if (pthread_mutex_lock(phi->params->game_status))
+		// 	return (ft_error(ERROR_LOCK_MUTEX));
 		phi->params->game = 0;
-		if (pthread_mutex_unlock(phi->params->game_status))
-			return (ft_error(ERROR_UNLOCK_MUTEX));
+		// if (pthread_mutex_unlock(phi->params->game_status))
+		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
 		return (1);
 	}
 	return (0);
