@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 11:14:00 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 11:25:01 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int		ft_standby(t_phi *phi, int time)
 		if (ft_is_over(phi) || ft_is_dead(phi))
 			return (-1);
 		gettimeofday(&now, NULL);
-		usleep(100);
 	}
 	return (0);
 }
