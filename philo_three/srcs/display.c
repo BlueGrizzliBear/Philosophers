@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:29:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:42:21 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,16 @@ int		ft_build_msg(t_phi *phi, int timestamp, char *str)
 int		ft_display(t_phi *phi, char *str)
 {
 	struct timeval	now;
-	static int		reaper = 0;
+	// static int		reaper = 0;
 
 	// if (ft_is_over(phi))
 	// 	return (-1);
 	// if (!phi->params->game)
 	// 	return (-1);
-	if (reaper != 0)
-	{
-		dprintf(2, "what\n");
-		return (-1);
-	}
-	if (phi->status == 0)
-		reaper += 1;
+	// if (reaper != 0)
+	// 	return (-1);
+	// if (phi->status == 0)
+	// 	reaper += 1;
 	gettimeofday(&now, NULL);
 	ft_build_msg(phi, ft_get_timestamp(phi->params->start, now), str);
 	return (0);
