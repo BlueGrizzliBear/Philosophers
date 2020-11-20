@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 16:00:32 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 16:10:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		ft_is_alive(void *arg)
 		else if (ret > 0)
 			exit(1);
 	}
-	return (0);
+	exit(0);
 }
 
 int		ft_launch(t_philo_three *p)
