@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:32:50 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 13:09:28 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,25 @@ int		ft_wait(t_philo_two *p)
 		iter = iter->next;
 	}
 	return (0);
+}
+
+void	*ft_is_alive(void *arg)
+{
+	t_phi	*phi;
+	int		ret;
+
+	phi = (t_phi *)arg;
+	while (phi->params->game == 1)
+	{
+		ret = 0;
+		if ((ret = ft_eat_sleep_think(phi)) != 0)
+		{
+			if (ret == -2 || ret == -3)
+				ft_unlock_forks(phi);
+			return (NULL);
+		}
+	}
+	return (NULL);
 }
 
 int		ft_launch(t_philo_two *p)

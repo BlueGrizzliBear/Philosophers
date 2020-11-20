@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 12:04:56 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 13:02:22 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,6 @@ int		ft_display(t_phi *phi, char *str)
 	struct timeval	now;
 	static int		reaper = 0;
 
-	// if (ft_is_over(phi))
-	// 	return (-1);
-	// if (pthread_mutex_lock(phi->params->game_status))
-	// 	return (ft_error(ERROR_LOCK_MUTEX));
-	// if (phi->params->game == 0)
-	// {
-	// 	if (pthread_mutex_unlock(phi->params->game_status))
-	// 		return (ft_error(ERROR_UNLOCK_MUTEX));
-	// 	return (-1);
-	// }
-	// if (pthread_mutex_unlock(phi->params->game_status))
-	// 	return (ft_error(ERROR_UNLOCK_MUTEX));
 	if (reaper != 0)
 		return (-1);
 	if (phi->status == 0)

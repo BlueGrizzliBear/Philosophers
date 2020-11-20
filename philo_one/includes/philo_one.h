@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 12:49:24 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 13:01:09 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct			s_params
 
 typedef struct			s_fork
 {
-	// int					id;
 	int					status;
 	pthread_mutex_t		*mutex;
 	struct s_fork		*next;

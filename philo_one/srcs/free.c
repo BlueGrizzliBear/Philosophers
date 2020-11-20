@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 10:06:16 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 13:01:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,6 @@ int		ft_free(t_philo_one *p)
 	ft_free_philosophers(p->phi, p->params);
 	if (ft_free_params(p->params))
 		return (1);
-	// if (pthread_mutex_destroy(p->params->game_status))
-	// 	ft_error(ERROR_DESTROY);
-	// free(p->params->game_status);
-	// p->params->game_status = NULL;
-	// if (pthread_mutex_destroy(p->params->display))
-	// 	ft_error(ERROR_DESTROY);
-	// free(p->params->display);
-	// p->params->display = NULL;
-	// free(p->params);
-	// p->params = NULL;
 	free(p);
 	p = NULL;
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:24:52 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 13:09:56 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,13 @@ t_params				*ft_parse(char **argv);
 int						ft_atoi(const char *str);
 void					ft_putstr(char *str);
 t_philo_two				*ft_init(t_params *params);
-void					*ft_is_alive(void *arg);
+int						ft_eat_sleep_think(t_phi *phi);
+int						ft_unlock_forks(t_phi *phi);
 int						ft_display(t_phi *phi, char *str);
 int						ft_get_timestamp(struct timeval s, struct timeval t);
 int						ft_free(t_philo_two *p);
 int						ft_is_dead(t_phi *phi);
+int						ft_is_over(t_phi *phi);
 char					*ft_strdup(char *str);
 int						ft_strlen(char *str);
 void					ft_itoa(char *id, int nb);

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 12:50:18 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 13:08:19 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
 
-	// if (ft_is_over(phi))
-	// 	return (-1);
-	// while (phi->left_fork->status == 1 || phi->right_fork->status == 1 ||
 	while (phi->right_fork->status == 1 ||
 	phi->left_fork->mutex == phi->right_fork->mutex)
 	{
@@ -59,7 +56,6 @@ int		ft_lock_forks(t_phi *phi)
 			return (-1);
 	}
 	phi->right_fork->status = 1;
-	// phi->left_fork->status = 1;
 	if (pthread_mutex_lock(phi->left_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
 	if (pthread_mutex_lock(phi->right_fork->mutex))
@@ -73,9 +69,6 @@ int		ft_lock_forks(t_phi *phi)
 
 int		ft_unlock_forks(t_phi *phi)
 {
-	// if (ft_is_over(phi))
-	// 	return (-2);
-	// phi->left_fork->status = 0;
 	phi->right_fork->status = 0;
 	if (pthread_mutex_unlock(phi->left_fork->mutex))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
@@ -99,8 +92,8 @@ int		ft_eat_sleep_think(t_phi *phi)
 	gettimeofday(&phi->last_meal, NULL);
 	if ((ret = ft_standby(phi, phi->params->time_to_eat)) != 0)
 		return (ret < 0 ? -2 : ft_error(ERROR_STANDBY));
-	if ((ret = ft_unlock_forks(phi)))
-		return (ret < 0 ? ret : 1);
+	if (ft_unlock_forks(phi))
+		return (1);
 	if ((ret = ft_display(phi, " is sleeping\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	if ((ret = ft_standby(phi, phi->params->time_to_sleep)) != 0)
