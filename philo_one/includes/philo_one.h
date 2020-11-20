@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 09:36:04 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 09:43:24 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int						ft_atoi(const char *str);
 void					ft_putstr(char *str);
 int						ft_strlen(char *str);
 t_philo_one				*ft_init(t_params *params);
-// void					*ft_is_alive(void *arg);
 int						ft_unlock_forks(t_phi *phi);
 int						ft_eat_sleep_think(t_phi *phi);
 int						ft_display(t_phi *phi, char *str);

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:27:30 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 09:52:54 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		ft_free_philosophers(t_phi *phi, t_params *params)
 	int		nb;
 
 	nb = params->nb;
-	while (nb > 0)
+	while (nb-- > 0)
 	{
 		free(phi->thread);
 		phi->thread = NULL;
@@ -48,9 +48,23 @@ int		ft_free_philosophers(t_phi *phi, t_params *params)
 		iter = phi->next;
 		free(phi);
 		phi = iter;
-		nb--;
 	}
 	phi = NULL;
+	return (0);
+}
+
+int		ft_free_params(t_params *params)
+{
+	if (pthread_mutex_destroy(params->game_status))
+		ft_error(ERROR_DESTROY);
+	free(params->game_status);
+	params->game_status = NULL;
+	if (pthread_mutex_destroy(params->display))
+		ft_error(ERROR_DESTROY);
+	free(params->display);
+	params->display = NULL;
+	free(params);
+	params = NULL;
 	return (0);
 }
 
@@ -59,16 +73,18 @@ int		ft_free(t_philo_one *p)
 	if (ft_free_forks(p->forks, p->params))
 		return (1);
 	ft_free_philosophers(p->phi, p->params);
-	if (pthread_mutex_destroy(p->params->game_status))
-		ft_error(ERROR_DESTROY);
-	free(p->params->game_status);
-	p->params->game_status = NULL;
-	if (pthread_mutex_destroy(p->params->display))
-		ft_error(ERROR_DESTROY);
-	free(p->params->display);
-	p->params->display = NULL;
-	free(p->params);
-	p->params = NULL;
+	if (ft_free_params(p->params))
+		return (1);
+	// if (pthread_mutex_destroy(p->params->game_status))
+	// 	ft_error(ERROR_DESTROY);
+	// free(p->params->game_status);
+	// p->params->game_status = NULL;
+	// if (pthread_mutex_destroy(p->params->display))
+	// 	ft_error(ERROR_DESTROY);
+	// free(p->params->display);
+	// p->params->display = NULL;
+	// free(p->params);
+	// p->params = NULL;
 	free(p);
 	p = NULL;
 	return (0);
