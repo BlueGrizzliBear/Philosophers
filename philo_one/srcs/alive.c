@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 10:13:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 11:14:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,14 @@ int		ft_standby(t_phi *phi, int time)
 
 	gettimeofday(&standby_start, NULL);
 	gettimeofday(&now, NULL);
+	if (ft_is_over(phi))
+		return (-1);
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
 		if (ft_is_over(phi) || ft_is_dead(phi))
 			return (-1);
 		gettimeofday(&now, NULL);
+		usleep(100);
 	}
 	return (0);
 }
@@ -86,9 +89,8 @@ int		ft_eat_sleep_think(t_phi *phi)
 		return (ret < 0 ? ret : 1);
 	if ((ret = ft_display(phi, " is eating\n")))
 		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
-	phi->has_eaten++;
 	if (phi->params->nb_time_phi_must_eat != -1 &&
-	phi->has_eaten >= phi->params->nb_time_phi_must_eat)
+	++phi->has_eaten >= phi->params->nb_time_phi_must_eat)
 		return (-3);
 	gettimeofday(&phi->last_meal, NULL);
 	if ((ret = ft_standby(phi, phi->params->time_to_eat)) != 0)
