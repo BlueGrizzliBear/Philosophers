@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:43:47 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:44:18 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ int		ft_eat_sleep_think(t_phi *phi)
 	ret = 0;
 	if ((ret = ft_lock_forks(phi)) != 0)
 		return (ret < 0 ? ret : 1);
-	if (ft_is_over(phi))
-		return (-1);
 	if ((ret = ft_display(phi, " is eating\n")))
 		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
 	gettimeofday(&phi->last_meal, NULL);
