@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 09:35:01 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 10:13:42 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int		ft_standby(t_phi *phi, int time)
 
 	gettimeofday(&standby_start, NULL);
 	gettimeofday(&now, NULL);
-	// if (ft_is_over(phi))
-	// 	return (-1);
 	while (ft_get_timestamp(standby_start, now) < time)
 	{
 		if (ft_is_over(phi) || ft_is_dead(phi))
@@ -64,7 +62,7 @@ int		ft_lock_forks(t_phi *phi)
 	ret = 0;
 	if ((ret = ft_display(phi, " has taken a fork\n")) ||
 	(ret = ft_display(phi, " has taken a fork\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
+		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
 	return (0);
 }
 
@@ -85,7 +83,7 @@ int		ft_eat_sleep_think(t_phi *phi)
 
 	ret = 0;
 	if ((ret = ft_lock_forks(phi)) != 0)
-		return (ret < 0 ? -2 : 1);
+		return (ret < 0 ? ret : 1);
 	if ((ret = ft_display(phi, " is eating\n")))
 		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
 	phi->has_eaten++;
