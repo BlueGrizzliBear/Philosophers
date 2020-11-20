@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 13:25:52 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:16:28 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int		ft_is_over(t_phi *phi)
 {
 	if (sem_wait(phi->params->game_status))
 		return (ft_error(ERROR_LOCK_SEM));
+	dprintf(2, "|%d|\n", phi->params->game);
 	if (!phi->params->game)
 	{
 		if (sem_post(phi->params->game_status))
