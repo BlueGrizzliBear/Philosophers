@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:52:06 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 15:52:41 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int		ft_is_dead(t_phi *phi)
 
 int		ft_wait(t_philo_three *p)
 {
-	t_phi	*iter;
+	// t_phi	*iter;
 	int		status;
 	int		incr;
 
-	iter = p->phi;
+	// iter = p->phi;
 	incr = 0;
 	while (incr++ < p->params->nb)
 	{
