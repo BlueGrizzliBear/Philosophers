@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 14:52:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 14:55:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	*ft_fill_const_char(char *c, char *str)
 	int i;
 
 	i = -1;
-	memset((void*)c, '\0', sizeof((const char*)c));
+	memset((void*)c, '\0', 32);
+	dprintf(2, "%lu\n", sizeof((const char*)c));
 	while (str[++i])
 		c[i] = str[i];		
 	return (c);
