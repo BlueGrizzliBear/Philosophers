@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/21 18:38:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 18:56:37 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,21 @@ int		ft_is_over(t_phi *phi)
 		return (-1);
 	}
 	if (sem_post(phi->params->game_status))
+		return (ft_error(ERROR_UNLOCK_SEM));
+	return (0);
+}
+
+int		ft_right_order(t_phi *phi, int order)
+{
+	if (sem_wait(phi->params->order))
+		return (ft_error(ERROR_LOCK_SEM));
+	if (phi->id_nb != order)
+	{
+		if (sem_post(phi->params->order))
+			return (ft_error(ERROR_UNLOCK_SEM));
+		return (1);
+	}
+	if (sem_post(phi->params->order))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	return (0);
 }
@@ -51,7 +66,8 @@ int		ft_lock_forks(t_phi *phi)
 	static int order = 0;
 
 	ret = 0;
-	while ((phi->id_nb != order) || phi->params->forks_nb < 2)
+	// while ((phi->id_nb != order) || phi->params->forks_nb < 2)
+	while (ft_right_order(phi, order) || phi->params->forks_nb < 2)
 	{
 		if (ft_is_over(phi) || ft_is_dead(phi))
 			return (-1);
