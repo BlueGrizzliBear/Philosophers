@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/21 17:04:35 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 17:11:23 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,5 @@ t_params	*ft_parse(char **argv)
 	if (!(params = ft_create_sem(params)))
 		return (NULL);
 	params->forks_nb = params->nb;
-	params->order_nb = 0;
 	return (params);
 }

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/21 17:08:47 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 17:11:37 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,19 @@ int		ft_standby(t_phi *phi, int time)
 int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
-	// static int order = 0;
+	static int order = 0;
 
 	ret = 0;
-	while (phi->params->forks_nb < 2 || phi->params->order_nb != phi->id_nb)
+	while (phi->params->forks_nb < 2 || order != phi->id_nb)
 	{
 		if (ft_is_over(phi) || ft_is_dead(phi))
 			return (-1);
 	}
 	if (sem_wait(phi->params->order))
 		return (ft_error(ERROR_LOCK_SEM));
-	phi->params->order_nb = (phi->params->order_nb + 1) % phi->params->nb;
+	order = (order + 1) % phi->params->nb;
 	if (sem_post(phi->params->order))
-		return (ft_error(ERROR_LOCK_SEM));
+		return (ft_error(ERROR_UNLOCK_SEM));
 	usleep(100);
 	if (sem_wait(phi->params->forks) || sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
