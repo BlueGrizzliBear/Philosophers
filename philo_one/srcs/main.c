@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 12:15:50 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 14:23:08 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		ft_is_dead(t_phi *phi)
 	struct timeval now;
 
 	gettimeofday(&now, NULL);
-	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
+	if (ft_get_timestamp(phi->last_meal, now) >= phi->params->time_to_die)
 	{
 		if (pthread_mutex_lock(phi->params->game_status))
 			return (ft_error(ERROR_LOCK_MUTEX));
