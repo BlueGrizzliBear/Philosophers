@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/21 17:57:02 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 18:09:47 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int		ft_lock_forks(t_phi *phi)
 	static int order = 0;
 
 	ret = 0;
-	while (order != phi->id_nb || phi->params->forks_nb < 2)
+	// while ((phi->id_nb == order) || phi->params->forks_nb < 2)
+	while (!(phi->id_nb <= (order + phi->params->nb / 2) && 
+	(phi->id_nb >= (order - phi->params->nb / 2))) 
+	|| phi->params->forks_nb < 2)
 	{
 		if (ft_is_over(phi) || ft_is_dead(phi))
 			return (-1);
