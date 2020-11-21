@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 13:09:56 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 16:39:56 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct			s_params
 
 typedef struct			s_phi
 {
+	int					id_nb;
 	char				id[13];
 	int					status;
 	int					has_eaten;
