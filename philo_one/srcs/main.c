@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/21 14:32:38 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 14:33:51 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ int		ft_is_dead(t_phi *phi)
 {
 	struct timeval now;
 
-	if (pthread_mutex_lock(phi->params->game_status))
-		return (ft_error(ERROR_LOCK_MUTEX));
 	gettimeofday(&now, NULL);
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
-		// if (pthread_mutex_lock(phi->params->game_status))
-		// 	return (ft_error(ERROR_LOCK_MUTEX));
+		if (pthread_mutex_lock(phi->params->game_status))
+			return (ft_error(ERROR_LOCK_MUTEX));
 		phi->status = 0;
 		ft_display(phi, " died\n");
 		phi->params->game = 0;
@@ -30,8 +28,6 @@ int		ft_is_dead(t_phi *phi)
 			return (ft_error(ERROR_UNLOCK_MUTEX));
 		return (1);
 	}
-	if (pthread_mutex_unlock(phi->params->game_status))
-		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);
 }
 
