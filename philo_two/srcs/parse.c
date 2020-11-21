@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:05:20 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 16:54:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ t_params	*ft_create_sem(t_params *params)
 	sem_unlink("/forks");
 	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
 	if (params->forks == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
+	sem_unlink("/order");
+	params->order = sem_open("/order", O_CREAT, S_IRWXU, 1);
+	if (params->order == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
 	return (params);
 }

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/21 16:39:56 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/21 16:54:16 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct			s_params
 	struct timeval		start;
 	sem_t				*display;
 	sem_t				*forks;
+	sem_t				*order;
 	int					forks_nb;
 }						t_params;
 
