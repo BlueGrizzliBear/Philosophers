@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/19 14:11:30 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 10:30:59 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int		ft_strlen(char *str)
 
 void	ft_putstr(char *str)
 {
-	write(1, str, ft_strlen(str));
+	if (!(write(1, str, ft_strlen(str))))
+		return;
 }
 
 int		ft_atoi(const char *str)
