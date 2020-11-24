@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 09:56:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 10:32:42 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int		ft_display(t_phi *phi, char *str)
 		return (-1);
 	if (phi->status == 0)
 		reaper += 1;
-	write(1, (void*)msg, size);
+	if ((write(1, (void*)msg, size)) == -1)
+		return (ft_error(ERROR_LAUNCH_PHI));
 	if (sem_post(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	return (0);
