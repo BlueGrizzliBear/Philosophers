@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 09:30:43 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 09:31:34 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct			s_params
 	sem_t				*forks;
 	int					forks_nb;
 	sem_t				*order;
-	id_t				order_nb;
+	int					order_nb;
 }						t_params;
 
 typedef struct			s_phi
