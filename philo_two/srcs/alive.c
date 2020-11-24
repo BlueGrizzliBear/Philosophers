@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 09:18:55 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 09:24:20 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,45 @@ int		ft_standby(t_phi *phi, int time)
 	return (0);
 }
 
+int		ft_in_order(t_phi *phi)
+{
+	static int order = 0;
+
+	if (sem_wait(phi->params->order))
+		return (ft_error(ERROR_LOCK_SEM));
+	if (phi->id_nb != order)
+	{
+		if (sem_post(phi->params->order))
+			return (ft_error(ERROR_UNLOCK_SEM));
+		return (-1);
+	}
+	order = (order + 1) % phi->params->nb;
+	if (sem_post(phi->params->order))
+		return (ft_error(ERROR_UNLOCK_SEM));
+	// if (sem_wait(phi->params->order))
+	// 	return (ft_error(ERROR_LOCK_SEM));
+	// if (sem_post(phi->params->order))
+	// 	return (ft_error(ERROR_UNLOCK_SEM));
+	return (0);
+}
+
 int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
-	static int order = 0;
+	// static int order = 0;
 
 	ret = 0;
-	while ((phi->id_nb != order) || phi->params->forks_nb < 2)
+	// while ((phi->id_nb != order) || phi->params->forks_nb < 2)
+	while (phi->params->forks_nb < 2 || ft_in_order(phi))
 	{
 		if (ft_is_over(phi) || ft_is_dead(phi))
 			return (-1);
 	}
-	if (sem_wait(phi->params->order))
-		return (ft_error(ERROR_LOCK_SEM));
-	order = (order + 1) % phi->params->nb;
-	if (sem_post(phi->params->order))
-		return (ft_error(ERROR_UNLOCK_SEM));
+	// if (sem_wait(phi->params->order))
+	// 	return (ft_error(ERROR_LOCK_SEM));
+	// order = (order + 1) % phi->params->nb;
+	// if (sem_post(phi->params->order))
+	// 	return (ft_error(ERROR_UNLOCK_SEM));
 	if (sem_wait(phi->params->forks) || sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
 	phi->params->forks_nb -= 2;
