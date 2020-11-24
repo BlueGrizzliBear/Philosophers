@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 11:40:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 11:55:34 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,6 @@ int		ft_standby(t_phi *phi, int time)
 	return (0);
 }
 
-int		ft_in_order(t_phi *phi)
-{
-	if (sem_wait(phi->params->order))
-		return (ft_error(ERROR_LOCK_SEM));
-	if (phi->id_nb != phi->params->order_nb)
-	{
-		if (sem_post(phi->params->order))
-			return (ft_error(ERROR_UNLOCK_SEM));
-		return (-1);
-	}
-	// if (sem_wait(phi->params->display))
-	// 	return (ft_error(ERROR_LOCK_SEM));
-	// dprintf(2, "================== order|%d|\n", phi->params->order_nb);
-	// if (sem_post(phi->params->display))
-	// 	return (ft_error(ERROR_UNLOCK_SEM));
-	if (sem_post(phi->params->order))
-		return (ft_error(ERROR_UNLOCK_SEM));
-	return (0);
-}
-
 int		ft_lock_forks(t_phi *phi)
 {
 	int ret;
@@ -83,8 +63,6 @@ int		ft_lock_forks(t_phi *phi)
 	phi->params->order_nb = (phi->params->order_nb + 1) % phi->params->nb;
 	if (sem_post(phi->params->order))
 		return (ft_error(ERROR_UNLOCK_SEM));
-	// if (ft_is_over(phi) || ft_is_dead(phi))
-	// 	return (-2);
 	if ((ret = ft_display(phi, " has taken a fork\n")) ||
 	(ret = ft_display(phi, " has taken a fork\n")))
 		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
@@ -106,8 +84,6 @@ int		ft_eat_sleep_think(t_phi *phi)
 	ret = 0;
 	if ((ret = ft_lock_forks(phi)) != 0)
 		return (ret < 0 ? ret : 1);
-	// if (ft_is_over(phi) || ft_is_dead(phi))
-	// 	return (-2);
 	if ((ret = ft_display(phi, " is eating\n")))
 		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
 	gettimeofday(&phi->last_meal, NULL);
@@ -118,14 +94,10 @@ int		ft_eat_sleep_think(t_phi *phi)
 		return (-3);
 	if (ft_unlock_forks(phi))
 		return (1);
-	// if (ft_is_over(phi) || ft_is_dead(phi))
-	// 	return (-1);
 	if ((ret = ft_display(phi, " is sleeping\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	if ((ret = ft_standby(phi, phi->params->time_to_sleep)) != 0)
 		return (ret < 0 ? -1 : ft_error(ERROR_STANDBY));
-	// if (ft_is_over(phi) || ft_is_dead(phi))
-	// 	return (-1);
 	if ((ret = ft_display(phi, " is thinking\n")))
 		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
 	return (0);

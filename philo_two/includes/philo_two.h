@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 09:31:34 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 11:55:30 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ int						ft_is_over(t_phi *phi);
 char					*ft_strdup(char *str);
 int						ft_strlen(char *str);
 void					ft_itoa(char *id, int nb);
+int						ft_in_order(t_phi *phi);
 
 #endif

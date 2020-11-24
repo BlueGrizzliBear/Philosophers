@@ -6,11 +6,26 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 10:33:54 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 11:55:21 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_two.h"
+
+int		ft_in_order(t_phi *phi)
+{
+	if (sem_wait(phi->params->order))
+		return (ft_error(ERROR_LOCK_SEM));
+	if (phi->id_nb != phi->params->order_nb)
+	{
+		if (sem_post(phi->params->order))
+			return (ft_error(ERROR_UNLOCK_SEM));
+		return (-1);
+	}
+	if (sem_post(phi->params->order))
+		return (ft_error(ERROR_UNLOCK_SEM));
+	return (0);
+}
 
 int		ft_fill_msg_str(char *msg, char *id, char *str, int size)
 {
@@ -49,21 +64,6 @@ int		ft_fill_msg_nb(char *msg, int nb)
 	return (cpy);
 }
 
-// int		ft_build_msg(t_phi *phi, int timestamp, char *str)
-// {
-	// char	msg[64];
-	// int		size;
-
-	// size = ft_fill_msg_nb(msg, timestamp);
-	// size = ft_fill_msg_str(msg, phi->id, str, size);
-	// if (sem_wait(phi->params->display))
-	// 	return (ft_error(ERROR_LOCK_SEM));
-	// write(1, (void*)msg, size);
-	// if (sem_post(phi->params->display))
-	// 	return (ft_error(ERROR_UNLOCK_SEM));
-// 	return (0);
-// }
-
 int		ft_display(t_phi *phi, char *str)
 {
 	struct timeval	now;
@@ -72,7 +72,6 @@ int		ft_display(t_phi *phi, char *str)
 	int				size;
 
 	gettimeofday(&now, NULL);
-	// ft_build_msg(phi, ft_get_timestamp(phi->params->start, now), str);
 	size = ft_fill_msg_nb(msg, ft_get_timestamp(phi->params->start, now));
 	size = ft_fill_msg_str(msg, phi->id, str, size);
 	if (sem_wait(phi->params->display))

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 16:57:34 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 12:10:49 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ int		ft_is_dead(t_phi *phi)
 	gettimeofday(&now, NULL);
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
+		// if (sem_wait(phi->params->game_status))
+		// 	return (ft_error(ERROR_LOCK_SEM));
 		phi->status = 0;
 		ft_display(phi, " died\n");
 		phi->params->game = 0;
+		// if (sem_post(phi->params->game_status))
+		// 	return (ft_error(ERROR_UNLOCK_SEM));
 		return (1);
 	}
 	return (0);

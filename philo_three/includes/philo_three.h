@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 15:20:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 11:59:50 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ typedef struct			s_params
 	sem_t				*display;
 	sem_t				*forks;
 	int					forks_nb;
+	sem_t				*order;
+	int					order_nb;
 }						t_params;
 
 typedef struct			s_phi
 {
+	int					id_nb;
 	char				id[13];
 	int					status;
 	int					has_eaten;
@@ -87,5 +90,6 @@ int						ft_is_dead(t_phi *phi);
 int						ft_is_over(t_phi *phi);
 int						ft_strlen(char *str);
 void					ft_itoa(char *id, int nb);
+int						ft_in_order(t_phi *phi);
 
 #endif
