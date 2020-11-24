@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 09:24:20 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 09:27:37 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int		ft_in_order(t_phi *phi)
 		return (-1);
 	}
 	order = (order + 1) % phi->params->nb;
+	dprintf(2, "================== order|%d|\n", order);
 	if (sem_post(phi->params->order))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	// if (sem_wait(phi->params->order))
