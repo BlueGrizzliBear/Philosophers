@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 09:27:37 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 09:31:07 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ int		ft_standby(t_phi *phi, int time)
 
 int		ft_in_order(t_phi *phi)
 {
-	static int order = 0;
+	// static int order = 0;
 
 	if (sem_wait(phi->params->order))
 		return (ft_error(ERROR_LOCK_SEM));
-	if (phi->id_nb != order)
+	if (phi->id_nb != phi->params->order_nb)
 	{
 		if (sem_post(phi->params->order))
 			return (ft_error(ERROR_UNLOCK_SEM));
 		return (-1);
 	}
-	order = (order + 1) % phi->params->nb;
-	dprintf(2, "================== order|%d|\n", order);
+	phi->params->order_nb = (phi->params->order_nb + 1) % phi->params->nb;
+	dprintf(2, "================== order|%d|\n", phi->params->order_nb);
 	if (sem_post(phi->params->order))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	// if (sem_wait(phi->params->order))
