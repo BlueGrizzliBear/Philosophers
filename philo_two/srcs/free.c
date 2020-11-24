@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:28:06 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 12:21:37 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ int		ft_free_semaphore(t_params *params)
 	if (sem_close(params->forks))
 		return (ft_error(ERROR_CLOSING));
 	if (sem_unlink("/forks"))
+		return (ft_error(ERROR_UNLINK));
+	if (sem_close(params->order))
+		return (ft_error(ERROR_CLOSING));
+	if (sem_unlink("/order"))
 		return (ft_error(ERROR_UNLINK));
 	params->forks = NULL;
 	return (0);

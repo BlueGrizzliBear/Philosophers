@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 12:10:49 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 16:51:05 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,52 @@ int		ft_is_dead(t_phi *phi)
 	gettimeofday(&now, NULL);
 	if (ft_get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
-		// if (sem_wait(phi->params->game_status))
-		// 	return (ft_error(ERROR_LOCK_SEM));
 		phi->status = 0;
 		ft_display(phi, " died\n");
-		phi->params->game = 0;
-		// if (sem_post(phi->params->game_status))
-		// 	return (ft_error(ERROR_UNLOCK_SEM));
 		return (1);
 	}
 	return (0);
 }
 
+void	*ft_in_order(void *arg)
+{
+	t_philo_three *p;
+	t_phi	*iter;
+	int		order;
+
+	p = (t_philo_three*)(arg);
+	iter = p->phi;
+	order = 0;
+	while (p->params->game == 1 && iter && p->params->nb != 0)
+	{
+		if (order == iter->id_nb)
+		{
+			if (sem_post(iter->order))
+			{
+				ft_error(ERROR_UNLOCK_SEM);
+				return ((void*)0);
+			}
+			if (sem_wait(iter->order))
+			{
+				ft_error(ERROR_UNLOCK_SEM);
+				return ((void*)0);
+			}
+			order = (order + 1) % p->params->nb;
+		}
+		iter = iter->next;
+	}
+	return ((void*)0);
+}
+
 int		ft_wait(t_philo_three *p)
 {
-	t_phi	*iter;
-	int		status;
 	int		incr;
+	int		status;
+	t_phi	*iter;
+
+	if (pthread_create(p->thread, NULL, &ft_in_order, p))
+		return (ft_error(ERROR_CREATE_THREAD));
+	pthread_detach(*p->thread);
 
 	iter = p->phi;
 	incr = 0;
@@ -44,14 +73,13 @@ int		ft_wait(t_philo_three *p)
 		status = 0;
 		if (waitpid(-1, &status, 0) < 0)
 			return (ft_error(ERROR_CREATE_FORK));
-		if (WEXITSTATUS(status) > 0)
+		if (WEXITSTATUS(status) >= 0)
 		{
-			status = p->params->nb;
-			while (status > 0)
+			p->params->game = 1;
+			while (p->params->nb-- > 0)
 			{
 				kill(iter->pid, SIGINT);
 				iter = iter->next;
-				status--;
 			}
 			return (0);
 		}
@@ -93,6 +121,8 @@ int		ft_launch(t_philo_three *p)
 	gettimeofday(&p->params->start, NULL);
 	while (counter-- > 0)
 	{
+		if (sem_wait(iter->order))
+			return (ft_error(ERROR_LOCK_SEM));
 		gettimeofday(&iter->last_meal, NULL);
 		if (!(pid = fork()))
 			ft_is_alive(iter);

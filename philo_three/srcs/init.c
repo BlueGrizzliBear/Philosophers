@@ -6,11 +6,20 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 12:00:12 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 16:48:16 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
+
+int			ft_init_phi_sem(t_phi *phi)
+{
+	sem_unlink("/order");
+	phi->order = sem_open("/order", O_CREAT, S_IRWXU, 1);
+	if (phi->order == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM));
+	return (0);
+}
 
 t_phi			*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
 {
@@ -26,6 +35,8 @@ t_phi			*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
 	phi->id_nb = p->params->nb - inv_id;
 	memset(phi->id, '\0', 13);
 	ft_itoa(phi->id, p->params->nb - inv_id);
+	if (ft_init_phi_sem(phi))
+		return (NULL);
 	phi->status = 1;
 	phi->has_eaten = 0;
 	phi->params = p->params;
@@ -43,6 +54,11 @@ t_philo_three	*ft_init(t_params *p)
 	if (!(ph_three = malloc(sizeof(t_philo_three))))
 	{
 		ft_error(ERROR_STRUCT_CREAT);
+		return (NULL);
+	}
+	if (!(ph_three->thread = malloc(sizeof(pthread_t))))
+	{
+		ft_error(ERROR_MEM_ALLOC);
 		return (NULL);
 	}
 	ph_three->params = p;

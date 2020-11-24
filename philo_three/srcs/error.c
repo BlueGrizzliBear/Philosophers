@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/16 15:39:45 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 16:39:11 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	ft_mem_error(int err)
 		ft_putstr("Error: could not open semaphore\n");
 	if (err == ERROR_CREATE_FORK)
 		ft_putstr("Error: could not create fork\n");
+	if (err == ERROR_CREATE_THREAD)
+		ft_putstr("Error: could not create thread\n");
 }
 
 void	ft_program_error(int err)

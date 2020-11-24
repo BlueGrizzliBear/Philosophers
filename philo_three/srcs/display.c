@@ -6,26 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 12:10:09 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/24 16:53:05 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
-
-int		ft_in_order(t_phi *phi)
-{
-	if (sem_wait(phi->params->order))
-		return (ft_error(ERROR_LOCK_SEM));
-	if (phi->id_nb != phi->params->order_nb)
-	{
-		if (sem_post(phi->params->order))
-			return (ft_error(ERROR_UNLOCK_SEM));
-		return (-1);
-	}
-	if (sem_post(phi->params->order))
-		return (ft_error(ERROR_UNLOCK_SEM));
-	return (0);
-}
 
 int		ft_fill_msg_str(char *msg, char *id, char *str, int size)
 {
@@ -70,23 +55,15 @@ int		ft_display(t_phi *phi, char *str)
 	char	msg[64];
 	int		size;
 
-	if (sem_wait(phi->params->game_status))
-		return (ft_error(ERROR_LOCK_SEM));
 	gettimeofday(&now, NULL);
 	size = ft_fill_msg_nb(msg, ft_get_timestamp(phi->params->start, now));
 	size = ft_fill_msg_str(msg, phi->id, str, size);
-	
 	if (sem_wait(phi->params->display))
 		return (ft_error(ERROR_LOCK_SEM));
-	// if (ft_is_over(phi))
-	// 	return (-1);
 	write(1, (void*)msg, size);
-	if (sem_post(phi->params->display))
-		return (ft_error(ERROR_UNLOCK_SEM));
-	
 	if (phi->status == 0)
-		return (0);
-	if (sem_post(phi->params->game_status))
+		return (-1);
+	if (sem_post(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	return (0);
 }
