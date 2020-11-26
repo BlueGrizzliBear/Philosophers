@@ -6,13 +6,13 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 18:00:06 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 18:09:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
 
-void	*ft_in_order(void *arg)
+void	*th_in_order(void *arg)
 {
 	t_philo_three 	*p;
 	t_phi			*iter;
@@ -36,14 +36,14 @@ void	*ft_in_order(void *arg)
 	return ((void*)0);
 }
 
-void	*ft_has_eaten(void *arg)
+void	*th_has_eaten(void *arg)
 {
 	t_philo_three 	*p;
 	int				total;
 
 	p = (t_philo_three*)arg;
 	total = 0;
-	while (total++ < p->params->nb)
+	while (total++ < p->params->nb && p->params->game == 1)
 	{
 		if (sem_wait(p->params->has_eaten) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
@@ -87,13 +87,15 @@ int		ft_launch(t_philo_three *p)
 	int			counter;
 	
 	// Thread to insure the eating order
-	if (pthread_create(&ordering, NULL, &ft_in_order, p))
+	ordering = NULL;
+	if (pthread_create(&ordering, NULL, &th_in_order, p))
 		return (ft_error(ERROR_CREATE_THREAD));
 	pthread_detach(ordering);
 
+	has_eaten = NULL;
 	if (p->params->must_eat != -1)
 	{
-		if (pthread_create(&has_eaten, NULL, &ft_has_eaten, p))
+		if (pthread_create(&has_eaten, NULL, &th_has_eaten, p))
 			return (ft_error(ERROR_CREATE_THREAD));
 		pthread_detach(has_eaten);
 	}
