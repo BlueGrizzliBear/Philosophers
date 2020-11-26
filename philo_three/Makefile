@@ -6,7 +6,7 @@
 #    By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/30 10:08:08 by cbussier          #+#    #+#              #
-#    Updated: 2020/11/26 15:37:48 by cbussier         ###   ########lyon.fr    #
+#    Updated: 2020/11/26 17:21:19 by cbussier         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,9 @@ OBJS			= 		${SRCS:.c=.o}
 
 NAME			=		philo_three
 
-FLAGS			=		-Wall -Wextra -Werror #-fsanitize=address
+FLAGS			=		-Wall -Wextra -Werror -fsanitize=address
 
-# LIB_LINK		=		-I. -lpthread
+#LIB_LINK		=		-I. -lpthread
 LIB_LINK		=		-I. -pthread
 
 SRCS			=		$(addprefix $(SRC_PATH)/,$(SRCS_NAME))
@@ -37,7 +37,7 @@ SRCS			=		$(addprefix $(SRC_PATH)/,$(SRCS_NAME))
 all				:		philo_three $(NAME)
 
 %.o				:		%.c $(HEADER)
-						gcc $(FLAGS) -c $< -o $(<:.c=.o) $(LIB_LINK)
+						gcc $(FLAGS) -c $< -o $(<:.c=.o)
 
 $(NAME)			:		$(OBJS)
 						gcc $(FLAGS) $(LIB_LINK) $(OBJS) -o $(NAME)

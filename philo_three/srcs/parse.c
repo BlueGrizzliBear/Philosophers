@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 14:04:30 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 16:52:27 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,20 @@ int			ft_init_params(t_params *params, int val, int index)
 	else if (index == 4)
 		params->time_to_sleep = val;
 	else if (index == 5)
-		params->nb_time_phi_must_eat = val;
+		params->must_eat = val;
 	return (0);
 }
 
 int			ft_init_semaphores(t_params *params)
 {
 	params->game = 1;
+	if (params->must_eat != -1)
+	{
+		sem_unlink("/has_eaten");
+		params->has_eaten = sem_open("/has_eaten", O_CREAT, S_IRWXU, 0);
+		if (params->has_eaten == SEM_FAILED)
+			return (ft_error(ERROR_OPEN_SEM));
+	}
 	sem_unlink("/game_over");
 	params->game_over = sem_open("/game_over", O_CREAT, S_IRWXU, 0);
 	if (params->game_over == SEM_FAILED)
@@ -53,7 +60,7 @@ t_params	*ft_parse(char **argv)
 
 	if (!(params = malloc(sizeof(t_params))))
 		return (ft_error(ERROR_STRUCT_CREAT) == 3 ? NULL : NULL);
-	params->nb_time_phi_must_eat = -1;
+	params->must_eat = -1;
 	i = 0;
 	while (argv[++i])
 	{

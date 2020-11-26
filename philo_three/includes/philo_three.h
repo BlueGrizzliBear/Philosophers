@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 15:01:00 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 16:46:09 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ typedef struct			s_params
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
-	int					nb_time_phi_must_eat;
+	int					must_eat;
+	sem_t				*has_eaten;
 	struct timeval		start;
 	int					game;
 	sem_t				*game_over;

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 14:42:58 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 17:20:04 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,16 @@ void	ft_eat(t_phi *phi)
 	if (sem_post(phi->check))
 		exit(ft_error(ERROR_UNLOCK_SEM));
 	ft_standby(phi->params->time_to_eat);
-	if (phi->params->nb_time_phi_must_eat != -1 &&
-	++phi->has_eaten >= phi->params->nb_time_phi_must_eat)
-		exit(0); // attention ici
+	++phi->has_eaten;
 	unlock_forks(phi);
+	if (phi->params->must_eat != -1 &&
+	phi->has_eaten >= phi->params->must_eat)
+	{
+		// dprintf(2, "phi|%d| quiting here\n", phi->id_nb);
+		if (sem_post(phi->params->has_eaten))
+			exit(ft_error(ERROR_UNLOCK_SEM));
+		exit(0);
+	}
 }
 
 void	ft_sleep(t_phi *phi)
@@ -91,13 +97,15 @@ int		ft_is_dead(t_phi *phi)
 void	*ft_brain(void *arg)
 {
 	t_phi	*phi;
+	int		end;
 
 	phi = (t_phi*)(arg);
+	end = 0;
 	while (1)
 	{
 		if (sem_wait(phi->check) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
-		if (ft_is_dead(phi))
+		if (phi->has_eaten != phi->params->must_eat && ft_is_dead(phi))
 		{
 			phi->status = 0;
 			ft_display(phi, " died\n");
@@ -107,6 +115,11 @@ void	*ft_brain(void *arg)
 				return ((void*)0);
 			return ((void*)0);
 		}
+		// if (phi->has_eaten == phi->params->must_eat)
+		// {
+		// 	dprintf(2, "END phi|%d| eaten|%d|\n", phi->id_nb, phi->has_eaten);			
+		// 	return ((void*)0);
+		// }
 		if (sem_post(phi->check) && ft_error(ERROR_UNLOCK_SEM))
 			return ((void*)0);
 		usleep(1000);

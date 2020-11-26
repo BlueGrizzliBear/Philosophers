@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 09:30:53 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 16:32:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int			ft_init_params(t_params *params, int val, int index)
 	else if (index == 4)
 		params->time_to_sleep = val;
 	else if (index == 5)
-		params->nb_time_phi_must_eat = val;
+		params->must_eat = val;
 	return (0);
 }
 
@@ -56,7 +56,7 @@ t_params	*ft_parse(char **argv)
 
 	if (!(params = malloc(sizeof(t_params))))
 		return (ft_error(ERROR_STRUCT_CREAT) == 3 ? NULL : NULL);
-	params->nb_time_phi_must_eat = -1;
+	params->must_eat = -1;
 	i = 0;
 	while (argv[++i])
 	{

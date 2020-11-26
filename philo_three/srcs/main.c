@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 14:53:41 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 17:19:32 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,27 +36,53 @@ void	*ft_in_order(void *arg)
 	return ((void*)0);
 }
 
+void	*ft_has_eaten(void *arg)
+{
+	t_philo_three 	*p;
+	int				total;
+
+	p = (t_philo_three*)arg;
+	total = 0;
+	while (total++ < p->params->nb)
+	{
+		if (sem_wait(p->params->has_eaten) && ft_error(ERROR_LOCK_SEM))
+			return ((void*)0);
+	}
+	if (sem_post(p->params->has_eaten) && ft_error(ERROR_UNLOCK_SEM))
+		return ((void*)0);
+	if (sem_post(p->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
+		return ((void*)0);
+	p->params->game = 0;
+	return ((void*)0);
+}
+
 void	ft_wait(t_philo_three *p)
 {
 	t_phi	*iter;
 
 	if (sem_wait(p->params->game_over))
 		exit(ft_error(ERROR_LOCK_SEM));
-	p->params->game = 0;
-	// usleep(1000000);
+	if (sem_post(p->params->game_over))
+		exit(ft_error(ERROR_UNLOCK_SEM));
+	// else if (p->params->game != 0)
+	// {
+		// p->params->game = 0;
+		// usleep(1000000);
 	iter = p->phi;
 	while (p->params->nb-- > 0)
 	{
+		if (p->params->game == 0 && sem_post(iter->check))
+			exit(ft_error(ERROR_UNLOCK_SEM));
 		kill(iter->pid, SIGINT);
 		iter = iter->next;
 	}
-	if (sem_post(p->params->game_over))
-		exit(ft_error(ERROR_UNLOCK_SEM));
+	// }
 }
 
 int		ft_launch(t_philo_three *p)
 {
 	pthread_t	ordering;
+	pthread_t	has_eaten;
 	t_phi		*iter;
 	int			counter;
 	
@@ -64,7 +90,14 @@ int		ft_launch(t_philo_three *p)
 	if (pthread_create(&ordering, NULL, &ft_in_order, p))
 		return (ft_error(ERROR_CREATE_THREAD));
 	pthread_detach(ordering);
-	
+
+	if (p->params->must_eat != -1)
+	{
+		if (pthread_create(&has_eaten, NULL, &ft_has_eaten, p))
+			return (ft_error(ERROR_CREATE_THREAD));
+		pthread_detach(has_eaten);
+	}
+
 	iter = p->phi;
 	counter = 0;
 	gettimeofday(&p->params->start, NULL);
