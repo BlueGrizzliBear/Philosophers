@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 14:56:18 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 15:01:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,5 @@ int						ft_is_over(t_phi *phi);
 int						ft_strlen(char *str);
 void					ft_itoa(char *id, int nb);
 int						ft_is_alive(void *arg);
-
-// void					*ft_brain(void *arg);
-// void	ft_eat(t_phi *phi);
-// void	ft_sleep(t_phi *phi);
-// void	ft_think(t_phi *phi);
 
 #endif
