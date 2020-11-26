@@ -6,7 +6,7 @@
 #    By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/30 10:08:08 by cbussier          #+#    #+#              #
-#    Updated: 2020/11/26 17:21:19 by cbussier         ###   ########lyon.fr    #
+#    Updated: 2020/11/26 17:57:40 by cbussier         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJS			= 		${SRCS:.c=.o}
 
 NAME			=		philo_three
 
-FLAGS			=		-Wall -Wextra -Werror -fsanitize=address
+FLAGS			=		-Wall -Wextra -Werror #-fsanitize=address
 
 #LIB_LINK		=		-I. -lpthread
 LIB_LINK		=		-I. -pthread

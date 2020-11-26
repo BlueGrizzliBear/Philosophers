@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 17:22:57 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 18:02:17 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,6 @@ void	*ft_brain(void *arg)
 				return ((void*)0);
 			return ((void*)0);
 		}
-		// if (phi->has_eaten == phi->params->must_eat)
-		// {
-		// 	dprintf(2, "END phi|%d| eaten|%d|\n", phi->id_nb, phi->has_eaten);			
-		// 	return ((void*)0);
-		// }
 		if (sem_post(phi->check) && ft_error(ERROR_UNLOCK_SEM))
 			return ((void*)0);
 		usleep(1000);
