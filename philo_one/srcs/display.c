@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/20 13:02:22 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/25 16:31:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ int		ft_display(t_phi *phi, char *str)
 	if (phi->status == 0)
 		reaper += 1;
 	gettimeofday(&now, NULL);
-	ft_build_msg(phi, ft_get_timestamp(phi->params->start, now), str);
+	ft_build_msg(phi, get_timestamp(phi->params->start, now), str);
 	return (0);
 }

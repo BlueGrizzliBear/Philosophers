@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/21 15:55:01 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/25 16:48:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ft_standby(t_phi *phi, int time)
 	gettimeofday(&now, NULL);
 	if (ft_is_over(phi))
 		return (-1);
-	while (ft_get_timestamp(standby_start, now) < time)
+	while (get_timestamp(standby_start, now) < time)
 	{
 		if (!phi->params->game || ft_is_dead(phi))
 			return (-1);
@@ -45,7 +45,7 @@ int		ft_standby(t_phi *phi, int time)
 	return (0);
 }
 
-int		ft_lock_forks(t_phi *phi)
+int		lock_forks(t_phi *phi)
 {
 	int ret;
 
@@ -70,7 +70,7 @@ int		ft_lock_forks(t_phi *phi)
 	return (0);
 }
 
-int		ft_unlock_forks(t_phi *phi)
+int		unlock_forks(t_phi *phi)
 {
 	phi->right_fork->status = 0;
 	phi->left_fork->status = 0;
@@ -86,7 +86,7 @@ int		ft_eat_sleep_think(t_phi *phi)
 	int ret;
 
 	ret = 0;
-	if ((ret = ft_lock_forks(phi)) != 0)
+	if ((ret = lock_forks(phi)) != 0)
 		return (ret < 0 ? ret : 1);
 	if (ft_is_over(phi) || ft_is_dead(phi))
 		return (-2);
@@ -98,7 +98,7 @@ int		ft_eat_sleep_think(t_phi *phi)
 	if (phi->params->nb_time_phi_must_eat != -1 &&
 	++phi->has_eaten >= phi->params->nb_time_phi_must_eat)
 		return (-3);
-	if (ft_unlock_forks(phi))
+	if (unlock_forks(phi))
 		return (1);
 	if (ft_is_over(phi) || ft_is_dead(phi))
 		return (-1);

@@ -6,74 +6,131 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 16:53:43 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 14:42:58 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
 
-int		ft_standby(t_phi *phi, int time)
+void	ft_standby(int time)
 {
-	struct timeval now;
-	struct timeval standby_start;
+	usleep(1000 * time);
+	// struct timeval now;
+	// struct timeval standby_start;
 
-	gettimeofday(&standby_start, NULL);
-	gettimeofday(&now, NULL);
-	while (ft_get_timestamp(standby_start, now) < time)
-	{
-		if (ft_is_dead(phi))
-			return (-1);
-		gettimeofday(&now, NULL);
-	}
-	return (0);
+	// gettimeofday(&standby_start, NULL);
+	// gettimeofday(&now, NULL);
+	// while (get_timestamp(standby_start, now) < time)
+	// 	gettimeofday(&now, NULL);
 }
 
-int		ft_lock_forks(t_phi *phi)
+void	lock_forks(t_phi *phi)
 {
-	int ret;
-
-	ret = 0;
+	// wait for order given
 	if (sem_wait(phi->order))
-		return (ft_error(ERROR_LOCK_SEM));
+		exit(ft_error(ERROR_LOCK_SEM));
+	if (sem_wait(phi->params->forks))
+		exit(ft_error(ERROR_LOCK_SEM));
+	if (ft_display(phi, " has taken a fork\n"))
+		exit(ft_error(ERROR_DISPLAY));
+	if (sem_wait(phi->params->forks))
+		exit(ft_error(ERROR_LOCK_SEM));
+	if (ft_display(phi, " has taken a fork\n"))
+		exit(ft_error(ERROR_DISPLAY));
+	// give back order
 	if (sem_post(phi->order))
-		return (ft_error(ERROR_UNLOCK_SEM));
-	if (sem_wait(phi->params->forks) || sem_wait(phi->params->forks))
-		return (ft_error(ERROR_LOCK_SEM));
-	if ((ret = ft_display(phi, " has taken a fork\n")) ||
-	(ret = ft_display(phi, " has taken a fork\n")))
-		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
-	return (0);
+		exit(ft_error(ERROR_UNLOCK_SEM));
 }
 
-int		ft_unlock_forks(t_phi *phi)
+void	unlock_forks(t_phi *phi)
 {
 	if (sem_post(phi->params->forks) || sem_post(phi->params->forks))
-		return (ft_error(ERROR_UNLOCK_SEM));
+		exit(ft_error(ERROR_UNLOCK_SEM));
+}
+
+void	ft_eat(t_phi *phi)
+{
+	lock_forks(phi);
+	if (sem_wait(phi->check))
+		exit(ft_error(ERROR_LOCK_SEM));
+	if (ft_display(phi, " is eating\n") > 0)
+		exit(ft_error(ERROR_DISPLAY));
+	gettimeofday(&phi->last_meal, NULL);
+	if (sem_post(phi->check))
+		exit(ft_error(ERROR_UNLOCK_SEM));
+	ft_standby(phi->params->time_to_eat);
+	if (phi->params->nb_time_phi_must_eat != -1 &&
+	++phi->has_eaten >= phi->params->nb_time_phi_must_eat)
+		exit(0); // attention ici
+	unlock_forks(phi);
+}
+
+void	ft_sleep(t_phi *phi)
+{
+	if (ft_display(phi, " is sleeping\n") > 0)
+		exit(ft_error(ERROR_DISPLAY));
+	ft_standby(phi->params->time_to_sleep);	
+}
+
+void	ft_think(t_phi *phi)
+{
+	if (ft_display(phi, " is thinking\n") > 0)
+		exit(ft_error(ERROR_DISPLAY));
+}
+
+int		ft_is_dead(t_phi *phi)
+{
+	static struct timeval now;
+
+	gettimeofday(&now, NULL);
+	if (get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
+		return (1);
 	return (0);
 }
 
-int		ft_eat_sleep_think(t_phi *phi)
+void	*ft_brain(void *arg)
 {
-	int ret;
+	t_phi	*phi;
 
-	ret = 0;
-	if ((ret = ft_lock_forks(phi)) != 0)
-		return (ret < 0 ? ret : 1);
-	if ((ret = ft_display(phi, " is eating\n")))
-		return (ret < 0 ? -2 : ft_error(ERROR_DISPLAY));
-	gettimeofday(&phi->last_meal, NULL);
-	if ((ret = ft_standby(phi, phi->params->time_to_eat)) != 0)
-		return (ret < 0 ? -2 : ft_error(ERROR_STANDBY));
-	if (phi->params->nb_time_phi_must_eat != -1 &&
-	++phi->has_eaten >= phi->params->nb_time_phi_must_eat)
-		return (-3);
-	if (ft_unlock_forks(phi))
-		return (1);
-	if ((ret = ft_display(phi, " is sleeping\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	if ((ret = ft_standby(phi, phi->params->time_to_sleep)) != 0)
-		return (ret < 0 ? -1 : ft_error(ERROR_STANDBY));
-	if ((ret = ft_display(phi, " is thinking\n")))
-		return (ret < 0 ? -1 : ft_error(ERROR_DISPLAY));
-	return (0);
+	phi = (t_phi*)(arg);
+	while (1)
+	{
+		if (sem_wait(phi->check) && ft_error(ERROR_LOCK_SEM))
+			return ((void*)0);
+		if (ft_is_dead(phi))
+		{
+			phi->status = 0;
+			ft_display(phi, " died\n");
+			if (sem_post(phi->check) && ft_error(ERROR_UNLOCK_SEM))
+				return ((void*)0);
+			if (sem_post(phi->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
+				return ((void*)0);
+			return ((void*)0);
+		}
+		if (sem_post(phi->check) && ft_error(ERROR_UNLOCK_SEM))
+			return ((void*)0);
+		usleep(1000);
+	}
+	return ((void*)0);
+}
+
+int		ft_is_alive(void *arg)
+{
+	pthread_t	brain;
+	t_phi		*phi;
+
+	phi = (t_phi *)arg;
+
+	// Thread to check if philosopher is alive, equivalent to BRAIN
+	if (pthread_create(&brain, NULL, &ft_brain, phi))
+		exit(ft_error(ERROR_CREATE_THREAD));
+	pthread_detach(brain);
+
+	while (1)
+	{
+		ft_eat(phi);
+		ft_sleep(phi);
+		ft_think(phi);
+	}
+	exit(0);
 }

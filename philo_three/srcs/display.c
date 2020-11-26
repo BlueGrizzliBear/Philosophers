@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 16:53:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 11:56:40 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ int		ft_fill_msg_nb(char *msg, int nb)
 
 int		ft_display(t_phi *phi, char *str)
 {
-	struct timeval	now;
+	static struct timeval	now;
 	char	msg[64];
 	int		size;
 
-	gettimeofday(&now, NULL);
-	size = ft_fill_msg_nb(msg, ft_get_timestamp(phi->params->start, now));
-	size = ft_fill_msg_str(msg, phi->id, str, size);
 	if (sem_wait(phi->params->display))
 		return (ft_error(ERROR_LOCK_SEM));
+	gettimeofday(&now, NULL);
+	size = ft_fill_msg_nb(msg, get_timestamp(phi->params->start, now));
+	size = ft_fill_msg_str(msg, phi->id, str, size);
 	write(1, (void*)msg, size);
 	if (phi->status == 0)
 		return (-1);

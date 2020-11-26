@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 16:47:59 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 14:04:30 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int			ft_init_params(t_params *params, int val, int index)
 int			ft_init_semaphores(t_params *params)
 {
 	params->game = 1;
-	// sem_unlink("/game_status");
-	// params->game_status = sem_open("/game_status", O_CREAT, S_IRWXU, 1);
-	// if (params->game_status == SEM_FAILED)
-	// 	return (ft_error(ERROR_OPEN_SEM));
+	sem_unlink("/game_over");
+	params->game_over = sem_open("/game_over", O_CREAT, S_IRWXU, 0);
+	if (params->game_over == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM));
 	sem_unlink("/display");
 	params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
 	if (params->display == SEM_FAILED)
@@ -63,7 +63,5 @@ t_params	*ft_parse(char **argv)
 	}
 	if (ft_init_semaphores(params))
 		return (NULL);
-	// params->forks_nb = params->nb;
-	// params->order_nb = 0;
 	return (params);
 }

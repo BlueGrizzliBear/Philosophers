@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/24 11:55:21 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/25 16:31:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int		ft_display(t_phi *phi, char *str)
 	int				size;
 
 	gettimeofday(&now, NULL);
-	size = ft_fill_msg_nb(msg, ft_get_timestamp(phi->params->start, now));
+	size = ft_fill_msg_nb(msg, get_timestamp(phi->params->start, now));
 	size = ft_fill_msg_str(msg, phi->id, str, size);
 	if (sem_wait(phi->params->display))
 		return (ft_error(ERROR_LOCK_SEM));
