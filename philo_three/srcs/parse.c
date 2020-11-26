@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 16:52:27 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 17:53:01 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int			ft_init_semaphores(t_params *params)
 		if (params->has_eaten == SEM_FAILED)
 			return (ft_error(ERROR_OPEN_SEM));
 	}
+	else
+		params->has_eaten = NULL;
 	sem_unlink("/game_over");
 	params->game_over = sem_open("/game_over", O_CREAT, S_IRWXU, 0);
 	if (params->game_over == SEM_FAILED)
