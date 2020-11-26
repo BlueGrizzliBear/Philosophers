@@ -6,7 +6,7 @@
 #    By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/30 10:08:08 by cbussier          #+#    #+#              #
-#    Updated: 2020/11/26 15:38:17 by cbussier         ###   ########lyon.fr    #
+#    Updated: 2020/11/26 15:40:24 by cbussier         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,10 +37,10 @@ SRCS			=		$(addprefix $(SRC_PATH)/,$(SRCS_NAME))
 all				:		philo_one $(NAME)
 
 %.o				:		%.c $(HEADER)
-						gcc $(FLAGS) -c $< -o $(<:.c=.o)
+						gcc $(FLAGS) -c $< -o $(<:.c=.o) $(LIB_LINK)
 
 $(NAME)			:		$(OBJS)
-						gcc $(FLAGS) $(OBJS) -o $(NAME)
+						gcc $(FLAGS) $(LIB_LINK) $(OBJS) -o $(NAME)
 
 clean			:
 						rm -f $(OBJS)
