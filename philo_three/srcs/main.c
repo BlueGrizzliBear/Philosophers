@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 17:19:32 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 17:48:18 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ void	ft_wait(t_philo_three *p)
 
 	if (sem_wait(p->params->game_over))
 		exit(ft_error(ERROR_LOCK_SEM));
-	if (sem_post(p->params->game_over))
-		exit(ft_error(ERROR_UNLOCK_SEM));
 	// else if (p->params->game != 0)
 	// {
 		// p->params->game = 0;
@@ -76,6 +74,8 @@ void	ft_wait(t_philo_three *p)
 		kill(iter->pid, SIGINT);
 		iter = iter->next;
 	}
+	if (sem_post(p->params->game_over))
+		exit(ft_error(ERROR_UNLOCK_SEM));
 	// }
 }
 
