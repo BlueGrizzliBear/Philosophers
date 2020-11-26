@@ -6,7 +6,7 @@
 #    By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/30 10:08:08 by cbussier          #+#    #+#              #
-#    Updated: 2020/11/26 12:03:39 by cbussier         ###   ########lyon.fr    #
+#    Updated: 2020/11/26 14:58:01 by cbussier         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ NAME			=		philo_three
 
 FLAGS			=		-Wall -Wextra -Werror #-fsanitize=address
 
-LIB_LINK		=		-lpthread
+LIB_LINK		=		-I -lpthread
 
 SRCS			=		$(addprefix $(SRC_PATH)/,$(SRCS_NAME))
 
