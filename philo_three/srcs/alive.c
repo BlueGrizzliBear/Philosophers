@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 17:20:04 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 17:22:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,8 @@ int		ft_is_dead(t_phi *phi)
 void	*ft_brain(void *arg)
 {
 	t_phi	*phi;
-	int		end;
 
 	phi = (t_phi*)(arg);
-	end = 0;
 	while (1)
 	{
 		if (sem_wait(phi->check) && ft_error(ERROR_LOCK_SEM))
