@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 14:21:10 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 14:53:41 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ void	*ft_in_order(void *arg)
 
 void	ft_wait(t_philo_three *p)
 {
-	int		status;
 	t_phi	*iter;
 
-	status = 0;
 	if (sem_wait(p->params->game_over))
 		exit(ft_error(ERROR_LOCK_SEM));
 	p->params->game = 0;
