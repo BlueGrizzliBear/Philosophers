@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 10:29:35 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 11:09:08 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,49 @@
 int		ft_free_philosophers(t_phi *phi, t_params *params)
 {
 	t_phi	*iter;
+	t_phi	*iter_next;
 	int		nb;
 
+	iter = phi;
 	nb = params->nb;
-	while (nb > 0)
+	while (nb-- > 0)
 	{
-		if (sem_close(phi->order))
+		dprintf(2, "phi|%d|\n", iter->id_nb);
+		if (sem_close(iter->order))
 			return (ft_error(ERROR_CLOSING));
-		if (sem_unlink("/order"))
-			return (ft_error(ERROR_UNLINK));
-		if (sem_close(phi->check))
+		// if (sem_unlink("/order"))
+		// {
+		// 	dprintf(2, "1errno|%s|\n", strerror(errno));
+		// 	return (ft_error(ERROR_UNLINK));
+		// }
+		iter->order = NULL;
+		
+		if (sem_close(iter->check))
 			return (ft_error(ERROR_CLOSING));
-		if (sem_unlink("/check"))
-			return (ft_error(ERROR_UNLINK));
-		if (sem_close(phi->stop))
+		// if (sem_unlink("/check"))
+		// {
+		// 	dprintf(2, "2errno|%s|\n", strerror(errno));
+		// 	return (ft_error(ERROR_UNLINK));
+		// }
+		iter->check = NULL;
+		
+		if (sem_close(iter->stop))
 			return (ft_error(ERROR_CLOSING));
-		if (sem_unlink("/stop"))
-			return (ft_error(ERROR_UNLINK));
-		// free(phi->brain);
-		// phi->brain = NULL;
-		iter = phi->next;
-		free(phi);
-		phi = iter;
-		nb--;
+		// if (sem_unlink("/stop"))
+		// {
+		// 	dprintf(2, "3errno|%s|\n", strerror(errno));
+		// 	return (ft_error(ERROR_UNLINK));
+		// }
+		iter->stop = NULL;
+		
+		dprintf(2, "before free\n");
+
+		iter_next = iter->next;
+		free(iter);
+		iter = iter_next;
+		dprintf(2, "after free\n");
 	}
-	phi = NULL;
+	iter = NULL;
 	return (0);
 }
 
@@ -47,28 +65,29 @@ int		ft_free_semaphore(t_params *params)
 {
 	if (sem_close(params->has_eaten))
 		return (ft_error(ERROR_CLOSING));
-	if (sem_unlink("/has_eaten"))
-		return (ft_error(ERROR_UNLINK));
+	// if (sem_unlink("/has_eaten"))
+	// 	return (ft_error(ERROR_UNLINK));
+	params->has_eaten = NULL;
 	if (sem_close(params->game_over))
 		return (ft_error(ERROR_CLOSING));
-	if (sem_unlink("/game_over"))
-		return (ft_error(ERROR_UNLINK));
+	// if (sem_unlink("/game_over"))
+	// 	return (ft_error(ERROR_UNLINK));
+	params->game_over = NULL;
 	if (sem_close(params->display))
 		return (ft_error(ERROR_CLOSING));
-	if (sem_unlink("/display"))
-		return (ft_error(ERROR_UNLINK));
+	// if (sem_unlink("/display"))
+	// 	return (ft_error(ERROR_UNLINK));
+	params->display = NULL;
 	if (sem_close(params->forks))
 		return (ft_error(ERROR_CLOSING));
-	if (sem_unlink("/forks"))
-		return (ft_error(ERROR_UNLINK));
+	// if (sem_unlink("/forks"))
+	// 	return (ft_error(ERROR_UNLINK));
 	params->forks = NULL;
 	return (0);
 }
 
 int		ft_free(t_philo_three *p)
 {
-	// free(p->thread);
-	// p->thread = NULL;
 	ft_free_philosophers(p->phi, p->params);
 	if (ft_free_semaphore(p->params))
 		return (1);

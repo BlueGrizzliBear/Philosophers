@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 10:40:28 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 10:59:08 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,15 @@ void	*th_has_eaten(void *arg)
 void	ft_wait(t_philo_three *p)
 {
 	t_phi	*iter;
+	int		i;
 
 	if (sem_wait(p->params->game_over))
 		exit(ft_error(ERROR_LOCK_SEM));
 	p->params->game = 0;
 	iter = p->phi;
 	usleep(1500);
-	while (p->params->nb-- > 0)
+	i = p->params->nb;
+	while (i-- > 0)
 	{
 		kill(iter->pid, SIGKILL);
 		if (sem_post(iter->stop))
