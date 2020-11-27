@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 18:11:50 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 10:22:24 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ void	*th_has_eaten(void *arg)
 	{
 		if (sem_wait(p->params->has_eaten) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
+		dprintf(2, "intercepted signal has eaten\n");
 	}
+	// p->params->game = 0;
 	if (sem_post(p->params->has_eaten) && ft_error(ERROR_UNLOCK_SEM))
 		return ((void*)0);
 	if (sem_post(p->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
 		return ((void*)0);
-	p->params->game = 0;
 	return ((void*)0);
 }
 
@@ -62,23 +63,17 @@ void	ft_wait(t_philo_three *p)
 
 	if (sem_wait(p->params->game_over))
 		exit(ft_error(ERROR_LOCK_SEM));
-	// else if (p->params->game != 0)
-	// {
-		// p->params->game = 0;
-		// usleep(1000000);
+	p->params->game = 0;
 	iter = p->phi;
 	while (p->params->nb-- > 0)
 	{
-		if (p->params->game == 0 && sem_post(iter->check))
+		kill(iter->pid, SIGKILL);
+		if (sem_post(iter->stop))
 			exit(ft_error(ERROR_UNLOCK_SEM));
-		kill(iter->pid, SIGINT);
 		iter = iter->next;
 	}
-	p->params->game = 0;
-	usleep(1000000);
 	if (sem_post(p->params->game_over))
 		exit(ft_error(ERROR_UNLOCK_SEM));
-	// }
 }
 
 int		ft_launch(t_philo_three *p)

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 16:46:09 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 10:18:25 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct			s_phi
 	char				id[13];
 	sem_t				*order;
 	sem_t				*check;
+	sem_t				*stop;
 	int					status;
 	int					has_eaten;
 	struct timeval		last_meal;

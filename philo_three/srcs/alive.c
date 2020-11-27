@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 18:02:17 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 10:21:04 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,12 @@ void	ft_eat(t_phi *phi)
 	phi->has_eaten >= phi->params->must_eat)
 	{
 		// dprintf(2, "phi|%d| quiting here\n", phi->id_nb);
+		phi->status = 0;
 		if (sem_post(phi->params->has_eaten))
 			exit(ft_error(ERROR_UNLOCK_SEM));
-		exit(0);
+		dprintf(2, "philo|%d| willl stop\n", phi->id_nb);
+		if (sem_wait(phi->stop))
+			exit(ft_error(ERROR_LOCK_SEM));
 	}
 }
 
@@ -99,7 +102,7 @@ void	*ft_brain(void *arg)
 	t_phi	*phi;
 
 	phi = (t_phi*)(arg);
-	while (1)
+	while (phi->status == 1)
 	{
 		if (sem_wait(phi->check) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
@@ -117,6 +120,7 @@ void	*ft_brain(void *arg)
 			return ((void*)0);
 		usleep(1000);
 	}
+	dprintf(2, "brain|%d| exiting\n", phi->id_nb);
 	return ((void*)0);
 }
 
