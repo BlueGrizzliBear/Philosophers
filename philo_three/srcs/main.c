@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 11:24:52 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 11:45:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	*th_has_eaten(void *arg)
 		if (sem_wait(p->params->has_eaten) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
 	}
-	// p->params->game = 0;
 	if (sem_post(p->params->has_eaten) && ft_error(ERROR_UNLOCK_SEM))
 		return ((void*)0);
 	if (sem_post(p->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
@@ -65,12 +64,15 @@ void	ft_wait(t_philo_three *p)
 		exit(ft_error(ERROR_LOCK_SEM));
 	p->params->game = 0;
 	iter = p->phi;
-	usleep(1500);
 	i = p->params->nb;
 	while (i-- > 0)
 	{
 		kill(iter->pid, SIGKILL);
 		if (sem_post(iter->stop))
+			exit(ft_error(ERROR_UNLOCK_SEM));
+		if (sem_post(iter->order))
+			exit(ft_error(ERROR_UNLOCK_SEM));
+		if (sem_post(p->params->has_eaten))
 			exit(ft_error(ERROR_UNLOCK_SEM));
 		iter = iter->next;
 	}
@@ -131,5 +133,6 @@ int		main(int argc, char **argv)
 	ft_wait(p);
 	if (ft_free(p))
 		return (1);
+	dprintf(2, "exited\n");
 	return (0);
 }
