@@ -6,7 +6,7 @@
 #    By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/30 10:08:08 by cbussier          #+#    #+#              #
-#    Updated: 2020/11/27 10:24:55 by cbussier         ###   ########lyon.fr    #
+#    Updated: 2020/11/27 13:24:22 by cbussier         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS_NAME		=		main.c \
 						error.c \
 						init.c \
 						alive.c \
+						philosophers.c \
 						display.c \
 						free.c
 

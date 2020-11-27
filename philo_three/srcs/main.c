@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 12:36:27 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 13:20:09 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*th_in_order(void *arg)
 {
-	t_philo_three 	*p;
+	t_philo_three	*p;
 	t_phi			*iter;
 	int				order;
 
@@ -27,7 +27,6 @@ void	*th_in_order(void *arg)
 		{
 			if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
 				return ((void*)0);
-			dprintf(2, "authorized|%d|\n", order);
 			if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
 				return ((void*)0);
 			order = (order + 1) % p->params->nb;
@@ -39,7 +38,7 @@ void	*th_in_order(void *arg)
 
 void	*th_has_eaten(void *arg)
 {
-	t_philo_three 	*p;
+	t_philo_three	*p;
 	int				total;
 
 	p = (t_philo_three*)arg;
@@ -69,16 +68,13 @@ void	ft_wait(t_philo_three *p)
 	while (i-- > 0)
 	{
 		kill(iter->pid, SIGKILL);
-		if (sem_post(iter->stop))
-			exit(ft_error(ERROR_UNLOCK_SEM));
-		if (sem_post(iter->order_start))
-			exit(ft_error(ERROR_UNLOCK_SEM));
-		if (sem_post(iter->order_end))
-			exit(ft_error(ERROR_UNLOCK_SEM));
-		if (sem_post(p->params->has_eaten))
+		if (sem_post(iter->stop) || sem_post(iter->order_start) ||
+		sem_post(iter->order_end))
 			exit(ft_error(ERROR_UNLOCK_SEM));
 		iter = iter->next;
 	}
+	if (sem_post(p->params->has_eaten))
+		exit(ft_error(ERROR_UNLOCK_SEM));
 	if (sem_post(p->params->game_over))
 		exit(ft_error(ERROR_UNLOCK_SEM));
 	pthread_join(p->ordering, NULL);
@@ -88,23 +84,16 @@ void	ft_wait(t_philo_three *p)
 
 int		ft_launch(t_philo_three *p)
 {
-	// pthread_t	ordering;
-	// pthread_t	has_eaten;
-	t_phi		*iter;
-	int			counter;
-	
-	// Thread to insure the eating order
+	t_phi	*iter;
+	int		counter;
+
 	if (pthread_create(&p->ordering, NULL, &th_in_order, p))
 		return (ft_error(ERROR_CREATE_THREAD));
-	// pthread_detach(ordering);
-
 	if (p->params->must_eat != -1)
 	{
 		if (pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))
 			return (ft_error(ERROR_CREATE_THREAD));
-		// pthread_detach(has_eaten);
 	}
-
 	iter = p->phi;
 	counter = 0;
 	gettimeofday(&p->params->start, NULL);
@@ -132,10 +121,11 @@ int		main(int argc, char **argv)
 	if ((p = ft_init(params)) == NULL)
 		return (ft_error(ERROR_INIT_STRUCT));
 	if (ft_launch(p))
+	{
+		ft_free(p);
 		return (ft_error(ERROR_LAUNCH_PHI));
+	}
 	ft_wait(p);
-	if (ft_free(p))
-		return (1);
-	dprintf(2, "exited\n");
+	ft_free(p);
 	return (0);
 }

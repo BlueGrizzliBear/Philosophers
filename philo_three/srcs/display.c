@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 11:56:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 13:16:23 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int		ft_fill_msg_nb(char *msg, int nb)
 int		ft_display(t_phi *phi, char *str)
 {
 	static struct timeval	now;
-	char	msg[64];
-	int		size;
+	char					msg[64];
+	int						size;
 
 	if (sem_wait(phi->params->display))
 		return (ft_error(ERROR_LOCK_SEM));

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 12:35:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 13:28:19 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <semaphore.h>
 # include <signal.h>
 # include <fcntl.h>
-
-// # include <errno.h>
 
 # define ERROR_NB_ARG 0
 # define ERROR_ARG_VAL 1
@@ -49,9 +47,9 @@ typedef struct			s_params
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat;
-	sem_t				*has_eaten;
-	struct timeval		start;
 	int					game;
+	struct timeval		start;
+	sem_t				*has_eaten;
 	sem_t				*game_over;
 	sem_t				*display;
 	sem_t				*forks;
@@ -61,15 +59,15 @@ typedef struct			s_phi
 {
 	int					id_nb;
 	char				id[13];
+	int					status;
+	int					has_eaten;
+	struct timeval		last_meal;
+	pid_t				pid;
 	pthread_t			brain;
 	sem_t				*order_start;
 	sem_t				*order_end;
 	sem_t				*check;
 	sem_t				*stop;
-	int					status;
-	int					has_eaten;
-	struct timeval		last_meal;
-	pid_t				pid;
 	t_params			*params;
 	struct s_phi		*next;
 }						t_phi;
@@ -84,17 +82,25 @@ typedef struct			s_philo_three
 
 int						ft_error(int err);
 t_params				*ft_parse(char **argv);
-int						ft_atoi(const char *str);
-void					ft_putstr(char *str);
 t_philo_three			*ft_init(t_params *params);
-int						ft_eat_sleep_think(t_phi *phi);
-int						ft_display(t_phi *phi, char *str);
-int						get_timestamp(struct timeval s, struct timeval t);
-int						ft_free(t_philo_three *p);
-int						ft_is_dead(t_phi *phi);
-int						ft_is_over(t_phi *phi);
+
 int						ft_strlen(char *str);
 void					ft_itoa(char *id, int nb);
+int						ft_atoi(const char *str);
+void					ft_putstr(char *str);
+
 int						ft_is_alive(void *arg);
+int						get_timestamp(struct timeval s, struct timeval t);
+
+int						ft_display(t_phi *phi, char *str);
+int						ft_is_dead(t_phi *phi);
+int						ft_is_over(t_phi *phi);
+
+void					ft_eat(t_phi *phi);
+void					ft_sleep(t_phi *phi);
+void					ft_think(t_phi *phi);
+
+void					ft_free_params(t_params *params);
+void					ft_free(t_philo_three *p);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 17:56:26 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 13:13:56 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ int			ft_init_params(t_params *params, int val, int index)
 	return (0);
 }
 
-int			ft_init_semaphores(t_params *params)
+int			ft_create_params_sem(t_params *params)
 {
-	params->game = 1;
 	sem_unlink("/has_eaten");
 	params->has_eaten = sem_open("/has_eaten", O_CREAT, S_IRWXU, 0);
 	if (params->has_eaten == SEM_FAILED)
@@ -55,8 +54,9 @@ t_params	*ft_parse(char **argv)
 	int			i;
 	int			val;
 
+	params = NULL;
 	if (!(params = malloc(sizeof(t_params))))
-		return (ft_error(ERROR_STRUCT_CREAT) == 3 ? NULL : NULL);
+		exit(ft_error(ERROR_STRUCT_CREAT));
 	params->must_eat = -1;
 	i = 0;
 	while (argv[++i])
@@ -65,7 +65,8 @@ t_params	*ft_parse(char **argv)
 			return (NULL);
 		ft_init_params(params, val, i);
 	}
-	if (ft_init_semaphores(params))
+	params->game = 1;
+	if (ft_create_params_sem(params))
 		return (NULL);
 	return (params);
 }
