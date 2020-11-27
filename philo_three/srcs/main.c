@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 10:22:24 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 10:36:38 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	*th_in_order(void *arg)
 		}
 		iter = iter->next;
 	}
+	dprintf(2, "exiting th_in_order\n");
 	return ((void*)0);
 }
 
@@ -47,13 +48,13 @@ void	*th_has_eaten(void *arg)
 	{
 		if (sem_wait(p->params->has_eaten) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
-		dprintf(2, "intercepted signal has eaten\n");
 	}
 	// p->params->game = 0;
 	if (sem_post(p->params->has_eaten) && ft_error(ERROR_UNLOCK_SEM))
 		return ((void*)0);
 	if (sem_post(p->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
 		return ((void*)0);
+	dprintf(2, "exiting th_has_eaten\n");
 	return ((void*)0);
 }
 
