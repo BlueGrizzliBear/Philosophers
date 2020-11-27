@@ -6,11 +6,22 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 13:26:57 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 14:25:37 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
+
+void	ft_standby(int time)
+{
+	struct timeval now;
+	struct timeval standby_start;
+
+	gettimeofday(&standby_start, NULL);
+	gettimeofday(&now, NULL);
+	while (get_timestamp(standby_start, now) < time)
+		gettimeofday(&now, NULL);
+}
 
 void	lock_forks(t_phi *phi)
 {
@@ -44,7 +55,8 @@ void	ft_eat(t_phi *phi)
 	gettimeofday(&phi->last_meal, NULL);
 	if (sem_post(phi->check))
 		exit(ft_error(ERROR_UNLOCK_SEM));
-	usleep(1000 * phi->params->time_to_eat);
+	// usleep(1000 * phi->params->time_to_eat);
+	ft_standby(phi->params->time_to_eat);
 	++phi->has_eaten;
 	unlock_forks(phi);
 	if (phi->params->must_eat != -1 &&
@@ -63,7 +75,8 @@ void	ft_sleep(t_phi *phi)
 {
 	if (ft_display(phi, " is sleeping\n") > 0)
 		exit(ft_error(ERROR_DISPLAY));
-	usleep(1000 * phi->params->time_to_sleep);
+	// usleep(1000 * phi->params->time_to_sleep);
+	ft_standby(phi->params->time_to_sleep);
 }
 
 void	ft_think(t_phi *phi)
