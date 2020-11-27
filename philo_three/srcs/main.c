@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:19:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 14:28:48 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	*th_in_order(void *arg)
 	// order = 0;
 	while (p->params->game == 1)
 	{
-		dprintf(2, "|%d| ordering to eat\n", iter->id_nb);
 		if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
 			return ((void*)0);
 		if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
