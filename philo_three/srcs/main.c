@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 11:45:02 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 12:03:33 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	*th_in_order(void *arg)
 		{
 			if (sem_post(iter->order) && ft_error(ERROR_UNLOCK_SEM))
 				return ((void*)0);
+			dprintf(2, "authorized|%d|\n", order);
 			if (sem_wait(iter->order) && ft_error(ERROR_LOCK_SEM))
 				return ((void*)0);
 			order = (order + 1) % p->params->nb;
