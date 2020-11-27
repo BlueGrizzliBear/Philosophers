@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 11:22:27 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 12:35:05 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ typedef struct			s_phi
 	int					id_nb;
 	char				id[13];
 	pthread_t			brain;
-	sem_t				*order;
+	sem_t				*order_start;
+	sem_t				*order_end;
 	sem_t				*check;
 	sem_t				*stop;
 	int					status;

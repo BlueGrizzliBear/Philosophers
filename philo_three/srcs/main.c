@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 12:17:47 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 12:36:27 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	*th_in_order(void *arg)
 	{
 		if (order == iter->id_nb)
 		{
-			if (sem_post(iter->order) && ft_error(ERROR_UNLOCK_SEM))
+			if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
 				return ((void*)0);
 			dprintf(2, "authorized|%d|\n", order);
-			if (sem_wait(iter->order) && ft_error(ERROR_LOCK_SEM))
+			if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
 				return ((void*)0);
 			order = (order + 1) % p->params->nb;
 		}
@@ -71,7 +71,9 @@ void	ft_wait(t_philo_three *p)
 		kill(iter->pid, SIGKILL);
 		if (sem_post(iter->stop))
 			exit(ft_error(ERROR_UNLOCK_SEM));
-		if (sem_post(iter->order))
+		if (sem_post(iter->order_start))
+			exit(ft_error(ERROR_UNLOCK_SEM));
+		if (sem_post(iter->order_end))
 			exit(ft_error(ERROR_UNLOCK_SEM));
 		if (sem_post(p->params->has_eaten))
 			exit(ft_error(ERROR_UNLOCK_SEM));

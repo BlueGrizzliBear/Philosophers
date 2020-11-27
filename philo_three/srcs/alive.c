@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 11:26:02 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 12:35:15 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_standby(int time)
 
 void	lock_forks(t_phi *phi)
 {
-	if (sem_wait(phi->order))
+	if (sem_wait(phi->order_start))
 		exit(ft_error(ERROR_LOCK_SEM));
 	if (sem_wait(phi->params->forks))
 		exit(ft_error(ERROR_LOCK_SEM));
@@ -29,7 +29,7 @@ void	lock_forks(t_phi *phi)
 		exit(ft_error(ERROR_LOCK_SEM));
 	if (ft_display(phi, " has taken a fork\n"))
 		exit(ft_error(ERROR_DISPLAY));
-	if (sem_post(phi->order))
+	if (sem_post(phi->order_end))
 		exit(ft_error(ERROR_UNLOCK_SEM));
 }
 
