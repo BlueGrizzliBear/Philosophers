@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 15:01:22 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/16 15:19:20 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	ft_mem_error(int err)
 		ft_putstr("Error: structure could not be created\n");
 	if (err == ERROR_OPEN_SEM)
 		ft_putstr("Error: could not open semaphore\n");
-	if (err == ERROR_CREATE_FORK)
-		ft_putstr("Error: could not create fork\n");
+	if (err == ERROR_ALLOC_THREAD)
+		ft_putstr("Error: could not allocate memory to thread\n");
 	if (err == ERROR_CREATE_THREAD)
 		ft_putstr("Error: could not create thread\n");
 }
@@ -44,8 +44,8 @@ void	ft_program_error(int err)
 		ft_putstr("Error: could not unlock semaphore\n");
 	if (err == ERROR_MEM_ALLOC)
 		ft_putstr("Error: could not allocate memory\n");
-	// if (err == ERROR_DISPLAY)
-	// 	ft_putstr("Error: could not display message\n");
+	if (err == ERROR_DISPLAY)
+		ft_putstr("Error: could not display message\n");
 	if (err == ERROR_STANDBY)
 		ft_putstr("Error: an error occured during ft_standby()\n");
 	if (err == ERROR_CLOSING)

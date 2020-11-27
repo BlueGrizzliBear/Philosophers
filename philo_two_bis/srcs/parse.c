@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:38:09 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/26 16:32:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,25 @@ int			ft_init_params(t_params *params, int val, int index)
 	return (0);
 }
 
-int			ft_create_params_sem(t_params *params)
+t_params	*ft_create_sem(t_params *params)
 {
-	sem_unlink("/has_eaten");
-	params->has_eaten = sem_open("/has_eaten", O_CREAT, S_IRWXU, 0);
-	if (params->has_eaten == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM));
-	sem_unlink("/game_over");
-	params->game_over = sem_open("/game_over", O_CREAT, S_IRWXU, 0);
-	if (params->game_over == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM));
+	sem_unlink("/game_status");
+	params->game_status = sem_open("/game_status", O_CREAT, S_IRWXU, 1);
+	if (params->game_status == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
 	sem_unlink("/display");
 	params->display = sem_open("/display", O_CREAT, S_IRWXU, 1);
 	if (params->display == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM));
+		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
 	sem_unlink("/forks");
 	params->forks = sem_open("/forks", O_CREAT, S_IRWXU, params->nb);
 	if (params->forks == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM));
-	return (0);
+		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
+	sem_unlink("/order");
+	params->order = sem_open("/order", O_CREAT, S_IRWXU, 1);
+	if (params->order == SEM_FAILED)
+		return (ft_error(ERROR_OPEN_SEM) ? NULL : NULL);
+	return (params);
 }
 
 t_params	*ft_parse(char **argv)
@@ -54,9 +54,8 @@ t_params	*ft_parse(char **argv)
 	int			i;
 	int			val;
 
-	params = NULL;
 	if (!(params = malloc(sizeof(t_params))))
-		exit(ft_error(ERROR_STRUCT_CREAT));
+		return (ft_error(ERROR_STRUCT_CREAT) == 3 ? NULL : NULL);
 	params->must_eat = -1;
 	i = 0;
 	while (argv[++i])
@@ -66,7 +65,9 @@ t_params	*ft_parse(char **argv)
 		ft_init_params(params, val, i);
 	}
 	params->game = 1;
-	if (ft_create_params_sem(params))
+	if (!(params = ft_create_sem(params)))
 		return (NULL);
+	params->forks_nb = params->nb;
+	params->order_nb = 0;
 	return (params);
 }

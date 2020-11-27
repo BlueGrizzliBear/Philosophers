@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 13:25:32 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 14:36:05 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,19 @@ void	*th_brain(void *arg)
 		usleep(1000);
 	}
 	return ((void*)0);
+}
+
+void	ft_sleep(t_phi *phi)
+{
+	if (ft_display(phi, " is sleeping\n") > 0)
+		exit(ft_error(ERROR_DISPLAY));
+	ft_standby(phi->params->time_to_sleep);
+}
+
+void	ft_think(t_phi *phi)
+{
+	if (ft_display(phi, " is thinking\n") > 0)
+		exit(ft_error(ERROR_DISPLAY));
 }
 
 int		ft_is_alive(void *arg)
