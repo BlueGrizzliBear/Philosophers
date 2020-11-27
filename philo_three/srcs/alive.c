@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:36:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 15:52:16 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*th_brain(void *arg)
 		if (phi->has_eaten != phi->params->must_eat && ft_is_dead(phi))
 		{
 			phi->status = 0;
-			ft_display(phi, " died\n");
+			ft_display(phi, " died\n", 1);
 			if (sem_post(phi->check) && ft_error(ERROR_UNLOCK_SEM))
 				return ((void*)0);
 			if (sem_post(phi->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
@@ -50,14 +50,14 @@ void	*th_brain(void *arg)
 
 void	ft_sleep(t_phi *phi)
 {
-	if (ft_display(phi, " is sleeping\n") > 0)
+	if (ft_display(phi, " is sleeping\n", 0))
 		exit(ft_error(ERROR_DISPLAY));
 	ft_standby(phi->params->time_to_sleep);
 }
 
 void	ft_think(t_phi *phi)
 {
-	if (ft_display(phi, " is thinking\n") > 0)
+	if (ft_display(phi, " is thinking\n", 0))
 		exit(ft_error(ERROR_DISPLAY));
 }
 

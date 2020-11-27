@@ -94,7 +94,7 @@ int						get_timestamp(struct timeval s, struct timeval t);
 int						ft_is_dead(t_phi *phi);
 int						ft_is_over(t_phi *phi);
 
-int						ft_display(t_phi *phi, char *str);
+int						ft_display(t_phi *phi, char *str, int last);
 int						ft_eat(t_phi *phi);
 // int						ft_standby(t_phi *phi, int time);
 int						ft_standby(int time);

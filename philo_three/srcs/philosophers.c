@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:36:10 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 15:51:58 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	lock_forks(t_phi *phi)
 		exit(ft_error(ERROR_LOCK_SEM));
 	if (sem_wait(phi->params->forks))
 		exit(ft_error(ERROR_LOCK_SEM));
-	if (ft_display(phi, " has taken a fork\n"))
+	if (ft_display(phi, " has taken a fork\n", 0))
 		exit(ft_error(ERROR_DISPLAY));
 	if (sem_wait(phi->params->forks))
 		exit(ft_error(ERROR_LOCK_SEM));
-	if (ft_display(phi, " has taken a fork\n"))
+	if (ft_display(phi, " has taken a fork\n", 0))
 		exit(ft_error(ERROR_DISPLAY));
 	if (sem_post(phi->order_end))
 		exit(ft_error(ERROR_UNLOCK_SEM));
@@ -50,7 +50,7 @@ void	ft_eat(t_phi *phi)
 	lock_forks(phi);
 	if (sem_wait(phi->check))
 		exit(ft_error(ERROR_LOCK_SEM));
-	if (ft_display(phi, " is eating\n") > 0)
+	if (ft_display(phi, " is eating\n", 0))
 		exit(ft_error(ERROR_DISPLAY));
 	gettimeofday(&phi->last_meal, NULL);
 	if (sem_post(phi->check))

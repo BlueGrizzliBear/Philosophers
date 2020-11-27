@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:36:24 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 15:50:50 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int						get_timestamp(struct timeval s, struct timeval t);
 int						ft_is_dead(t_phi *phi);
 int						ft_is_over(t_phi *phi);
 
-int						ft_display(t_phi *phi, char *str);
+int						ft_display(t_phi *phi, char *str, int last);
 void					ft_eat(t_phi *phi);
 void					ft_sleep(t_phi *phi);
 void					ft_think(t_phi *phi);

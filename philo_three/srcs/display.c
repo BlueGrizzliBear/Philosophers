@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 13:16:23 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 15:50:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		ft_fill_msg_nb(char *msg, int nb)
 	return (cpy);
 }
 
-int		ft_display(t_phi *phi, char *str)
+int		ft_display(t_phi *phi, char *str, int last)
 {
 	static struct timeval	now;
 	char					msg[64];
@@ -61,7 +61,7 @@ int		ft_display(t_phi *phi, char *str)
 	size = ft_fill_msg_nb(msg, get_timestamp(phi->params->start, now));
 	size = ft_fill_msg_str(msg, phi->id, str, size);
 	write(1, (void*)msg, size);
-	if (phi->status == 0)
+	if (last == 1)
 		return (-1);
 	if (sem_post(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_SEM));
