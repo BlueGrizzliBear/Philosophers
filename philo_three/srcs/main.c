@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 10:36:38 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 10:39:11 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,19 @@ int		ft_launch(t_philo_three *p)
 	
 	// Thread to insure the eating order
 	if (pthread_create(&ordering, NULL, &th_in_order, p))
+	{
+		dprintf(2, "here\n");
 		return (ft_error(ERROR_CREATE_THREAD));
+	}
 	pthread_detach(ordering);
 
 	if (p->params->must_eat != -1)
 	{
 		if (pthread_create(&has_eaten, NULL, &th_has_eaten, p))
+		{
+			dprintf(2, "here2\n");
 			return (ft_error(ERROR_CREATE_THREAD));
+		}
 		pthread_detach(has_eaten);
 	}
 
