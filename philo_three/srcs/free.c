@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 11:09:08 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 11:21:16 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int		ft_free_philosophers(t_phi *phi, t_params *params)
 	nb = params->nb;
 	while (nb-- > 0)
 	{
-		dprintf(2, "phi|%d|\n", iter->id_nb);
 		if (sem_close(iter->order))
 			return (ft_error(ERROR_CLOSING));
 		// if (sem_unlink("/order"))
@@ -49,13 +48,9 @@ int		ft_free_philosophers(t_phi *phi, t_params *params)
 		// 	return (ft_error(ERROR_UNLINK));
 		// }
 		iter->stop = NULL;
-		
-		dprintf(2, "before free\n");
-
 		iter_next = iter->next;
 		free(iter);
 		iter = iter_next;
-		dprintf(2, "after free\n");
 	}
 	iter = NULL;
 	return (0);

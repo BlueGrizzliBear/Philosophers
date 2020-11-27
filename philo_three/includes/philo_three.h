@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 11:01:09 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 11:22:27 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include <fcntl.h>
 
-# include <errno.h>
+// # include <errno.h>
 
 # define ERROR_NB_ARG 0
 # define ERROR_ARG_VAL 1
@@ -61,6 +61,7 @@ typedef struct			s_phi
 {
 	int					id_nb;
 	char				id[13];
+	pthread_t			brain;
 	sem_t				*order;
 	sem_t				*check;
 	sem_t				*stop;
@@ -74,6 +75,8 @@ typedef struct			s_phi
 
 typedef struct			s_philo_three
 {
+	pthread_t			ordering;
+	pthread_t			has_eaten;
 	t_params			*params;
 	t_phi				*phi;
 }						t_philo_three;

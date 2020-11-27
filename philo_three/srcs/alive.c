@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 10:21:04 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 11:26:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,10 @@
 void	ft_standby(int time)
 {
 	usleep(1000 * time);
-	// struct timeval now;
-	// struct timeval standby_start;
-
-	// gettimeofday(&standby_start, NULL);
-	// gettimeofday(&now, NULL);
-	// while (get_timestamp(standby_start, now) < time)
-	// 	gettimeofday(&now, NULL);
 }
 
 void	lock_forks(t_phi *phi)
 {
-	// wait for order given
 	if (sem_wait(phi->order))
 		exit(ft_error(ERROR_LOCK_SEM));
 	if (sem_wait(phi->params->forks))
@@ -37,7 +29,6 @@ void	lock_forks(t_phi *phi)
 		exit(ft_error(ERROR_LOCK_SEM));
 	if (ft_display(phi, " has taken a fork\n"))
 		exit(ft_error(ERROR_DISPLAY));
-	// give back order
 	if (sem_post(phi->order))
 		exit(ft_error(ERROR_UNLOCK_SEM));
 }
@@ -64,11 +55,10 @@ void	ft_eat(t_phi *phi)
 	if (phi->params->must_eat != -1 &&
 	phi->has_eaten >= phi->params->must_eat)
 	{
-		// dprintf(2, "phi|%d| quiting here\n", phi->id_nb);
 		phi->status = 0;
+		pthread_join(phi->brain, NULL);
 		if (sem_post(phi->params->has_eaten))
 			exit(ft_error(ERROR_UNLOCK_SEM));
-		dprintf(2, "philo|%d| willl stop\n", phi->id_nb);
 		if (sem_wait(phi->stop))
 			exit(ft_error(ERROR_LOCK_SEM));
 	}
@@ -97,7 +87,7 @@ int		ft_is_dead(t_phi *phi)
 	return (0);
 }
 
-void	*ft_brain(void *arg)
+void	*th_brain(void *arg)
 {
 	t_phi	*phi;
 
@@ -120,22 +110,16 @@ void	*ft_brain(void *arg)
 			return ((void*)0);
 		usleep(1000);
 	}
-	dprintf(2, "brain|%d| exiting\n", phi->id_nb);
 	return ((void*)0);
 }
 
 int		ft_is_alive(void *arg)
 {
-	pthread_t	brain;
 	t_phi		*phi;
 
 	phi = (t_phi *)arg;
-
-	// Thread to check if philosopher is alive, equivalent to BRAIN
-	if (pthread_create(&brain, NULL, &ft_brain, phi))
+	if (pthread_create(&phi->brain, NULL, &th_brain, phi))
 		exit(ft_error(ERROR_CREATE_THREAD));
-	pthread_detach(brain);
-
 	while (1)
 	{
 		ft_eat(phi);

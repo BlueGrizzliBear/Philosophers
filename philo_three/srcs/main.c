@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 10:59:08 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 11:24:52 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	*th_in_order(void *arg)
 		}
 		iter = iter->next;
 	}
-	dprintf(2, "exiting th_in_order\n");
 	return ((void*)0);
 }
 
@@ -54,7 +53,6 @@ void	*th_has_eaten(void *arg)
 		return ((void*)0);
 	if (sem_post(p->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
 		return ((void*)0);
-	dprintf(2, "exiting th_has_eaten\n");
 	return ((void*)0);
 }
 
@@ -78,25 +76,28 @@ void	ft_wait(t_philo_three *p)
 	}
 	if (sem_post(p->params->game_over))
 		exit(ft_error(ERROR_UNLOCK_SEM));
+	pthread_join(p->ordering, NULL);
+	if (p->params->must_eat != -1)
+		pthread_join(p->has_eaten, NULL);
 }
 
 int		ft_launch(t_philo_three *p)
 {
-	pthread_t	ordering;
-	pthread_t	has_eaten;
+	// pthread_t	ordering;
+	// pthread_t	has_eaten;
 	t_phi		*iter;
 	int			counter;
 	
 	// Thread to insure the eating order
-	if (pthread_create(&ordering, NULL, &th_in_order, p))
+	if (pthread_create(&p->ordering, NULL, &th_in_order, p))
 		return (ft_error(ERROR_CREATE_THREAD));
-	pthread_detach(ordering);
+	// pthread_detach(ordering);
 
 	if (p->params->must_eat != -1)
 	{
-		if (pthread_create(&has_eaten, NULL, &th_has_eaten, p))
+		if (pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))
 			return (ft_error(ERROR_CREATE_THREAD));
-		pthread_detach(has_eaten);
+		// pthread_detach(has_eaten);
 	}
 
 	iter = p->phi;
