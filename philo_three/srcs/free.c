@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 17:56:32 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 10:29:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ int		ft_free_philosophers(t_phi *phi, t_params *params)
 		if (sem_close(phi->check))
 			return (ft_error(ERROR_CLOSING));
 		if (sem_unlink("/check"))
+			return (ft_error(ERROR_UNLINK));
+		if (sem_close(phi->stop))
+			return (ft_error(ERROR_CLOSING));
+		if (sem_unlink("/stop"))
 			return (ft_error(ERROR_UNLINK));
 		// free(phi->brain);
 		// phi->brain = NULL;
