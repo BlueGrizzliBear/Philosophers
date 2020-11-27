@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:09:48 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/27 14:12:36 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	*th_in_order(void *arg)
 {
 	t_philo_three	*p;
 	t_phi			*iter;
-	int				order;
+	// int				order;
 
 	p = (t_philo_three*)(arg);
 	iter = p->phi;
-	order = 0;
+	// order = 0;
 	while (p->params->game == 1)
 	{
 		if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
