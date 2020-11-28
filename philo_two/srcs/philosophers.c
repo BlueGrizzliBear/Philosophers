@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 17:24:50 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 19:15:22 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int		ft_eat(t_phi *phi)
 	if (phi->params->must_eat != -1 &&
 	phi->has_eaten >= phi->params->must_eat)
 	{
+		dprintf(2, "phi|%d| finished diner\n", phi->id_nb);
 		if (sem_post(phi->params->has_eaten))
 			return (ft_error(ERROR_UNLOCK_SEM));
 		return (-1);
