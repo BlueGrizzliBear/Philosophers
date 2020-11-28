@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 14:51:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 15:03:04 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	*th_is_alive(void *arg)
 	t_phi		*phi;
 
 	phi = (t_phi *)arg;
-	if (pthread_create(&phi->brain, NULL, &th_brain, phi))
+	if (pthread_create(phi->brain, NULL, &th_brain, phi))
 	{
 		ft_error(ERROR_CREATE_THREAD);
 		return ((void*)0);
@@ -86,7 +86,7 @@ void	*th_is_alive(void *arg)
 	phi->status = 0;
 	phi->params->game = 0;
 	dprintf(2, "before\n");
-	if (pthread_join(phi->brain, NULL))
+	if (pthread_join(*phi->brain, NULL))
 		dprintf(2, "|%s|\n", strerror(errno));
 	dprintf(2, "after\n");
 	return ((void*)0);

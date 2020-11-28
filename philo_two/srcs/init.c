@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 11:10:35 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 15:02:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ t_phi		*ft_init_phi(t_philo_two *p, int inv_id, t_phi *addr)
 		return (NULL);
 	phi->status = 1;
 	phi->has_eaten = 0;
+	if (!(phi->brain = malloc(sizeof(pthread_t))))
+	{
+		ft_error(ERROR_MEM_ALLOC);
+		return (NULL);
+	}
 	phi->params = p->params;
 	if (inv_id != 1)
 		phi->next = ft_init_phi(p, inv_id - 1, addr);
