@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 11:10:12 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 12:13:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		lock_forks(t_phi *phi)
 		return (ft_error(ERROR_LOCK_SEM));
 	if (sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
+	dprintf(2, "will display fork\n");
 	if (ft_display(phi, " has taken a fork\n", 0))
 		return (-1);
 	if (sem_wait(phi->params->forks))
