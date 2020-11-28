@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 14:49:22 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 14:50:37 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ void	*th_is_alive(void *arg)
 	}
 	phi->status = 0;
 	phi->params->game = 0;
-	dprintf(2, "here\n");
+	dprintf(2, "before\n");
 	pthread_join(phi->brain, NULL);
+	dprintf(2, "after\n");
 	return ((void*)0);
 }
