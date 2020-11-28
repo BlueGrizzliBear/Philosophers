@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 15:09:46 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 16:48:40 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		ft_standby(int time)
 
 int		lock_forks(t_phi *phi)
 {
-	// dprintf(2, "                                        phi|%d| awaiting order\n", phi->id_nb);
 	if (sem_wait(phi->order_start))
 		return (ft_error(ERROR_LOCK_SEM));
 	if (sem_wait(phi->params->forks))
@@ -37,7 +36,6 @@ int		lock_forks(t_phi *phi)
 		return (ft_error(ERROR_LOCK_SEM));
 	if (ft_display(phi, " has taken a fork\n", 0))
 		return (-1);
-	// dprintf(2, "                                        finished phi|%d| awaiting order\n", phi->id_nb);
 	if (sem_post(phi->order_end))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	return (0);
@@ -69,14 +67,9 @@ int		ft_eat(t_phi *phi)
 	if (phi->params->must_eat != -1 &&
 	phi->has_eaten >= phi->params->must_eat)
 	{
-		// dprintf(2, "not here pls \n");
-		// phi->status = 0;
-		// pthread_join(*phi->brain, NULL);
 		if (sem_post(phi->params->has_eaten))
 			return (ft_error(ERROR_UNLOCK_SEM));
 		return (-1);
-		// if (sem_wait(phi->stop))
-		// 	return (ft_error(ERROR_LOCK_SEM));
 	}
 	return (0);
 }
