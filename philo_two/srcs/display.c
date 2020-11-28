@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 15:49:12 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 11:42:11 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ int		ft_display(t_phi *phi, char *str, int last)
 	char					msg[64];
 	int						size;
 
+	gettimeofday(&now, NULL);
+	size = ft_fill_msg_nb(msg, get_timestamp(phi->params->start, now));
+	size = ft_fill_msg_str(msg, phi->id, str, size);
 	if (sem_wait(phi->params->display))
 		return (ft_error(ERROR_LOCK_SEM));
 	if (phi->params->game == 0)
@@ -63,9 +66,6 @@ int		ft_display(t_phi *phi, char *str, int last)
 			return (ft_error(ERROR_UNLOCK_SEM));
 		return (-1);
 	}
-	gettimeofday(&now, NULL);
-	size = ft_fill_msg_nb(msg, get_timestamp(phi->params->start, now));
-	size = ft_fill_msg_str(msg, phi->id, str, size);
 	write(1, (void*)msg, size);
 	if (last == 1)
 		return (-1);
