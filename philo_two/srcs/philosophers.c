@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 16:48:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 17:24:50 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int		ft_eat(t_phi *phi)
 		return (-1);
 	if (sem_wait(phi->check))
 		return (ft_error(ERROR_LOCK_SEM));
+	gettimeofday(&phi->last_meal, NULL);
 	if (ft_display(phi, " is eating\n", 0))
 		return (unlock_forks(phi) > 0 ? 1 : -1);
-	gettimeofday(&phi->last_meal, NULL);
 	if (sem_post(phi->check))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	if (ft_standby(phi->params->time_to_eat))
