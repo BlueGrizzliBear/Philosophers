@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 15:04:44 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 15:08:22 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int		ft_eat(t_phi *phi)
 	if (phi->params->must_eat != -1 &&
 	phi->has_eaten >= phi->params->must_eat)
 	{
-		dprintf(2, "not here pls \n");
-		phi->status = 0;
-		pthread_join(*phi->brain, NULL);
+		// dprintf(2, "not here pls \n");
+		// phi->status = 0;
+		// pthread_join(*phi->brain, NULL);
 		if (sem_post(phi->params->has_eaten))
 			return (ft_error(ERROR_UNLOCK_SEM));
-		if (sem_wait(phi->stop))
-			return (ft_error(ERROR_LOCK_SEM));
+		// if (sem_wait(phi->stop))
+		// 	return (ft_error(ERROR_LOCK_SEM));
 	}
 	return (0);
 }

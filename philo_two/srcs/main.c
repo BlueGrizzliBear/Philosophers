@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 14:41:56 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 15:08:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_wait(t_philo_two *p)
 	while (i-- > 0)
 	{
 		if (sem_post(iter->params->display) || sem_post(iter->params->forks) ||
-		sem_post(iter->params->forks) || sem_post(iter->stop) ||
+		sem_post(iter->params->forks) /*|| sem_post(iter->stop)*/ ||
 		sem_post(iter->order_start) || sem_post(iter->order_end))
 			exit(ft_error(ERROR_UNLOCK_SEM));
 		pthread_join(iter->entity, NULL);
