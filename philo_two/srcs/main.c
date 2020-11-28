@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 12:00:57 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 12:04:57 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	*th_in_order(void *arg)
 			return ((void*)0);
 		if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
+		dprintf(2, "going next\n");
 		iter = iter->next;
 	}
 	return ((void*)0);
