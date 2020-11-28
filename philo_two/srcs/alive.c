@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 15:49:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 11:05:42 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,15 @@ void	*th_is_alive(void *arg)
 	while (1)
 	{
 		if (ft_eat(phi))
-			return ((void*)0);
+			break;
+			// return ((void*)0);
 		if (ft_sleep(phi))
-			return ((void*)0);
+			break;
+			// return ((void*)0);
 		if (ft_think(phi))
-			return ((void*)0);
+			break;
+			// return ((void*)0);
 	}
+	pthread_join(phi->brain, NULL);
 	return ((void*)0);
 }

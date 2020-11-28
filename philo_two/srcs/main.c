@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 11:03:00 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 11:05:33 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_wait(t_philo_two *p)
 		sem_post(iter->order_end))
 			exit(ft_error(ERROR_UNLOCK_SEM));
 		pthread_join(iter->entity, NULL);
-		dprintf(2, "Joined thread|%d|\n", iter->id_nb);
+		// dprintf(2, "Joined thread|%d|\n", iter->id_nb);
 		iter = iter->next;
 	}
 	if (sem_post(p->params->has_eaten))
