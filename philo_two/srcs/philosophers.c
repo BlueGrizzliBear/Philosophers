@@ -6,13 +6,12 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 15:49:52 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 11:10:12 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_two.h"
 
-// int		ft_standby(t_phi *phi, int time)
 int		ft_standby(int time)
 {
 	struct timeval now;
@@ -21,11 +20,7 @@ int		ft_standby(int time)
 	gettimeofday(&standby_start, NULL);
 	gettimeofday(&now, NULL);
 	while (get_timestamp(standby_start, now) < time)
-	{
-		// if (phi->params->game == 0)
-		// 	return (-1);
 		gettimeofday(&now, NULL);
-	}
 	return (0);
 }
 
@@ -37,12 +32,10 @@ int		lock_forks(t_phi *phi)
 		return (ft_error(ERROR_LOCK_SEM));
 	if (ft_display(phi, " has taken a fork\n", 0))
 		return (-1);
-		// return (ft_error(ERROR_DISPLAY));
 	if (sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
 	if (ft_display(phi, " has taken a fork\n", 0))
 		return (-1);
-		// return (ft_error(ERROR_DISPLAY));
 	if (sem_post(phi->order_end))
 		return (ft_error(ERROR_UNLOCK_SEM));
 	return (0);

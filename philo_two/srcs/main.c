@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 11:05:33 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 11:15:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	*th_in_order(void *arg)
 {
 	t_philo_two	*p;
-	t_phi			*iter;
+	t_phi		*iter;
 
 	p = (t_philo_two*)(arg);
 	iter = p->phi;
@@ -33,7 +33,7 @@ void	*th_in_order(void *arg)
 void	*th_has_eaten(void *arg)
 {
 	t_philo_two	*p;
-	int				total;
+	int			total;
 
 	p = (t_philo_two*)arg;
 	total = 0;
@@ -61,20 +61,11 @@ void	ft_wait(t_philo_two *p)
 	i = p->params->nb;
 	while (i-- > 0)
 	{
-		// dprintf(2, "sem_post display\n");
-		if (sem_post(iter->params->display))
-			exit(ft_error(ERROR_UNLOCK_SEM));
-		if (sem_post(iter->params->forks))
-			exit(ft_error(ERROR_UNLOCK_SEM));
-		if (sem_post(iter->params->forks))
-			exit(ft_error(ERROR_UNLOCK_SEM));
-		// kill(iter->pid, SIGKILL);
-		// dprintf(2, "sem_post stop start end\n");
-		if (sem_post(iter->stop) || sem_post(iter->order_start) ||
-		sem_post(iter->order_end))
+		if (sem_post(iter->params->display) || sem_post(iter->params->forks) ||
+		sem_post(iter->params->forks) || sem_post(iter->stop) ||
+		sem_post(iter->order_start) || sem_post(iter->order_end))
 			exit(ft_error(ERROR_UNLOCK_SEM));
 		pthread_join(iter->entity, NULL);
-		// dprintf(2, "Joined thread|%d|\n", iter->id_nb);
 		iter = iter->next;
 	}
 	if (sem_post(p->params->has_eaten))
@@ -106,10 +97,6 @@ int		ft_launch(t_philo_two *p)
 		gettimeofday(&iter->last_meal, NULL);
 		if (pthread_create(&iter->entity, NULL, &th_is_alive, iter))
 			return (ft_error(ERROR_CREATE_THREAD));
-		// if (!(iter->pid = fork()))
-		// 	th_is_alive(iter);
-		// if (iter->pid < 0)
-		// 	return (ft_error(ERROR_CREATE_FORK));
 		iter = iter->next;
 	}
 	return (0);
@@ -118,7 +105,7 @@ int		ft_launch(t_philo_two *p)
 int		main(int argc, char **argv)
 {
 	t_philo_two	*p;
-	t_params		*params;
+	t_params	*params;
 
 	if (!(argc >= 5 && argc <= 6))
 		return (ft_error(ERROR_NB_ARG));

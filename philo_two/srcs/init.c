@@ -6,13 +6,13 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:38:07 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 11:10:35 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_two.h"
 
-int				ft_create_phi_sem(t_phi *phi)
+int			ft_create_phi_sem(t_phi *phi)
 {
 	sem_unlink("/order_start");
 	phi->order_start = sem_open("/order_start", O_CREAT, S_IRWXU, 0);
@@ -33,7 +33,7 @@ int				ft_create_phi_sem(t_phi *phi)
 	return (0);
 }
 
-t_phi			*ft_init_phi(t_philo_two *p, int inv_id, t_phi *addr)
+t_phi		*ft_init_phi(t_philo_two *p, int inv_id, t_phi *addr)
 {
 	t_phi *phi;
 

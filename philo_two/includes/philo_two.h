@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.h                                      :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/05 12:10:57 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:36:24 by cbussier         ###   ########lyon.fr   */
+/*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
+/*   Updated: 2020/11/28 11:19:18 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct			s_philo_two
 
 int						ft_error(int err);
 t_params				*ft_parse(char **argv);
-t_philo_two			*ft_init(t_params *params);
+t_philo_two				*ft_init(t_params *params);
 
 int						ft_strlen(char *str);
 void					ft_itoa(char *id, int nb);
@@ -96,7 +96,6 @@ int						ft_is_over(t_phi *phi);
 
 int						ft_display(t_phi *phi, char *str, int last);
 int						ft_eat(t_phi *phi);
-// int						ft_standby(t_phi *phi, int time);
 int						ft_standby(int time);
 
 void					ft_free_params(t_params *params);

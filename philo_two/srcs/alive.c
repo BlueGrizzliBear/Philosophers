@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 11:05:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 11:15:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int		ft_sleep(t_phi *phi)
 {
 	if (ft_display(phi, " is sleeping\n", 0))
 		return (-1);
-	// if (ft_standby(phi, phi->params->time_to_sleep))
 	if (ft_standby(phi->params->time_to_sleep))
 		return (-1);
 	return (0);
@@ -78,15 +77,14 @@ void	*th_is_alive(void *arg)
 	while (1)
 	{
 		if (ft_eat(phi))
-			break;
-			// return ((void*)0);
+			break ;
 		if (ft_sleep(phi))
-			break;
-			// return ((void*)0);
+			break ;
 		if (ft_think(phi))
-			break;
-			// return ((void*)0);
+			break ;
 	}
+	phi->status = 0;
+	phi->params->game = 0;
 	pthread_join(phi->brain, NULL);
 	return ((void*)0);
 }
