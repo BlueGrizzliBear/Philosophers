@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 15:08:10 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 17:29:09 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ void	*th_in_order(void *arg)
 	iter = p->phi;
 	while (p->params->game == 1)
 	{
-		// dprintf(2, "ordering phi|%d|\n", iter->id_nb);
 		if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
 			return ((void*)0);
 		if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
-		// dprintf(2, "going next\n");
 		iter = iter->next;
 	}
 	return ((void*)0);
@@ -64,8 +62,8 @@ void	ft_wait(t_philo_two *p)
 	while (i-- > 0)
 	{
 		if (sem_post(iter->params->display) || sem_post(iter->params->forks) ||
-		sem_post(iter->params->forks) /*|| sem_post(iter->stop)*/ ||
-		sem_post(iter->order_start) || sem_post(iter->order_end))
+		sem_post(iter->params->forks) || sem_post(iter->order_start) ||
+		sem_post(iter->order_end))
 			exit(ft_error(ERROR_UNLOCK_SEM));
 		pthread_join(iter->entity, NULL);
 		iter = iter->next;
