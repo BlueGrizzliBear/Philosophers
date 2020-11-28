@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 15:01:49 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/28 15:28:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct			s_phi
 	int					has_eaten;
 	struct timeval		last_meal;
 	pthread_t			entity;
-	pthread_t			*brain;
+	pthread_t			brain;
 	sem_t				*order_start;
 	sem_t				*order_end;
 	sem_t				*check;
