@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/29 17:34:26 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/29 17:51:23 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,10 @@ void	*th_in_order(void *arg)
 	iter = p->phi;
 	while (p->params->game == 1)
 	{
-		// dprintf(2, "will order phi|%d| to eat\n", iter->id_nb);
 		if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
 			return ((void*)0);
-		// dprintf(2, "ordered phi|%d| to eat\n", iter->id_nb);
 		if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
 			return ((void*)0);
-		// dprintf(2, "phi|%d| took forks\n", iter->id_nb);
 		iter = iter->next;
 	}
 	return ((void*)0);

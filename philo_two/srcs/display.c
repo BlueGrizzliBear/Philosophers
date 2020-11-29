@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/29 17:02:18 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/29 17:52:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int		ft_display(t_phi *phi, char *str, int last)
 	{
 		if (sem_post(phi->params->display))
 			return (ft_error(ERROR_UNLOCK_SEM));
-		dprintf(2, "phi|%d| ending\n", phi->id_nb);
 		return (-1);
 	}
 	write(1, (void*)msg, size);
