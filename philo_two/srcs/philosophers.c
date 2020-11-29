@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 19:21:47 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/29 17:05:15 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ int		ft_standby(int time)
 
 int		lock_forks(t_phi *phi)
 {
+	dprintf(2, "phi|%d| is waiting to eat\n", phi->id_nb);
 	if (sem_wait(phi->order_start))
 		return (ft_error(ERROR_LOCK_SEM));
+	dprintf(2, "phi|%d| will lock forks\n", phi->id_nb);
 	if (sem_wait(phi->params->forks))
 		return (ft_error(ERROR_LOCK_SEM));
 	if (ft_display(phi, " has taken a fork\n", 0))
