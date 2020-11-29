@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/29 17:51:39 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/29 17:56:22 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	*th_brain(void *arg)
 		}
 		if (sem_post(phi->check) && ft_error(ERROR_UNLOCK_SEM))
 			return ((void*)0);
+		usleep(5000);
 	}
 	return ((void*)0);
 }
