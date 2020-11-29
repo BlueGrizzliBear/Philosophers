@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/29 17:05:15 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/29 17:08:50 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		ft_eat(t_phi *phi)
 {
 	if (lock_forks(phi))
 		return (-1);
+	dprintf(2, "phi|%d| waits for check before eating\n", phi->id_nb);
 	if (sem_wait(phi->check))
 		return (ft_error(ERROR_LOCK_SEM));
 	gettimeofday(&phi->last_meal, NULL);
