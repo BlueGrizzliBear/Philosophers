@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 22:58:25 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 23:04:09 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int		lock_forks(t_phi *phi)
 		return (ft_error(ERROR_LOCK_MUTEX));
 	if (ft_display(phi, " has taken a fork\n", 0))
 	{
+		if (pthread_mutex_unlock(phi->order))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
 		phi->ordo = 0;
 		return (-1);
 	}
@@ -40,13 +42,15 @@ int		lock_forks(t_phi *phi)
 		return (ft_error(ERROR_LOCK_MUTEX));
 	if (ft_display(phi, " has taken a fork\n", 0))
 	{
+		if (pthread_mutex_unlock(phi->order))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
 		phi->ordo = 0;
 		return (-1);
 	}
-	phi->ordo = 0;
 	// dprintf(2, "phi|%d| gave order back\n", phi->id_nb);
 	if (pthread_mutex_unlock(phi->order))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
+	phi->ordo = 0;
 	return (0);
 }
 
