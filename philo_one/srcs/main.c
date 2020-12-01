@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:30:16 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 17:36:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,14 @@ void	ft_wait(t_philo_one *p)
 		exit(ft_error(ERROR_LOCK_MUTEX));
 	p->params->game = 0;
 	iter = p->phi;
-	i = p->params->nb;
-	while (i-- > 0)
+	i = 0;
+	while (i++ < p->params->nb)
 	{
 		pthread_join(iter->entity, NULL);
 		iter = iter->next;
 	}
 	if (pthread_mutex_unlock(p->params->game_over))
 		exit(ft_error(ERROR_UNLOCK_MUTEX));
-	pthread_join(p->ordering, NULL);
 	if (p->params->must_eat != -1)
 		pthread_join(p->has_eaten, NULL);
 }
