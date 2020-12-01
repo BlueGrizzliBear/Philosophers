@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:25:39 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 18:28:36 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ int			ft_create_phi_mutex(t_phi *phi)
 {
 	if (!(phi->check = ft_create_mutex()))
 		return (1);
+	if (!(phi->order = ft_create_mutex()))
+		return (1);
+	if (pthread_mutex_lock(phi->order))
+	{
+		ft_error(ERROR_LOCK_MUTEX);
+		return (1);
+	}
 	return (0);
 }
 
@@ -30,7 +37,6 @@ t_fork		*ft_init_forks(int nb, int inv_id, t_fork *addr)
 	}
 	if (inv_id == nb)
 		addr = fork;
-	fork->status = 0;
 	if (!(fork->mutex = ft_create_mutex()))
 		return (NULL);
 	if (inv_id != 1)
@@ -60,6 +66,7 @@ t_phi		*ft_init_phi(t_philo_one *p, int inv_id, t_phi *addr, t_fork *f)
 	phi->right_fork = f->next;
 	phi->status = 1;
 	phi->has_eaten = 0;
+	phi->ordo = 1;
 	phi->params = p->params;
 	if (inv_id != 1)
 		phi->next = ft_init_phi(p, inv_id - 1, addr, f->next);

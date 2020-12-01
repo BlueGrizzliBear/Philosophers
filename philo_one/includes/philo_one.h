@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:24:08 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 18:27:40 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct			s_params
 
 typedef struct			s_fork
 {
-	int					status;
 	pthread_mutex_t		*mutex;
 	struct s_fork		*next;
 }						t_fork;
@@ -71,6 +70,8 @@ typedef struct			s_phi
 	pthread_t			entity;
 	pthread_t			brain;
 	pthread_mutex_t		*check;
+	pthread_mutex_t		*order;
+	int					ordo;
 	t_fork				*left_fork;
 	t_fork				*right_fork;
 	t_params			*params;
@@ -79,7 +80,7 @@ typedef struct			s_phi
 
 typedef struct			s_philo_one
 {
-	pthread_t			ordering;
+	pthread_t			in_order;
 	pthread_t			has_eaten;
 	t_params			*params;
 	t_fork				*forks;

@@ -6,11 +6,58 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:36:02 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 22:27:50 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
+
+void	*th_in_order(void *arg)
+{
+	t_philo_one	*p;
+	t_phi		*iter;
+	int			order;
+	int			delta;
+
+	p = (t_philo_one*)(arg);
+	iter = p->phi;
+	order = 0;
+	delta = p->params->nb % 2;
+	while (p->params->game == 1)
+	{
+		if (order == iter->id_nb)
+		{
+			// dprintf(2, "ordering phi|%d|\n", iter->id_nb);
+			if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
+				return ((void*)0);
+			while (iter->ordo == 1)
+				ft_standby(1);
+			iter->ordo = 1;
+			// dprintf(2, "waiting for phi|%d|\n", iter->id_nb);
+			if (pthread_mutex_lock(iter->order) && ft_error(ERROR_LOCK_MUTEX))
+				return ((void*)0);
+			// dprintf(2, "came back|%d|\n", iter->id_nb);
+			order += 2;
+			if (delta == 0 && order > p->params->nb)
+				order = (order - 1) % p->params->nb;
+			else if (delta == 0 && order == p->params->nb)
+				order = (order + 1) % p->params->nb;
+			else
+				order = order % p->params->nb;
+			// dprintf(2, "going next for |%d|\n", order);
+		}
+		iter = iter->next;
+	}
+	order = 0;
+	iter = p->phi;
+	while (order++ < p->params->nb)
+	{
+		if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
+			return ((void*)0);
+		iter = iter->next;
+	}
+	return ((void*)0);
+}
 
 void	*th_has_eaten(void *arg)
 {
@@ -53,6 +100,7 @@ void	ft_wait(t_philo_one *p)
 	}
 	if (pthread_mutex_unlock(p->params->game_over))
 		exit(ft_error(ERROR_UNLOCK_MUTEX));
+	pthread_join(p->in_order, NULL);
 	if (p->params->must_eat != -1)
 		pthread_join(p->has_eaten, NULL);
 }
@@ -62,6 +110,8 @@ int		ft_launch(t_philo_one *p)
 	t_phi	*iter;
 	int		counter;
 
+	if (pthread_create(&p->in_order, NULL, &th_in_order, p))
+		return (ft_error(ERROR_CREATE_THREAD));
 	if (p->params->must_eat != -1)
 	{
 		if (pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:28:47 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 22:26:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	*th_brain(void *arg)
 		{
 			phi->status = 0;
 			ft_display(phi, " died\n", 1);
+			// phi->params->game = 0;
 			if (pthread_mutex_unlock(phi->check) ||
 			pthread_mutex_unlock(phi->params->game_over))
 			{
@@ -88,8 +89,9 @@ void	*th_is_alive(void *arg)
 	phi->status = 0;
 	pthread_join(phi->brain, NULL);
 	if (pthread_mutex_unlock(phi->params->display) ||
+	pthread_mutex_unlock(phi->order) ||
 	pthread_mutex_unlock(phi->left_fork->mutex) ||
-	pthread_mutex_unlock(phi->left_fork->mutex))
+	pthread_mutex_unlock(phi->right_fork->mutex))
 		ft_error(ERROR_UNLOCK_MUTEX);
 	return ((void*)0);
 }

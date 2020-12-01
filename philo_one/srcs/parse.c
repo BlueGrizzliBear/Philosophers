@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:27:02 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 18:18:14 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ t_params		*ft_create_params_mutexes(t_params *params)
 	}
 	if (!(params->display = ft_create_mutex()))
 		return (NULL);
+	// if (!(params->ordering = ft_create_mutex()))
+	// 	return (NULL);
+	// if (pthread_mutex_lock(params->ordering))
+	// {
+	// 	ft_error(ERROR_LOCK_MUTEX);
+	// 	return (NULL);
+	// }
 	return (params);
 }
 
