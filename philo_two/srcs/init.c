@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/28 17:28:48 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 15:39:49 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int			ft_create_phi_sem(t_phi *phi)
 	phi->check = sem_open("/check", O_CREAT, S_IRWXU, 1);
 	if (phi->check == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM));
-	sem_unlink("/stop");
-	phi->stop = sem_open("/stop", O_CREAT, S_IRWXU, 0);
-	if (phi->stop == SEM_FAILED)
-		return (ft_error(ERROR_OPEN_SEM));
+	// sem_unlink("/stop");
+	// phi->stop = sem_open("/stop", O_CREAT, S_IRWXU, 0);
+	// if (phi->stop == SEM_FAILED)
+	// 	return (ft_error(ERROR_OPEN_SEM));
 	return (0);
 }
 
@@ -61,18 +61,18 @@ t_phi		*ft_init_phi(t_philo_two *p, int inv_id, t_phi *addr)
 
 t_philo_two	*ft_init(t_params *p)
 {
-	t_philo_two *ph_three;
+	t_philo_two *ph_two;
 
-	if (!(ph_three = malloc(sizeof(t_philo_two))))
+	if (!(ph_two = malloc(sizeof(t_philo_two))))
 	{
 		ft_free_params(p);
 		exit(ft_error(ERROR_STRUCT_CREAT));
 	}
-	ph_three->params = p;
-	if (!(ph_three->phi = ft_init_phi(ph_three, p->nb, NULL)))
+	ph_two->params = p;
+	if (!(ph_two->phi = ft_init_phi(ph_two, p->nb, NULL)))
 	{
-		ft_free(ph_three);
+		ft_free(ph_two);
 		return (NULL);
 	}
-	return (ph_three);
+	return (ph_two);
 }

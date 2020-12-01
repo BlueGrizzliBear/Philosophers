@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:23:51 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/25 16:31:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,31 @@ int		ft_fill_msg_nb(char *msg, int nb)
 	return (cpy);
 }
 
-int		ft_display(t_phi *phi, char *str, int last)
+int		ft_build_msg(t_phi *phi, int timestamp, char *str)
 {
-	static struct timeval	now;
-	char					msg[64];
-	int						size;
+	char	msg[64];
+	int		size;
 
+	size = ft_fill_msg_nb(msg, timestamp);
+	size = ft_fill_msg_str(msg, phi->id, str, size);
 	if (pthread_mutex_lock(phi->params->display))
 		return (ft_error(ERROR_LOCK_MUTEX));
-	gettimeofday(&now, NULL);
-	size = ft_fill_msg_nb(msg, get_timestamp(phi->params->start, now));
-	size = ft_fill_msg_str(msg, phi->id, str, size);
-	if (phi->params->game == 0)
-	{
-		if (pthread_mutex_unlock(phi->params->display))
-			return (ft_error(ERROR_UNLOCK_MUTEX));
-		return (-1);
-	}
 	write(1, (void*)msg, size);
-	if (last == 1)
-	{
-		phi->status = 0;
-		phi->params->game = 0;
-	}
 	if (pthread_mutex_unlock(phi->params->display))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
+	return (0);
+}
+
+int		ft_display(t_phi *phi, char *str)
+{
+	struct timeval	now;
+	static int		reaper = 0;
+
+	if (reaper != 0)
+		return (-1);
+	if (phi->status == 0)
+		reaper += 1;
+	gettimeofday(&now, NULL);
+	ft_build_msg(phi, get_timestamp(phi->params->start, now), str);
 	return (0);
 }

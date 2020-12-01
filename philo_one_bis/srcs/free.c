@@ -6,21 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:23:44 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/20 13:01:44 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
-
-void	ft_free_mutex(pthread_mutex_t *f)
-{
-	int ret;
-
-	if ((ret = pthread_mutex_destroy(f)))
-		ft_error(ERROR_DESTROY);
-	free(f);
-	f = NULL;
-}
 
 int		ft_free_forks(t_fork *f, t_params *params)
 {
@@ -43,42 +33,49 @@ int		ft_free_forks(t_fork *f, t_params *params)
 	return (0);
 }
 
-void	ft_free_philosophers(t_phi *phi, t_params *params)
+int		ft_free_philosophers(t_phi *phi, t_params *params)
 {
 	t_phi	*iter;
-	t_phi	*iter_next;
 	int		nb;
 
-	iter = phi;
 	nb = params->nb;
 	while (nb-- > 0)
 	{
-		ft_free_mutex(iter->check);
-		iter->left_fork = NULL;
-		iter->right_fork = NULL;
-		iter_next = iter->next;
-		free(iter);
-		iter = iter_next;
+		free(phi->thread);
+		phi->thread = NULL;
+		phi->left_fork = NULL;
+		phi->right_fork = NULL;
+		iter = phi->next;
+		free(phi);
+		phi = iter;
 	}
-	iter = NULL;
+	phi = NULL;
+	return (0);
 }
 
-void	ft_free_params(t_params *params)
+int		ft_free_params(t_params *params)
 {
-	ft_free_mutex(params->game_over);
-	ft_free_mutex(params->display);
+	if (pthread_mutex_destroy(params->game_status))
+		ft_error(ERROR_DESTROY);
+	free(params->game_status);
+	params->game_status = NULL;
+	if (pthread_mutex_destroy(params->display))
+		ft_error(ERROR_DESTROY);
+	free(params->display);
+	params->display = NULL;
 	free(params);
 	params = NULL;
+	return (0);
 }
 
-void	ft_free(t_philo_one *p)
+int		ft_free(t_philo_one *p)
 {
-	if (p->phi)
-		ft_free_philosophers(p->phi, p->params);
-	if (p->forks)
-		ft_free_forks(p->forks, p->params);
-	if (p->params)
-		ft_free_params(p->params);
+	if (ft_free_forks(p->forks, p->params))
+		return (1);
+	ft_free_philosophers(p->phi, p->params);
+	if (ft_free_params(p->params))
+		return (1);
 	free(p);
 	p = NULL;
+	return (0);
 }

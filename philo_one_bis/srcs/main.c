@@ -6,77 +6,81 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 17:30:16 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/11/25 16:48:02 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
 
-void	*th_has_eaten(void *arg)
+int		ft_is_dead(t_phi *phi)
 {
-	t_philo_one	*p;
-	int			total;
-	t_phi		*iter;
+	struct timeval now;
 
-	p = (t_philo_one*)arg;
-	iter = p->phi;
-	total = 0;
-	while (total < p->params->nb && p->params->game == 1)
+	gettimeofday(&now, NULL);
+	if (get_timestamp(phi->last_meal, now) > phi->params->time_to_die)
 	{
-		if (iter->has_eaten == p->params->must_eat)
-		{
-			iter = iter->next;
-			total++;
-		}
+		if (pthread_mutex_lock(phi->params->game_status))
+			return (ft_error(ERROR_LOCK_MUTEX));
+		phi->status = 0;
+		ft_display(phi, " died\n");
+		phi->params->game = 0;
+		if (pthread_mutex_unlock(phi->params->game_status))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
+		return (1);
 	}
-	p->params->all_has_eaten = total;
-	if (pthread_mutex_unlock(p->params->game_over) &&
-	ft_error(ERROR_UNLOCK_MUTEX))
-		return ((void*)0);
-	return ((void*)0);
+	return (0);
 }
 
-void	ft_wait(t_philo_one *p)
-{
-	t_phi	*iter;
-	int		i;
-
-	if (pthread_mutex_lock(p->params->game_over))
-		exit(ft_error(ERROR_LOCK_MUTEX));
-	p->params->game = 0;
-	iter = p->phi;
-	i = p->params->nb;
-	while (i-- > 0)
-	{
-		pthread_join(iter->entity, NULL);
-		iter = iter->next;
-	}
-	if (pthread_mutex_unlock(p->params->game_over))
-		exit(ft_error(ERROR_UNLOCK_MUTEX));
-	pthread_join(p->ordering, NULL);
-	if (p->params->must_eat != -1)
-		pthread_join(p->has_eaten, NULL);
-}
-
-int		ft_launch(t_philo_one *p)
+int		ft_wait(t_philo_one *p)
 {
 	t_phi	*iter;
 	int		counter;
 
-	if (p->params->must_eat != -1)
-	{
-		if (pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))
-			return (ft_error(ERROR_CREATE_THREAD));
-	}
 	iter = p->phi;
-	counter = 0;
+	counter = p->params->nb;
+	while (counter-- > 0)
+	{
+		if (pthread_join(*iter->thread, NULL))
+			return (1);
+		iter = iter->next;
+	}
+	return (0);
+}
+
+void	*ft_is_alive(void *arg)
+{
+	t_phi	*phi;
+	int		ret;
+
+	phi = (t_phi *)arg;
+	while (phi->params->game == 1)
+	{
+		ret = 0;
+		if ((ret = ft_eat_sleep_think(phi)) != 0)
+		{
+			if (ret == -2 || ret == -3)
+				unlock_forks(phi);
+			return (NULL);
+		}
+	}
+	return (NULL);
+}
+
+int		ft_launch(t_philo_one *p)
+{
+	t_phi			*iter;
+	int				counter;
+
+	iter = p->phi;
+	counter = p->params->nb;
 	gettimeofday(&p->params->start, NULL);
-	while (counter++ < p->params->nb)
+	while (counter-- > 0)
 	{
 		gettimeofday(&iter->last_meal, NULL);
-		if (pthread_create(&iter->entity, NULL, &th_is_alive, iter))
+		if (pthread_create(iter->thread, NULL, &ft_is_alive, iter))
 			return (ft_error(ERROR_CREATE_THREAD));
 		iter = iter->next;
+		usleep(100);
 	}
 	return (0);
 }
@@ -93,11 +97,10 @@ int		main(int argc, char **argv)
 	if ((p = ft_init(params)) == NULL)
 		return (ft_error(ERROR_INIT_STRUCT));
 	if (ft_launch(p))
-	{
-		ft_free(p);
 		return (ft_error(ERROR_LAUNCH_PHI));
-	}
-	ft_wait(p);
-	ft_free(p);
+	if (ft_wait(p))
+		return (ft_error(ERROR_JOIN_THREAD));
+	if (ft_free(p))
+		return (1);
 	return (0);
 }

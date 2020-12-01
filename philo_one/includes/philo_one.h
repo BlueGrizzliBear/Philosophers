@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/30 15:18:36 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/26 16:32:46 by cbussier         ###   ########lyon.fr   */
+/*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
+/*   Updated: 2020/12/01 17:24:08 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,23 @@
 # include <string.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <signal.h>
+# include <fcntl.h>
+
+# include <errno.h>
 
 # define ERROR_NB_ARG 0
 # define ERROR_ARG_VAL 1
 # define ERROR_INIT_STRUCT 2
 # define ERROR_STRUCT_CREAT 3
 # define ERROR_ALLOC_INIT_MUTEX 4
-# define ERROR_ALLOC_THREAD 5
-# define ERROR_LAUNCH_PHI 6
+# define ERROR_LAUNCH_PHI 5
+# define ERROR_CREATE_FORK 6
 # define ERROR_CREATE_THREAD 7
 # define ERROR_LOCK_MUTEX 8
 # define ERROR_UNLOCK_MUTEX 9
 # define ERROR_MEM_ALLOC 10
-# define ERROR_DISPLAY 11
 # define ERROR_STANDBY 12
 # define ERROR_DESTROY 13
 # define ERROR_JOIN_THREAD 14
@@ -44,9 +48,10 @@ typedef struct			s_params
 	int					time_to_sleep;
 	int					must_eat;
 	int					game;
-	pthread_mutex_t		*game_status;
-	pthread_mutex_t		*display;
 	struct timeval		start;
+	int					all_has_eaten;
+	pthread_mutex_t		*game_over;
+	pthread_mutex_t		*display;
 }						t_params;
 
 typedef struct			s_fork
@@ -58,19 +63,24 @@ typedef struct			s_fork
 
 typedef struct			s_phi
 {
+	int					id_nb;
 	char				id[13];
 	int					status;
 	int					has_eaten;
 	struct timeval		last_meal;
-	pthread_t			*thread;
-	t_params			*params;
+	pthread_t			entity;
+	pthread_t			brain;
+	pthread_mutex_t		*check;
 	t_fork				*left_fork;
 	t_fork				*right_fork;
+	t_params			*params;
 	struct s_phi		*next;
 }						t_phi;
 
 typedef struct			s_philo_one
 {
+	pthread_t			ordering;
+	pthread_t			has_eaten;
 	t_params			*params;
 	t_fork				*forks;
 	t_phi				*phi;
@@ -78,18 +88,26 @@ typedef struct			s_philo_one
 
 int						ft_error(int err);
 t_params				*ft_parse(char **argv);
+t_philo_one				*ft_init(t_params *params);
+
+int						ft_strlen(char *str);
+void					ft_itoa(char *id, int nb);
 int						ft_atoi(const char *str);
 void					ft_putstr(char *str);
-int						ft_strlen(char *str);
-t_philo_one				*ft_init(t_params *params);
-int						unlock_forks(t_phi *phi);
-int						ft_eat_sleep_think(t_phi *phi);
-int						ft_display(t_phi *phi, char *str);
-int						ft_display(t_phi *phi, char *str);
+
+void					*th_is_alive(void *arg);
 int						get_timestamp(struct timeval s, struct timeval t);
-int						ft_free(t_philo_one *p);
-int						ft_is_over(t_phi *phi);
+
 int						ft_is_dead(t_phi *phi);
-void					ft_itoa(char *id, int nb);
+int						ft_is_over(t_phi *phi);
+
+int						ft_display(t_phi *phi, char *str, int last);
+int						ft_eat(t_phi *phi);
+int						ft_standby(int time);
+
+void					ft_free_params(t_params *params);
+void					ft_free(t_philo_one *p);
+
+pthread_mutex_t 		*ft_create_mutex(void);
 
 #endif
