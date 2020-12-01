@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 18:27:40 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 22:29:21 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include <fcntl.h>
 
-# include <errno.h>
+// # include <errno.h>
 
 # define ERROR_NB_ARG 0
 # define ERROR_ARG_VAL 1
