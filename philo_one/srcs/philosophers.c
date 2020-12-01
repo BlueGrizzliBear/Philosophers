@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 23:04:09 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/01 23:09:24 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ int		ft_standby(int time)
 	return (0);
 }
 
+int		unlock_forks(t_phi *phi)
+{
+	if (pthread_mutex_unlock(phi->left_fork->mutex))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
+	if (pthread_mutex_unlock(phi->right_fork->mutex))
+		return (ft_error(ERROR_UNLOCK_MUTEX));
+	return (0);
+}
+
 int		lock_forks(t_phi *phi)
 {
 	// dprintf(2, "phi|%d| waiting for order\n", phi->id_nb);
@@ -33,6 +42,8 @@ int		lock_forks(t_phi *phi)
 		return (ft_error(ERROR_LOCK_MUTEX));
 	if (ft_display(phi, " has taken a fork\n", 0))
 	{
+		if (pthread_mutex_unlock(phi->left_fork->mutex))
+			return (ft_error(ERROR_UNLOCK_MUTEX));
 		if (pthread_mutex_unlock(phi->order))
 			return (ft_error(ERROR_UNLOCK_MUTEX));
 		phi->ordo = 0;
@@ -42,6 +53,8 @@ int		lock_forks(t_phi *phi)
 		return (ft_error(ERROR_LOCK_MUTEX));
 	if (ft_display(phi, " has taken a fork\n", 0))
 	{
+		if (unlock_forks(phi))
+			return (1);
 		if (pthread_mutex_unlock(phi->order))
 			return (ft_error(ERROR_UNLOCK_MUTEX));
 		phi->ordo = 0;
@@ -51,15 +64,6 @@ int		lock_forks(t_phi *phi)
 	if (pthread_mutex_unlock(phi->order))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
 	phi->ordo = 0;
-	return (0);
-}
-
-int		unlock_forks(t_phi *phi)
-{
-	if (pthread_mutex_unlock(phi->left_fork->mutex))
-		return (ft_error(ERROR_UNLOCK_MUTEX));
-	if (pthread_mutex_unlock(phi->right_fork->mutex))
-		return (ft_error(ERROR_UNLOCK_MUTEX));
 	return (0);
 }
 
