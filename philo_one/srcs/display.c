@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 22:19:56 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 09:41:58 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		ft_display(t_phi *phi, char *str, int last)
 	write(1, (void*)msg, size);
 	if (last == 1)
 	{
-		phi->status = 0;
+		// phi->status = 0;
 		phi->params->game = 0;
 	}
 	if (pthread_mutex_unlock(phi->params->display))

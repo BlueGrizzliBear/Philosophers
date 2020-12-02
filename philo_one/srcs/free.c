@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 22:45:21 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 09:48:38 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ void	ft_free_philosophers(t_phi *phi, t_params *params)
 
 void	ft_free_params(t_params *params)
 {
-	ft_free_mutex(params->game_over);
+	// dprintf(2, "game_over mutex\n");
+	// ft_free_mutex(params->game_over);
+	dprintf(2, "display mutex\n");
 	ft_free_mutex(params->display);
 	free(params);
 	params = NULL;
