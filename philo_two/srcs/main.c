@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 12:14:50 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:19:05 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*th_has_eaten(void *arg)
 	return ((void*)0);
 }
 
-void	ft_wait(t_philo_two *p)
+int		ft_wait(t_philo_two *p)
 {
 	t_phi	*iter;
 	int		i;
