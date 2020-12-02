@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:51:16 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:55:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ pthread_mutex_t	*ft_create_mutex(void)
 {
 	pthread_mutex_t *mutex;
 
-	if (!(mutex = malloc(sizeof(pthread_mutex_t))) ||
-	(pthread_mutex_init(mutex, NULL)))
+	if (!(mutex = malloc(sizeof(pthread_mutex_t))))
+		return (NULL);
+	if ((pthread_mutex_init(mutex, NULL)))
 	{
-		if (mutex)
-			free(mutex);
+		free(mutex);
 		mutex = NULL;
 		ft_error(ERROR_ALLOC_INIT_MUTEX);
 		return (NULL);
@@ -43,15 +43,15 @@ pthread_mutex_t	*ft_create_mutex(void)
 	return (mutex);
 }
 
-t_params		*ft_create_params_mutexes(t_params *params)
-{
-	if (!(params->display = ft_create_mutex()))
-	{
-		ft_free_params(params);
-		return (NULL);
-	}
-	return (params);
-}
+// t_params		*ft_create_params_mutexes(t_params *params)
+// {
+// 	if (!(params->display = ft_create_mutex()))
+// 	{
+// 		ft_free_params(params);
+// 		return (NULL);
+// 	}
+// 	return (params);
+// }
 
 t_params		*ft_parse(char **argv)
 {
@@ -74,10 +74,15 @@ t_params		*ft_parse(char **argv)
 		ft_init_params(params, val, i);
 	}
 	params->game = 1;
-	// params->all_has_eaten = 0;
-	if (!ft_create_params_mutexes(params))
+	if (!(params->display = ft_create_mutex()))
 	{
+		ft_free_params(params);
 		return (NULL);
 	}
+	// params->all_has_eaten = 0;
+	// if (!ft_create_params_mutexes(params))
+	// {
+	// 	return (NULL);
+	// }
 	return (params);
 }
