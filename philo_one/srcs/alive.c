@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:16:15 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 11:19:19 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,5 @@ void	*th_is_alive(void *arg)
 	phi->status = 0;
 	pthread_join(phi->brain, NULL);
 	phi->ordo = 0;
-	// if (pthread_mutex_unlock(phi->params->display))
-	// if (pthread_mutex_unlock(phi->params->display) ||
-	// pthread_mutex_unlock(phi->order) ||
-	// pthread_mutex_unlock(phi->left_fork->mutex) ||
-	// pthread_mutex_unlock(phi->right_fork->mutex))
-		// ft_error(ERROR_UNLOCK_MUTEX);
 	return ((void*)0);
 }

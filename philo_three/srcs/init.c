@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 13:16:42 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 11:17:32 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_phi			*ft_init_phi(t_philo_three *p, int inv_id, t_phi *addr)
 		addr = phi;
 	phi->id_nb = p->params->nb - inv_id;
 	memset(phi->id, '\0', 13);
-	ft_itoa(phi->id, p->params->nb - inv_id);
+	ft_itoa(phi->id, p->params->nb - inv_id + 1);
 	if (ft_create_phi_sem(phi))
 		return (NULL);
 	phi->status = 1;

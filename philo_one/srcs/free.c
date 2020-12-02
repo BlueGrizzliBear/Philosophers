@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:49:47 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 11:19:33 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int		ft_free_forks(t_fork *f, t_params *params)
 	nb = params->nb;
 	while (nb > 0)
 	{
-		// dprintf(2, "fork mutex\n");
 		if (pthread_mutex_destroy(f->mutex))
 			ft_error(ERROR_DESTROY);
 		free(f->mutex);
@@ -55,9 +54,7 @@ void	ft_free_philosophers(t_phi *phi, t_params *params)
 	nb = params->nb;
 	while (nb-- > 0)
 	{
-		// dprintf(2, "check mutex\n");
 		ft_free_mutex(iter->check);
-		// dprintf(2, "order mutex\n");
 		ft_free_mutex(iter->order);
 		iter->left_fork = NULL;
 		iter->right_fork = NULL;

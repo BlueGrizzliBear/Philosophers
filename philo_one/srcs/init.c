@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 18:28:36 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 11:17:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_phi		*ft_init_phi(t_philo_one *p, int inv_id, t_phi *addr, t_fork *f)
 		addr = phi;
 	phi->id_nb = p->params->nb - inv_id;
 	memset(phi->id, '\0', 13);
-	ft_itoa(phi->id, p->params->nb - inv_id);
+	ft_itoa(phi->id, p->params->nb - inv_id + 1);
 	if (ft_create_phi_mutex(phi))
 		return (NULL);
 	phi->left_fork = f;

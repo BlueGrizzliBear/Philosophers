@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:49:23 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 11:37:34 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <semaphore.h>
 # include <signal.h>
 # include <fcntl.h>
-
-// # include <errno.h>
 
 # define ERROR_NB_ARG 0
 # define ERROR_ARG_VAL 1
@@ -89,7 +87,6 @@ int						ft_error(int err);
 t_params				*ft_parse(char **argv);
 t_philo_one				*ft_init(t_params *params);
 
-int						ft_strlen(char *str);
 void					ft_itoa(char *id, int nb);
 int						ft_atoi(const char *str);
 void					ft_putstr(char *str);
@@ -107,9 +104,9 @@ int						ft_standby(int time);
 void					ft_free_params(t_params *params);
 void					ft_free(t_philo_one *p);
 
-pthread_mutex_t 		*ft_create_mutex(void);
+pthread_mutex_t			*ft_create_mutex(void);
 
-void					ft_free_params(t_params *params);
-// void					ft_free_mutex(pthread_mutex_t *f);
+void					*th_in_order(void *arg);
+void					*th_has_eaten(void *arg);
 
 #endif
