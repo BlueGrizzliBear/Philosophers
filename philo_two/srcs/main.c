@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/29 17:51:23 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:14:50 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ft_wait(t_philo_two *p)
 	int		i;
 
 	if (sem_wait(p->params->game_over))
-		exit(ft_error(ERROR_LOCK_SEM));
+		return (ft_error(ERROR_LOCK_SEM));
 	p->params->game = 0;
 	iter = p->phi;
 	i = p->params->nb;
@@ -64,14 +64,14 @@ void	ft_wait(t_philo_two *p)
 		if (sem_post(iter->params->display) || sem_post(iter->params->forks) ||
 		sem_post(iter->params->forks) || sem_post(iter->order_start) ||
 		sem_post(iter->order_end))
-			exit(ft_error(ERROR_UNLOCK_SEM));
+			return (ft_error(ERROR_UNLOCK_SEM));
 		pthread_join(iter->entity, NULL);
 		iter = iter->next;
 	}
 	if (sem_post(p->params->has_eaten))
-		exit(ft_error(ERROR_UNLOCK_SEM));
+		return (ft_error(ERROR_UNLOCK_SEM));
 	if (sem_post(p->params->game_over))
-		exit(ft_error(ERROR_UNLOCK_SEM));
+		return (ft_error(ERROR_UNLOCK_SEM));
 	pthread_join(p->ordering, NULL);
 	if (p->params->must_eat != -1)
 		pthread_join(p->has_eaten, NULL);

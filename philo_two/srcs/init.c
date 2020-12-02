@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 12:11:46 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:14:30 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_philo_two	*ft_init(t_params *p)
 	if (!(ph_two = malloc(sizeof(t_philo_two))))
 	{
 		ft_free_params(p);
-		exit(ft_error(ERROR_STRUCT_CREAT));
+		return (ft_error(ERROR_STRUCT_CREAT));
 	}
 	ph_two->params = p;
 	if (!(ph_two->phi = ft_init_phi(ph_two, p->nb, NULL)))
