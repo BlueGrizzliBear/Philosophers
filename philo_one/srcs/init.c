@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 12:14:01 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:25:06 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ t_philo_one	*ft_init(t_params *p)
 	if (!(ph_one = malloc(sizeof(t_philo_one))))
 	{
 		ft_free_params(p);
-		return (ft_error(ERROR_STRUCT_CREAT));
+		ft_error(ERROR_STRUCT_CREAT);
+		return (NULL);
 	}
 	ph_one->params = p;
 	if (!(ph_one->forks = ft_init_forks(p->nb, p->nb, NULL)))
