@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 11:05:12 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 11:08:55 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int		lock_forks(t_phi *phi)
 		if (pthread_mutex_unlock(phi->order))
 			return (ft_error(ERROR_UNLOCK_MUTEX));
 		phi->ordo = 0;
+		while (phi->params->game == 1)
+			ft_standby(1);
 		return (-1);
 	}
 	if (pthread_mutex_lock(phi->right_fork->mutex))
