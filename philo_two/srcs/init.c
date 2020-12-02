@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 11:17:21 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:11:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ int			ft_create_phi_sem(t_phi *phi)
 	phi->check = sem_open("/check", O_CREAT, S_IRWXU, 1);
 	if (phi->check == SEM_FAILED)
 		return (ft_error(ERROR_OPEN_SEM));
-	// sem_unlink("/stop");
-	// phi->stop = sem_open("/stop", O_CREAT, S_IRWXU, 0);
-	// if (phi->stop == SEM_FAILED)
-	// 	return (ft_error(ERROR_OPEN_SEM));
 	return (0);
 }
 

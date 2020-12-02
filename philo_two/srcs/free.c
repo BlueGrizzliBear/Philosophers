@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 15:40:02 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:10:47 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	ft_free_philosophers(t_phi *phi, t_params *params)
 		ft_free_sem(iter->order_start);
 		ft_free_sem(iter->order_end);
 		ft_free_sem(iter->check);
-		// ft_free_sem(iter->stop);
-		// iter->stop = NULL;
 		iter_next = iter->next;
 		free(iter);
 		iter = iter_next;

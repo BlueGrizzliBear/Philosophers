@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/01 15:39:57 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:12:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ typedef struct			s_phi
 	sem_t				*order_start;
 	sem_t				*order_end;
 	sem_t				*check;
-	// sem_t				*stop;
 	t_params			*params;
 	struct s_phi		*next;
 }						t_phi;
