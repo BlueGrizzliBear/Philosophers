@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 11:53:53 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 12:02:32 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,12 @@ int		lock_forks(t_phi *phi)
 	if (pthread_mutex_lock(phi->left_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
 	if (ft_display(phi, " has taken a fork\n", 0))
-	{
 		return (clean_mutexes(phi));
-		// if (pthread_mutex_unlock(phi->left_fork->mutex))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		// if (pthread_mutex_unlock(phi->order))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		// phi->ordo = 0;
-		// return (-1);
-	}
 	if (phi->params->nb < 2)
 	{
-		// if (pthread_mutex_unlock(phi->left_fork->mutex))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		// if (pthread_mutex_unlock(phi->order))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		// phi->ordo = 0;
 		while (phi->params->game == 1)
 			ft_standby(1);
 		return (clean_mutexes(phi));
-		// return (-1);
 	}
 	if (pthread_mutex_lock(phi->right_fork->mutex))
 		return (ft_error(ERROR_LOCK_MUTEX));
@@ -77,13 +63,7 @@ int		lock_forks(t_phi *phi)
 	{
 		if (pthread_mutex_unlock(phi->right_fork->mutex))
 			return (ft_error(ERROR_UNLOCK_MUTEX));
-		// if (unlock_forks(phi))
-		// 	return (1);
 		return (clean_mutexes(phi));
-		// if (pthread_mutex_unlock(phi->order))
-		// 	return (ft_error(ERROR_UNLOCK_MUTEX));
-		// phi->ordo = 0;
-		// return (-1);
 	}
 	if (pthread_mutex_unlock(phi->order))
 		return (ft_error(ERROR_UNLOCK_MUTEX));
