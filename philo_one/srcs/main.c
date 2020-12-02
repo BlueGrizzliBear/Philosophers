@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:29:13 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:30:33 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,13 @@ void	*th_in_order(void *arg)
 	{
 		if (order == iter->id_nb)
 		{
-			// dprintf(2, "ordering phi|%d|\n", iter->id_nb);
 			if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
 				return ((void*)0);
-			dprintf(2, "before while\n");
 			while (iter->ordo == 1)
 				ft_standby(1);
-			dprintf(2, "after while\n");
 			iter->ordo = 1;
-			dprintf(2, "waiting for phi|%d|\n", iter->id_nb);
 			if (pthread_mutex_lock(iter->order) && ft_error(ERROR_LOCK_MUTEX))
 				return ((void*)0);
-			// iter->ordo = -1;
-			dprintf(2, "came back|%d|\n", iter->id_nb);
 			order += 2;
 			if (delta == 0 && order > p->params->nb)
 				order = (order - 1) % p->params->nb;
@@ -47,23 +41,17 @@ void	*th_in_order(void *arg)
 				order = (order + 1) % p->params->nb;
 			else
 				order = order % p->params->nb;
-			// dprintf(2, "going next for |%d|\n", order);
 		}
 		iter = iter->next;
 	}
-	dprintf(2, "unlocking shits from order\n");
 	order = 0;
 	iter = p->phi;
 	while (order++ < p->params->nb)
 	{
-		// if (iter->ordo != )
-		// {
-			if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
-				return ((void*)0);
-		// }
+		if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
+			return ((void*)0);
 		iter = iter->next;
 	}
-	dprintf(2, "returning from order\n");
 	return ((void*)0);
 }
 
@@ -84,7 +72,6 @@ void	*th_has_eaten(void *arg)
 			total++;
 		}
 	}
-	// p->params->all_has_eaten = total;
 	p->params->game = 0;
 	return ((void*)0);
 }
@@ -101,14 +88,14 @@ void	ft_wait(t_philo_one *p)
 	while (i++ < p->params->nb)
 	{
 		pthread_join(iter->entity, NULL);
-		dprintf(2, "joigned phi|%d|\n", iter->id_nb);
+		// dprintf(2, "joigned phi|%d|\n", iter->id_nb);
 		iter = iter->next;
 	}
 	pthread_join(p->in_order, NULL);
-	dprintf(2, "joigned order\n");
+	// dprintf(2, "joigned order\n");
 	if (p->params->must_eat != -1)
 		pthread_join(p->has_eaten, NULL);
-	dprintf(2, "joigned has_eaten\n");
+	// dprintf(2, "joigned has_eaten\n");
 }
 
 int		ft_launch(t_philo_one *p)
