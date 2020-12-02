@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 09:48:23 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 09:51:05 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,8 @@ pthread_mutex_t	*ft_create_mutex(void)
 
 t_params		*ft_create_params_mutexes(t_params *params)
 {
-	// if (!(params->game_over = ft_create_mutex()))
-	// 	return (NULL);
-	// if (pthread_mutex_lock(params->game_over))
-	// {
-	// 	ft_error(ERROR_LOCK_MUTEX);
-	// 	return (NULL);
-	// }
 	if (!(params->display = ft_create_mutex()))
 		return (NULL);
-	// if (!(params->ordering = ft_create_mutex()))
-	// 	return (NULL);
-	// if (pthread_mutex_lock(params->ordering))
-	// {
-	// 	ft_error(ERROR_LOCK_MUTEX);
-	// 	return (NULL);
-	// }
 	return (params);
 }
 
