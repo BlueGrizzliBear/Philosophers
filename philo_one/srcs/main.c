@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:03:31 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:05:01 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	*th_in_order(void *arg)
 		}
 		iter = iter->next;
 	}
+	dprintf(2, "unlocking shits from order\n");
 	order = 0;
 	iter = p->phi;
 	while (order++ < p->params->nb)
@@ -59,6 +60,7 @@ void	*th_in_order(void *arg)
 		}
 		iter = iter->next;
 	}
+	dprintf(2, "returning from order\n");
 	return ((void*)0);
 }
 
