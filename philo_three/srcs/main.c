@@ -6,48 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/11/27 14:34:59 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 15:44:46 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_three.h"
-
-void	*th_in_order(void *arg)
-{
-	t_philo_three	*p;
-	t_phi			*iter;
-
-	p = (t_philo_three*)(arg);
-	iter = p->phi;
-	while (p->params->game == 1)
-	{
-		if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
-			return ((void*)0);
-		if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
-			return ((void*)0);
-		iter = iter->next;
-	}
-	return ((void*)0);
-}
-
-void	*th_has_eaten(void *arg)
-{
-	t_philo_three	*p;
-	int				total;
-
-	p = (t_philo_three*)arg;
-	total = 0;
-	while (total++ < p->params->nb && p->params->game == 1)
-	{
-		if (sem_wait(p->params->has_eaten) && ft_error(ERROR_LOCK_SEM))
-			return ((void*)0);
-	}
-	if (sem_post(p->params->has_eaten) && ft_error(ERROR_UNLOCK_SEM))
-		return ((void*)0);
-	if (sem_post(p->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
-		return ((void*)0);
-	return ((void*)0);
-}
 
 void	ft_wait(t_philo_three *p)
 {
@@ -76,6 +39,32 @@ void	ft_wait(t_philo_three *p)
 		pthread_join(p->has_eaten, NULL);
 }
 
+int		ft_kill_prematured(int limit, t_phi *phi, t_philo_three *p)
+{
+	t_phi	*iter;
+	int		i;
+
+	p->params->game = 0;
+	i = limit;
+	iter = phi;
+	while (i-- > 0)
+	{
+		kill(iter->pid, SIGKILL);
+		if (sem_post(iter->stop) || sem_post(iter->order_start) ||
+		sem_post(iter->order_end))
+			return (ft_error(ERROR_UNLOCK_SEM));
+		iter = iter->next;
+	}
+	if (sem_post(p->params->has_eaten))
+		exit(ft_error(ERROR_UNLOCK_SEM));
+	if (sem_post(p->params->game_over))
+		exit(ft_error(ERROR_UNLOCK_SEM));
+	pthread_join(p->ordering, NULL);
+	if (p->params->must_eat != -1)
+		pthread_join(p->has_eaten, NULL);
+	return (ft_error(ERROR_CREATE_FORK));
+}
+
 int		ft_launch(t_philo_three *p)
 {
 	t_phi	*iter;
@@ -83,10 +72,11 @@ int		ft_launch(t_philo_three *p)
 
 	if (pthread_create(&p->ordering, NULL, &th_in_order, p))
 		return (ft_error(ERROR_CREATE_THREAD));
-	if (p->params->must_eat != -1)
+	if (p->params->must_eat != -1 &&
+	pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))
 	{
-		if (pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))
-			return (ft_error(ERROR_CREATE_THREAD));
+		pthread_detach(p->ordering);
+		return (ft_error(ERROR_CREATE_THREAD));
 	}
 	iter = p->phi;
 	counter = 0;
@@ -97,7 +87,7 @@ int		ft_launch(t_philo_three *p)
 		if (!(iter->pid = fork()))
 			ft_is_alive(iter);
 		if (iter->pid < 0)
-			return (ft_error(ERROR_CREATE_FORK));
+			return (ft_kill_prematured(iter->id_nb, p->phi, p));
 		iter = iter->next;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 12:12:10 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 15:25:00 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,8 @@ int						ft_standby(int time);
 
 void					ft_free_params(t_params *params);
 void					ft_free(t_philo_two *p);
+
+void					*th_has_eaten(void *arg);
+void					*th_in_order(void *arg);
 
 #endif

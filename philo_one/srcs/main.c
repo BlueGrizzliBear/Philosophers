@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 11:37:51 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 15:22:24 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,24 @@ void	ft_wait(t_philo_one *p)
 		pthread_join(p->has_eaten, NULL);
 }
 
+int		ft_detach_threads(int limit, t_phi *phi, t_philo_one *p)
+{
+	t_phi	*iter;
+	int		counter;
+
+	iter = phi;
+	counter = 0;
+	pthread_detach(p->in_order);
+	if (p->params->must_eat != -1)
+		pthread_detach(p->has_eaten);
+	while (counter++ < limit)
+	{
+		pthread_detach(iter->entity);
+		iter = iter->next;
+	}
+	return (ft_error(ERROR_CREATE_THREAD));
+}
+
 int		ft_launch(t_philo_one *p)
 {
 	t_phi	*iter;
@@ -41,7 +59,10 @@ int		ft_launch(t_philo_one *p)
 	if (p->params->must_eat != -1)
 	{
 		if (pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))
+		{
+			pthread_detach(p->in_order);
 			return (ft_error(ERROR_CREATE_THREAD));
+		}
 	}
 	iter = p->phi;
 	counter = 0;
@@ -50,7 +71,7 @@ int		ft_launch(t_philo_one *p)
 	{
 		gettimeofday(&iter->last_meal, NULL);
 		if (pthread_create(&iter->entity, NULL, &th_is_alive, iter))
-			return (ft_error(ERROR_CREATE_THREAD));
+			return (ft_detach_threads(iter->id_nb, p->phi, p));
 		iter = iter->next;
 	}
 	return (0);

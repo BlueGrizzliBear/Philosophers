@@ -6,7 +6,7 @@
 #    By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/30 10:08:08 by cbussier          #+#    #+#              #
-#    Updated: 2020/12/02 13:42:42 by cbussier         ###   ########lyon.fr    #
+#    Updated: 2020/12/02 15:25:33 by cbussier         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRCS_NAME		=		main.c \
 						alive.c \
 						philosophers.c \
 						display.c \
-						free.c
+						free.c \
+						threads.c
 
 OBJS			= 		${SRCS:.c=.o}
 

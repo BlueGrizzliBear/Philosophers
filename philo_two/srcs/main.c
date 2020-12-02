@@ -6,48 +6,11 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 12:22:46 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 15:25:10 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_two.h"
-
-void	*th_in_order(void *arg)
-{
-	t_philo_two	*p;
-	t_phi		*iter;
-
-	p = (t_philo_two*)(arg);
-	iter = p->phi;
-	while (p->params->game == 1)
-	{
-		if (sem_post(iter->order_start) && ft_error(ERROR_UNLOCK_SEM))
-			return ((void*)0);
-		if (sem_wait(iter->order_end) && ft_error(ERROR_LOCK_SEM))
-			return ((void*)0);
-		iter = iter->next;
-	}
-	return ((void*)0);
-}
-
-void	*th_has_eaten(void *arg)
-{
-	t_philo_two	*p;
-	int			total;
-
-	p = (t_philo_two*)arg;
-	total = 0;
-	while (total++ < p->params->nb && p->params->game == 1)
-	{
-		if (sem_wait(p->params->has_eaten) && ft_error(ERROR_LOCK_SEM))
-			return ((void*)0);
-	}
-	if (sem_post(p->params->has_eaten) && ft_error(ERROR_UNLOCK_SEM))
-		return ((void*)0);
-	if (sem_post(p->params->game_over) && ft_error(ERROR_UNLOCK_SEM))
-		return ((void*)0);
-	return ((void*)0);
-}
 
 int		ft_wait(t_philo_two *p)
 {
@@ -78,6 +41,24 @@ int		ft_wait(t_philo_two *p)
 	return (0);
 }
 
+int		ft_detach_threads(int limit, t_phi *phi, t_philo_two *p)
+{
+	t_phi	*iter;
+	int		counter;
+
+	iter = phi;
+	counter = 0;
+	pthread_detach(p->ordering);
+	if (p->params->must_eat != -1)
+		pthread_detach(p->has_eaten);
+	while (counter++ < limit)
+	{
+		pthread_detach(iter->entity);
+		iter = iter->next;
+	}
+	return (ft_error(ERROR_CREATE_THREAD));
+}
+
 int		ft_launch(t_philo_two *p)
 {
 	t_phi	*iter;
@@ -88,7 +69,10 @@ int		ft_launch(t_philo_two *p)
 	if (p->params->must_eat != -1)
 	{
 		if (pthread_create(&p->has_eaten, NULL, &th_has_eaten, p))
+		{
+			pthread_detach(p->ordering);
 			return (ft_error(ERROR_CREATE_THREAD));
+		}
 	}
 	iter = p->phi;
 	counter = 0;
@@ -97,7 +81,7 @@ int		ft_launch(t_philo_two *p)
 	{
 		gettimeofday(&iter->last_meal, NULL);
 		if (pthread_create(&iter->entity, NULL, &th_is_alive, iter))
-			return (ft_error(ERROR_CREATE_THREAD));
+			return (ft_detach_threads(iter->id_nb, p->phi, p));
 		iter = iter->next;
 	}
 	return (0);
