@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:27:30 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:29:13 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*th_in_order(void *arg)
 			dprintf(2, "waiting for phi|%d|\n", iter->id_nb);
 			if (pthread_mutex_lock(iter->order) && ft_error(ERROR_LOCK_MUTEX))
 				return ((void*)0);
-			// iter->ordo = 0;
+			// iter->ordo = -1;
 			dprintf(2, "came back|%d|\n", iter->id_nb);
 			order += 2;
 			if (delta == 0 && order > p->params->nb)
@@ -56,11 +56,11 @@ void	*th_in_order(void *arg)
 	iter = p->phi;
 	while (order++ < p->params->nb)
 	{
-		if (iter->ordo == 0)
-		{
+		// if (iter->ordo != )
+		// {
 			if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
 				return ((void*)0);
-		}
+		// }
 		iter = iter->next;
 	}
 	dprintf(2, "returning from order\n");
