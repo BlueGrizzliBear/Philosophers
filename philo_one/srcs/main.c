@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:06:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:07:01 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	*th_in_order(void *arg)
 				order = order % p->params->nb;
 			// dprintf(2, "going next for |%d|\n", order);
 		}
+		dprintf(2, "in while loop\n");
 		iter = iter->next;
 	}
 	dprintf(2, "unlocking shits from order\n");
