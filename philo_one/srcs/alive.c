@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 09:51:59 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:11:14 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	*th_is_alive(void *arg)
 	}
 	phi->status = 0;
 	pthread_join(phi->brain, NULL);
+	phi->ordo = 0;
 	// if (pthread_mutex_unlock(phi->params->display))
 	// if (pthread_mutex_unlock(phi->params->display) ||
 	// pthread_mutex_unlock(phi->order) ||
