@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:19:37 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:26:36 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,23 @@ void	*th_in_order(void *arg)
 	iter = p->phi;
 	order = 0;
 	delta = p->params->nb % 2;
-	while (p->params->game == 1)
+	while (p->params->game == 1 && iter->ordo == 1)
 	{
 		if (order == iter->id_nb)
 		{
 			// dprintf(2, "ordering phi|%d|\n", iter->id_nb);
 			if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
 				return ((void*)0);
-			iter->ordo = 1;
 			while (iter->ordo == 1)
 			{
 				dprintf(2, "while\n");
 				ft_standby(1);
 			}
+			iter->ordo = 1;
 			dprintf(2, "waiting for phi|%d|\n", iter->id_nb);
 			if (pthread_mutex_lock(iter->order) && ft_error(ERROR_LOCK_MUTEX))
 				return ((void*)0);
-			iter->ordo = 0;
+			// iter->ordo = 0;
 			dprintf(2, "came back|%d|\n", iter->id_nb);
 			order += 2;
 			if (delta == 0 && order > p->params->nb)
