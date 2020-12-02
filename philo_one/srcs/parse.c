@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:55:46 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 11:00:52 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ pthread_mutex_t	*ft_create_mutex(void)
 	return (mutex);
 }
 
-// t_params		*ft_create_params_mutexes(t_params *params)
-// {
-// 	if (!(params->display = ft_create_mutex()))
-// 	{
-// 		ft_free_params(params);
-// 		return (NULL);
-// 	}
-// 	return (params);
-// }
+t_params		*ft_create_params_mutexes(t_params *params)
+{
+	if (!(params->display = ft_create_mutex()))
+	{
+		ft_free_params(params);
+		return (NULL);
+	}
+	return (params);
+}
 
 t_params		*ft_parse(char **argv)
 {
@@ -70,19 +70,14 @@ t_params		*ft_parse(char **argv)
 	while (argv[++i])
 	{
 		if ((val = ft_atoi(argv[i])) < 1)
+		{
+			free(params);
 			return (NULL);
+		}
 		ft_init_params(params, val, i);
 	}
 	params->game = 1;
-	if (!(params->display = ft_create_mutex()))
-	{
-		ft_free_params(params);
+	if (!ft_create_params_mutexes(params))
 		return (NULL);
-	}
-	// params->all_has_eaten = 0;
-	// if (!ft_create_params_mutexes(params))
-	// {
-	// 	return (NULL);
-	// }
 	return (params);
 }
