@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 09:52:09 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:03:31 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	*th_has_eaten(void *arg)
 			total++;
 		}
 	}
-	p->params->all_has_eaten = total;
+	// p->params->all_has_eaten = total;
 	p->params->game = 0;
 	return ((void*)0);
 }
@@ -96,11 +96,14 @@ void	ft_wait(t_philo_one *p)
 	while (i++ < p->params->nb)
 	{
 		pthread_join(iter->entity, NULL);
+		dprintf(2, "joigned phi|%d|\n", iter->id_nb);
 		iter = iter->next;
 	}
 	pthread_join(p->in_order, NULL);
+	dprintf(2, "joigned order\n");
 	if (p->params->must_eat != -1)
 		pthread_join(p->has_eaten, NULL);
+	dprintf(2, "joigned has_eaten\n");
 }
 
 int		ft_launch(t_philo_one *p)

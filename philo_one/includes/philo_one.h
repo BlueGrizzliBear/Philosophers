@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 09:50:54 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:02:38 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct			s_params
 	int					must_eat;
 	int					game;
 	struct timeval		start;
-	int					all_has_eaten;
+	// int					all_has_eaten;
 	pthread_mutex_t		*display;
 }						t_params;
 

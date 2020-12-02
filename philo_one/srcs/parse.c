@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 09:51:05 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:03:39 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_params		*ft_parse(char **argv)
 		ft_init_params(params, val, i);
 	}
 	params->game = 1;
-	params->all_has_eaten = 0;
+	// params->all_has_eaten = 0;
 	if (!ft_create_params_mutexes(params))
 		return (NULL);
 	return (params);
