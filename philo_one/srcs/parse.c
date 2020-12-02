@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:03:39 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:45:58 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ t_params		*ft_parse(char **argv)
 
 	params = NULL;
 	if (!(params = malloc(sizeof(t_params))))
-		exit(ft_error(ERROR_STRUCT_CREAT));
+	{
+		ft_error(ERROR_STRUCT_CREAT);
+		return (NULL);
+	}
 	params->must_eat = -1;
 	i = 0;
 	while (argv[++i])
@@ -67,6 +70,9 @@ t_params		*ft_parse(char **argv)
 	params->game = 1;
 	// params->all_has_eaten = 0;
 	if (!ft_create_params_mutexes(params))
+	{
+		ft_free_params(params);
 		return (NULL);
+	}
 	return (params);
 }

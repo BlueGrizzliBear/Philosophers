@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:43:27 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:30:54 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:45:31 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 void	ft_free_mutex(pthread_mutex_t *f)
 {
-	int ret;
-
-	if ((ret = pthread_mutex_destroy(f)))
-		ft_error(ERROR_DESTROY);
-	free(f);
-	f = NULL;
+	if (f)
+	{
+		if (pthread_mutex_destroy(f))
+			ft_error(ERROR_DESTROY);
+		free(f);
+		f = NULL;
+	}
 }
 
 int		ft_free_forks(t_fork *f, t_params *params)
@@ -71,7 +72,8 @@ void	ft_free_params(t_params *params)
 {
 	// dprintf(2, "display mutex\n");
 	ft_free_mutex(params->display);
-	free(params);
+	if (params)
+		free(params);
 	params = NULL;
 }
 
