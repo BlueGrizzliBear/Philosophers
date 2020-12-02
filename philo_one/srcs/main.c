@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:59:40 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:08:22 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:13:18 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	*th_in_order(void *arg)
 	iter = p->phi;
 	while (order++ < p->params->nb)
 	{
-		if (iter->ordo == 1)
+		if (iter->ordo == -1)
 		{
 			if (pthread_mutex_unlock(iter->order) && ft_error(ERROR_UNLOCK_MUTEX))
 				return ((void*)0);
