@@ -6,7 +6,7 @@
 /*   By: cbussier <cbussier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 11:19:16 by cbussier          #+#    #+#             */
-/*   Updated: 2020/12/02 10:45:43 by cbussier         ###   ########lyon.fr   */
+/*   Updated: 2020/12/02 10:49:23 by cbussier         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct			s_params
 	int					must_eat;
 	int					game;
 	struct timeval		start;
-	// int					all_has_eaten;
 	pthread_mutex_t		*display;
 }						t_params;
 
@@ -111,5 +110,6 @@ void					ft_free(t_philo_one *p);
 pthread_mutex_t 		*ft_create_mutex(void);
 
 void					ft_free_params(t_params *params);
+// void					ft_free_mutex(pthread_mutex_t *f);
 
 #endif
