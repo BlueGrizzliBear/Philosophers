@@ -12,11 +12,12 @@ Specifications:
   - philo_three: solve the problem with multi-threading and semaphores
 
 Each program will display on the console the status of each philosophers:
-◦ timestamp_in_ms X has taken a fork
-◦ timestamp_in_ms X is eating
-◦ timestamp_in_ms X is sleeping
-◦ timestamp_in_ms X is thinking
-◦ timestamp_in_ms X died
+
+- timestamp_in_ms X has taken a fork
+- timestamp_in_ms X is eating
+- timestamp_in_ms X is sleeping
+- timestamp_in_ms X is thinking
+- timestamp_in_ms X died
 
 ## Context
 
@@ -46,10 +47,11 @@ To launch each program (philo_one for example):
 ```
 
 Common tests are:
-./philo_nb 5 800 200 200 => philosophers should never die
-./philo_nb 4 410 200 200 => philosophers should never die
-./philo_nb 4 310 200 200 => philosophers should die
-./philo_nb 2 410 200 200 => philosophers should never die
+
+- ./philo_nb 5 800 200 200 => philosophers should never die
+- ./philo_nb 4 410 200 200 => philosophers should never die
+- ./philo_nb 4 310 200 200 => philosophers should die
+- ./philo_nb 2 410 200 200 => philosophers should never die
 
 ## Known Issues
 
