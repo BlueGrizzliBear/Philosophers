@@ -21,7 +21,7 @@ Each program will display on the console the status of each philosophers:
 
 ## Context
 
-This project is part of the Philosophers project of 42's Software Engineering program.
+This project was done as part of 42's Software Engineering program.
 
 ## Usage
 
