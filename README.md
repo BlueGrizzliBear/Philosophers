@@ -1,6 +1,6 @@
 # Philosophers
 
-3 programs to solve the [dining philosophers problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
+3 programs to solve the [dining philosophers problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem).
 
 Specifications:
 
@@ -21,7 +21,7 @@ Each program will display on the console the status of each philosophers:
 
 ## Context
 
-This project was done as part of 42's Software Engineer program.
+This project was done as part of 42's Software Engineer program. Project was passed the 2nd December 2020.
 
 ## Usage
 
