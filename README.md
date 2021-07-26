@@ -55,4 +55,4 @@ Common tests are:
 
 ## Known Issues
 
-Philosophers tend to die prematurely on certain machines (with low CPU availabilty) for the (4 410 200 200) test.
+The programs were tested successfully on Ubuntu Virtual Machine but philosophers tend to die prematurely on different machines for the (4 410 200 200) test.
